@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # README
 
 This README would normally document whatever steps are necessary to get the
@@ -23,7 +22,3 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
-=======
-# cavin
-A Rails app to create, organize, and manage personal wine storages with editable grids and detailed wine tracking.
->>>>>>> 467ebe97a6a2ce494d1fa53f29a9a3e347754768

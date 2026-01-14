@@ -1,0 +1,44 @@
+<div class="devise-container">
+  <div class="devise-card">
+    <div class="devise-header">
+      <div class="devise-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 2h8l2 10-4 10-4-10z"/>
+          <ellipse cx="12" cy="2" rx="4" ry="1"/>
+        </svg>
+      </div>
+      <h2>Inscription</h2>
+      <p class="devise-subtitle">Créez votre compte et commencez à gérer votre cave</p>
+    </div>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "devise-form" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <div class="form-group">
+        <%= f.label :email, "Email", class: "form-label" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-input", placeholder: "votre@email.com" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password, "Mot de passe", class: "form-label" %>
+        <% if @minimum_password_length %>
+          <span class="form-hint">(<%= @minimum_password_length %> caractères minimum)</span>
+        <% end %>
+        <%= f.password_field :password, autocomplete: "new-password", class: "form-input", placeholder: "••••••••" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password_confirmation, "Confirmation du mot de passe", class: "form-label" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-input", placeholder: "••••••••" %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit "S'inscrire", class: "btn-submit" %>
+      </div>
+    <% end %>
+
+    <div class="devise-links">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

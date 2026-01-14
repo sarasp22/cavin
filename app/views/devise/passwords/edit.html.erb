@@ -1,0 +1,39 @@
+<div class="devise-container">
+  <div class="devise-card">
+    <div class="devise-header">
+      <div class="devise-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+      </div>
+      <h2>Nouveau mot de passe</h2>
+      <p class="devise-subtitle">Choisissez un nouveau mot de passe sécurisé</p>
+    </div>
+
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "devise-form" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+      <%= f.hidden_field :reset_password_token %>
+
+      <div class="form-group">
+        <%= f.label :password, "Nouveau mot de passe", class: "form-label" %>
+        <% if @minimum_password_length %>
+          <span class="form-hint">(<%= @minimum_password_length %> caractères minimum)</span>
+        <% end %>
+        <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class: "form-input", placeholder: "••••••••" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password_confirmation, "Confirmation du mot de passe", class: "form-label" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-input", placeholder: "••••••••" %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit "Modifier mon mot de passe", class: "btn-submit" %>
+      </div>
+    <% end %>
+
+    <div class="devise-links">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

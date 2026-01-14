@@ -1,0 +1,58 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <%= link_to root_path, class: "logo-link" do %>
+        <div class="logo-icon">
+         <%= image_tag "logo.png", alt: "logo Cavin", width: 40, height: 40 %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="navbar-menu">
+      <%= link_to "Accueil", root_path, class: "nav-link" %>
+
+      <div class="nav-dropdown">
+        <button class="nav-link dropdown-toggle">
+          Qui sommes-nous
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div class="dropdown-menu">
+          <%= link_to "Notre histoire", "#", class: "dropdown-item" %>
+          <%= link_to "Notre équipe", "#", class: "dropdown-item" %>
+          <%= link_to "Contact", "#", class: "dropdown-item" %>
+        </div>
+      </div>
+
+      <% if user_signed_in? %>
+        <%= link_to "Mes Caves", storages_path, class: "nav-link" %>
+      <% end %>
+    </div>
+
+    <div class="navbar-actions">
+      <% if user_signed_in? %>
+        <%= link_to "Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "btn-navbar btn-outline" %>
+      <% else %>
+        <%= link_to "Connexion", new_user_session_path, class: "btn-navbar btn-login" %>
+      <% end %>
+    </div>
+
+    <button class="mobile-menu-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <div class="mobile-menu">
+    <%= link_to "Accueil", root_path, class: "mobile-nav-link" %>
+    <%= link_to "Qui sommes-nous", "#", class: "mobile-nav-link" %>
+    <% if user_signed_in? %>
+      <%= link_to "Mes Caves", storages_path, class: "mobile-nav-link" %>
+      <%= link_to "Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "mobile-nav-link" %>
+    <% else %>
+      <%= link_to "Connexion", new_user_session_path, class: "mobile-nav-link" %>
+    <% end %>
+  </div>
+</nav>

@@ -1,0 +1,31 @@
+<div class="devise-container">
+  <div class="devise-card">
+    <div class="devise-header">
+      <div class="devise-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      </div>
+      <h2>Mot de passe oublié ?</h2>
+      <p class="devise-subtitle">Entrez votre email pour réinitialiser votre mot de passe</p>
+    </div>
+
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "devise-form" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <div class="form-group">
+        <%= f.label :email, "Email", class: "form-label" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-input", placeholder: "votre@email.com" %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit "Envoyer les instructions", class: "btn-submit" %>
+      </div>
+    <% end %>
+
+    <div class="devise-links">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

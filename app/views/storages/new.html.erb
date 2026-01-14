@@ -1,0 +1,25 @@
+<h1>Créer un nouveau stockage</h1>
+
+<%= form_with model: @storage do |f| %>
+  <div>
+    <%= f.label :name, "Nom du stockage" %>
+    <%= f.text_field :name, placeholder: "Es: Ma Cave Principale" %>
+  </div>
+
+  <div>
+    <%= f.label :category, "Type de stockage" %>
+    <%= f.select :category, Storage::CATEGORIES %>
+  </div>
+
+  <div>
+    <%= f.label :rows, "Nombre de rangées (lignes)" %>
+    <%= f.number_field :rows, in: 1..20, value: 4 %>
+  </div>
+
+  <div>
+    <%= f.label :cols, "Nombre de colonnes" %>
+    <%= f.number_field :cols, in: 1..20, value: 5 %>
+  </div>
+
+  <%= f.submit "Créer mon stockage", class: "btn-primary" %>
+<% end %>

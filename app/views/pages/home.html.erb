@@ -1,0 +1,55 @@
+<div class="home-container">
+  <section class="hero-section">
+    <div class="hero-overlay">
+      <div class="hero-content">
+        <h1 class="hero-title">Gérez votre cave à vin avec simplicité</h1>
+        <% if user_signed_in? %>
+          <%= link_to "Voir mes caves", storages_path, class: "btn-primary" %>
+        <% else %>
+          <%= link_to "Inscrivez-vous", new_user_registration_path, class: "btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <section class="features-section">
+    <h2 class="section-title">Comment ça marche :</h2>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <%= image_tag "Icona1.png", alt: "logo Cavin", width:"60" %>
+        </div>
+        <h3 class="feature-title">1. CRÉA | TUOI STOCCAGE</h3>
+        <p class="feature-description">Créez vos espaces de stockage personnalisés pour organiser votre cave à vin</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <%= image_tag "Icona2.png", alt: "logo Cavin", width:"60" %>
+        </div>
+        <h3 class="feature-title">2. AJOUTEZ | VOS VINS</h3>
+        <p class="feature-description">Ajoutez vos bouteilles avec toutes leurs informations : nom, région, type et prix</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <%= image_tag "Icona3.png", alt: "logo Cavin", width:"60" %>
+        </div>
+        <h3 class="feature-title">3. EXPLOREZ ET GÉREZ</h3>
+        <p class="feature-description">Recherchez facilement vos vins et suivez votre collection en temps réel</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="cta-content">
+      <div class="wine-glass-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 2h8M9 2v6.5a4 4 0 0 0 6 3.5M12 17v5M8 22h8"></path>
+        </svg>
+      </div>
+      <p class="cta-text">Pour vos intérieurs : chaque bouteille a son histoire.</p>
+    </div>
+  </section>
+</div>
