@@ -17,8 +17,7 @@
         <div class="storage-card">
           <%= link_to storage_path(storage), class: "storage-link" do %>
             <div class="storage-image">
-              <%= image_tag storage.photo_url, alt: storage.name, class: "storage-photo" %>
-              <div class="storage-overlay">
+              <%= image_tag storage.photo_url, alt: storage.name, class: "storage-photo" %>              <div class="storage-overlay">
                 <h3 class="storage-name"><%= storage.name %></h3>
                 <p class="storage-bottles">
                   <%= storage.wines.where(consumed_at: nil).count %> Bouteilles

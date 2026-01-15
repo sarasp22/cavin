@@ -51,18 +51,18 @@ class StoragesController < ApplicationController
     params.require(:storage).permit(:name, :category, :rows, :cols)
   end
 
-  def set_default_photo(category)
-    case category
-    when "Cave"
-      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800"
-    when "Vinothèque salon"
-      "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800"
-    when "Meuble cuisine"
-      "https://images.unsplash.com/photo-1578911373434-0cb395d2cbfb?w=800"
-    when "Vinothèque cuisine"
-      "https://images.unsplash.com/photo-1568213816046-0ee1c42bd559?w=800"
-    else
-      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800"
-    end
+def set_default_photo(category)
+  case category
+  when "Cave"
+    "cave.jpg"
+  when "Vinothèque salon"
+    "vinotheque_salon.png"
+  when "Meuble cuisine"
+    "meuble_cuisine.jpg"
+  when "Vinothèque cuisine"
+    "vinotheque_cuisine.png"
+  else
+    "default_storage.jpg"
   end
+end
 end
