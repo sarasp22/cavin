@@ -1,5 +1,5 @@
 <div class="storages-container">
-  <!-- Header Section -->
+
   <div class="storages-header">
     <h1 class="storages-title">Mes Stockages</h1>
     <%= link_to new_storage_path, class: "btn-add-storage" do %>
@@ -11,7 +11,6 @@
     <% end %>
   </div>
 
-  <!-- Storages Grid -->
   <% if @storages.any? %>
     <div class="storages-grid">
       <% @storages.each do |storage| %>
@@ -34,7 +33,7 @@
       <% end %>
     </div>
   <% else %>
-    <!-- Empty State -->
+
     <div class="empty-state">
       <div class="empty-icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

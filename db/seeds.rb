@@ -1,4 +1,3 @@
-# Clean database
 puts "Cleaning database..."
 Wine.destroy_all
 Storage.destroy_all
@@ -6,7 +5,6 @@ User.destroy_all
 
 puts "Creating users..."
 
-# Create demo user
 user = User.create!(
   email: "demo@cavin.fr",
   password: "password123",
@@ -17,7 +15,6 @@ puts "Created user: #{user.email}"
 
 puts "Creating storages..."
 
-# Storage 1: Cave traditionnelle
 storage1 = Storage.create!(
   user: user,
   name: "Cantina di Casa",
@@ -27,7 +24,6 @@ storage1 = Storage.create!(
   photo_url: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800"
 )
 
-# Storage 2: Vinothèque moderne
 storage2 = Storage.create!(
   user: user,
   name: "Vinoteca Soggiorno",
@@ -37,7 +33,6 @@ storage2 = Storage.create!(
   photo_url: "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800"
 )
 
-# Storage 3: Armoire cuisine
 storage3 = Storage.create!(
   user: user,
   name: "Armadietto Cucina",
@@ -47,7 +42,6 @@ storage3 = Storage.create!(
   photo_url: "https://images.unsplash.com/photo-1578911373434-0cb395d2cbfb?w=800"
 )
 
-# Storage 4: Vinothèque cuisine
 storage4 = Storage.create!(
   user: user,
   name: "Armadietto Cuclina",
@@ -61,7 +55,6 @@ puts "Created #{Storage.count} storages"
 
 puts "Creating wines..."
 
-# Wines for Storage 1 (Cave)
 wines_data_1 = [
   { name: "Château Margaux 2015", wine_type: "Rouge", region: "Bordeaux", price: 450.00, row_position: 1, col_position: 1 },
   { name: "Pétrus 2010", wine_type: "Rouge", region: "Pomerol", price: 2500.00, row_position: 1, col_position: 2 },
@@ -79,7 +72,6 @@ wines_data_1.each do |wine_data|
   Wine.create!(wine_data.merge(storage: storage1))
 end
 
-# Wines for Storage 2 (Vinothèque salon)
 wines_data_2 = [
   { name: "Dom Pérignon 2012", wine_type: "Champagne", region: "Champagne", price: 180.00, row_position: 1, col_position: 1 },
   { name: "Krug Grande Cuvée", wine_type: "Champagne", region: "Champagne", price: 200.00, row_position: 1, col_position: 2 },
@@ -93,7 +85,6 @@ wines_data_2.each do |wine_data|
   Wine.create!(wine_data.merge(storage: storage2))
 end
 
-# Wines for Storage 3 (Meuble cuisine)
 wines_data_3 = [
   { name: "Côtes du Rhône 2020", wine_type: "Rouge", region: "Rhône", price: 15.00, row_position: 1, col_position: 1 },
   { name: "Chianti Classico 2021", wine_type: "Rouge", region: "Toscane", price: 18.00, row_position: 1, col_position: 2 },
@@ -106,7 +97,6 @@ wines_data_3.each do |wine_data|
   Wine.create!(wine_data.merge(storage: storage3))
 end
 
-# Wines for Storage 4 (Vinothèque cuisine)
 wines_data_4 = [
   { name: "Montepulciano d'Abruzzo", wine_type: "Rouge", region: "Abruzzes", price: 13.00, row_position: 1, col_position: 1 },
   { name: "Valpolicella Ripasso", wine_type: "Rouge", region: "Vénétie", price: 22.00, row_position: 1, col_position: 2 },
@@ -119,7 +109,6 @@ end
 
 puts "Created #{Wine.count} wines"
 
-# Add some consumed wines for history
 consumed_wines = [
   { name: "Château Lafite Rothschild 2005", wine_type: "Rouge", region: "Bordeaux", price: 800.00, storage: storage1, consumed_at: 2.months.ago },
   { name: "Moët & Chandon Impérial", wine_type: "Champagne", region: "Champagne", price: 45.00, storage: storage2, consumed_at: 1.week.ago },
