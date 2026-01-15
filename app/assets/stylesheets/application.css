@@ -18,6 +18,8 @@
 @import "pages/devise";
 @import "pages/storage";
 @import "pages/storage_form";
+@import "pages/storage_show";
+@import "pages/wine_form";
 
 body {
   background-color: #f5f1e8;

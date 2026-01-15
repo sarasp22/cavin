@@ -1,0 +1,49 @@
+<div class="wine-form-container">
+  <div class="wine-form-card">
+    <h1 class="form-main-title">Modifier le Vin</h1>
+
+    <%= form_with model: [@storage, @wine], class: "wine-form" do |f| %>
+
+      <div class="form-group">
+        <%= f.label :name, "Nom du vin", class: "form-label" %>
+        <%= f.text_field :name, placeholder: "Ex: Château Margaux 2015", class: "form-input", required: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :wine_type, "Type de vin", class: "form-label" %>
+        <%= f.select :wine_type,
+            [["Rouge", "Rouge"], ["Blanc", "Blanc"], ["Rosé", "Rosé"], ["Champagne", "Champagne"], ["Pétillant", "Pétillant"]],
+            { prompt: "Sélectionnez un type" },
+            class: "form-input",
+            required: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :region, "Région", class: "form-label" %>
+        <%= f.text_field :region, placeholder: "Ex: Bordeaux", class: "form-input", required: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :price, "Prix (€)", class: "form-label" %>
+        <%= f.number_field :price, step: 0.01, min: 0, placeholder: "Ex: 45.50", class: "form-input", required: true %>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <%= f.label :row_position, "Rangée", class: "form-label" %>
+          <%= f.number_field :row_position, min: 1, max: @storage.rows, class: "form-input", required: true %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :col_position, "Colonne", class: "form-label" %>
+          <%= f.number_field :col_position, min: 1, max: @storage.cols, class: "form-input", required: true %>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <%= link_to "Annuler", storage_wine_path(@storage, @wine), class: "btn-secondary" %>
+        <%= f.submit "Mettre à jour", class: "btn-submit-wine" %>
+      </div>
+    <% end %>
+  </div>
+</div>

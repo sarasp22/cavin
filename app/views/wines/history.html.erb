@@ -1,0 +1,20 @@
+<div class="history-container">
+  <h1>Historique des Vins Consommés</h1>
+
+  <% if @consumed_wines.any? %>
+    <div class="history-list">
+      <% @consumed_wines.each do |wine| %>
+        <div class="history-item">
+          <h3><%= wine.name %></h3>
+          <p><%= wine.wine_type %> - <%= wine.region %></p>
+          <p><strong>Consommé le:</strong> <%= l(wine.consumed_at, format: :long) %></p>
+          <p><strong>Prix:</strong> <%= number_to_currency(wine.price, unit: "€") %></p>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="empty-message">Aucun vin consommé pour le moment.</p>
+  <% end %>
+
+  <%= link_to "Retour aux stockages", storages_path, class: "btn-primary" %>
+</div>

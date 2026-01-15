@@ -1,0 +1,19 @@
+<div class="wine-show-container">
+  <h1><%= @wine.name %></h1>
+
+  <div class="wine-details">
+    <p><strong>Type:</strong> <%= @wine.wine_type %></p>
+    <p><strong>Région:</strong> <%= @wine.region %></p>
+    <p><strong>Prix:</strong> <%= number_to_currency(@wine.price, unit: "€") %></p>
+    <p><strong>Position:</strong> Rangée <%= @wine.row_position %>, Colonne <%= @wine.col_position %></p>
+  </div>
+
+  <div class="wine-actions">
+    <%= link_to "Retour au stockage", storage_path(@storage), class: "btn-secondary" %>
+    <%= link_to "Modifier", edit_storage_wine_path(@storage, @wine), class: "btn-primary" %>
+
+    <% unless @wine.consumed_at %>
+      <%= button_to "Marquer comme consommé", consume_storage_wine_path(@storage, @wine), method: :patch, class: "btn-consume" %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,137 @@
+<div class="wine-form-container">
+  <div class="wine-form-card">
+    <div class="wine-form-header">
+      <div class="wine-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 2h8l2 10-4 10-4-10z"/>
+          <ellipse cx="12" cy="2" rx="4" ry="1"/>
+        </svg>
+      </div>
+      <h1 class="wine-form-title">Ajouter un Vin</h1>
+      <p class="wine-form-subtitle">Ajoutez une nouvelle bouteille à <%= @storage.name %></p>
+    </div>
+
+    <%= form_with model: [@storage, @wine], class: "wine-form" do |f| %>
+
+      <div class="wine-form-group">
+        <%= f.label :name, "Nom du Vin", class: "wine-form-label" %>
+        <%= f.text_field :name, placeholder: "Ex: Château Margaux 2015", class: "wine-form-input", required: true %>
+      </div>
+
+      <div class="wine-form-group">
+        <%= f.label :wine_type, "Type de Vin", class: "wine-form-label" %>
+        <div class="wine-type-buttons">
+          <% wine_types = ["Rouge", "Blanc", "Rosé", "Champagne", "Pétillant"] %>
+          <% wine_types.each do |type| %>
+            <label class="wine-type-option">
+              <%= f.radio_button :wine_type, type, class: "wine-type-radio", required: true %>
+              <span class="wine-type-label <%= type.downcase %>"><%= type %></span>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="wine-form-group">
+        <%= f.label :region, "Région", class: "wine-form-label" %>
+        <%= f.text_field :region, placeholder: "Ex: Bordeaux, Bourgogne, Toscane...", class: "wine-form-input", required: true %>
+      </div>
+
+      <div class="wine-form-group">
+        <%= f.label :price, "Prix (€)", class: "wine-form-label" %>
+        <div class="input-with-currency">
+          <%= f.number_field :price, step: 0.01, min: 0, placeholder: "0.00", class: "wine-form-input price-input", required: true %>
+          <span class="currency-symbol">€</span>
+        </div>
+      </div>
+
+      <div class="wine-form-section">
+        <h3 class="section-title">Position dans le Stockage</h3>
+
+        <div class="position-grid">
+          <div class="position-control">
+            <%= f.label :row_position, "Rangée", class: "wine-form-label" %>
+            <%= f.number_field :row_position,
+                value: params[:row] || 1,
+                min: 1,
+                max: @storage.rows,
+                class: "wine-form-input position-input",
+                required: true %>
+            <span class="position-hint">De 1 à <%= @storage.rows %></span>
+          </div>
+
+          <div class="position-control">
+            <%= f.label :col_position, "Colonne", class: "wine-form-label" %>
+            <%= f.number_field :col_position,
+                value: params[:col] || 1,
+                min: 1,
+                max: @storage.cols,
+                class: "wine-form-input position-input",
+                required: true %>
+            <span class="position-hint">De 1 à <%= @storage.cols %></span>
+          </div>
+        </div>
+
+        <div class="position-preview">
+          <p class="preview-label">Aperçu de la position</p>
+          <div class="preview-grid" id="position-preview" style="grid-template-columns: repeat(<%= @storage.cols %>, 1fr);">
+            <% (@storage.rows * @storage.cols).times do |index| %>
+              <% row = (index / @storage.cols) + 1 %>
+              <% col = (index % @storage.cols) + 1 %>
+              <% wine = @storage.wines.where(consumed_at: nil).find { |w| w.row_position == row && w.col_position == col } %>
+
+              <div class="preview-slot <%= 'occupied' if wine %> <%= 'selected' if row == (params[:row]&.to_i || 1) && col == (params[:col]&.to_i || 1) %>"
+                   data-row="<%= row %>"
+                   data-col="<%= col %>"
+                   onclick="selectPosition(<%= row %>, <%= col %>)">
+                <% if wine %>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 2h8l2 10-4 10-4-10z"/>
+                    <ellipse cx="12" cy="2" rx="4" ry="1"/>
+                  </svg>
+                <% else %>
+                  <span class="slot-label">R<%= row %>C<%= col %></span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="wine-form-actions">
+        <%= link_to "Annuler", storage_path(@storage), class: "btn-cancel" %>
+        <%= f.submit "Ajouter le Vin", class: "btn-submit-wine" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  function selectPosition(row, col) {
+    document.getElementById('wine_row_position').value = row;
+    document.getElementById('wine_col_position').value = col;
+
+    document.querySelectorAll('.preview-slot').forEach(slot => {
+      slot.classList.remove('selected');
+    });
+
+    const selectedSlot = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+    if (selectedSlot && !selectedSlot.classList.contains('occupied')) {
+      selectedSlot.classList.add('selected');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const rowInput = document.getElementById('wine_row_position');
+    const colInput = document.getElementById('wine_col_position');
+
+    if (rowInput && colInput) {
+      rowInput.addEventListener('change', function() {
+        selectPosition(parseInt(this.value), parseInt(colInput.value));
+      });
+
+      colInput.addEventListener('change', function() {
+        selectPosition(parseInt(rowInput.value), parseInt(this.value));
+      });
+    }
+  });
+</script>

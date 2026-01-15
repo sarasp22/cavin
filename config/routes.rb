@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   root to: "pages#home"
 
   resources :storages do
-    resources :wines, only: [:new, :create, :edit, :update, :show, :destroy]
+    resources :wines, only: [:new, :create, :edit, :update, :show, :destroy] do
+      member do
+        patch :consume
+      end
+    end
   end
 
   get "history", to: "wines#history"
