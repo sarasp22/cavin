@@ -1,25 +1,187 @@
-<h1>Créer un nouveau stockage</h1>
+<div class="storage-form-container">
+  <div class="storage-form-card">
+    <h1 class="form-main-title">Ajouter Nouveau Stockage</h1>
 
-<%= form_with model: @storage do |f| %>
-  <div>
-    <%= f.label :name, "Nom du stockage" %>
-    <%= f.text_field :name, placeholder: "Es: Ma Cave Principale" %>
+    <%= form_with model: @storage, class: "storage-form", data: { controller: "storage-form" } do |f| %>
+
+      <div class="form-section">
+        <label class="form-section-label">Nom du Stockage</label>
+        <div class="input-with-icon">
+          <%= f.text_field :name, placeholder: "Ex: Ma Cave Principale", class: "form-text-input" %>
+          <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <label class="form-section-label">Type de Stockage</label>
+        <div class="storage-types-grid">
+          <% Storage::CATEGORIES.each_with_index do |category, index| %>
+            <div class="storage-type-card" data-action="click->storage-form#selectCategory" data-category="<%= category %>">
+              <%= f.radio_button :category, category, class: "storage-radio-input", id: "category_#{index}" %>
+              <label for="category_<%= index %>" class="storage-type-label">
+                <div class="storage-type-image">
+                  <% case category %>
+                  <% when "Cave" %>
+                    <%= image_tag "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400", alt: "Cave", class: "category-img" %>
+                  <% when "Vinothèque salon" %>
+                    <%= image_tag "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=400", alt: "Vinothèque Salon", class: "category-img" %>
+                  <% when "Meuble cuisine" %>
+                    <%= image_tag "https://images.unsplash.com/photo-1578911373434-0cb395d2cbfb?w=400", alt: "Meuble Cuisine", class: "category-img" %>
+                  <% when "Vinothèque cuisine" %>
+                    <%= image_tag "https://images.unsplash.com/photo-1568213816046-0ee1c42bd559?w=400", alt: "Vinothèque Cuisine", class: "category-img" %>
+                  <% end %>
+                  <div class="storage-type-overlay">
+                    <h3 class="storage-type-name"><%= category %></h3>
+                  </div>
+                </div>
+              </label>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <label class="form-section-label">Dimensions du Stockage</label>
+
+        <div class="dimensions-grid">
+          <div class="dimension-control">
+            <label class="dimension-label">Colonnes</label>
+            <div class="dimension-input-group">
+              <button type="button" class="dimension-btn" data-action="click->storage-form#decrementCols">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+              <%= f.number_field :cols, value: 2, min: 1, max: 20, class: "dimension-input", data: { storage_form_target: "colsInput" } %>
+              <button type="button" class="dimension-btn" data-action="click->storage-form#incrementCols">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+            </div>
+            <span class="dimension-subtitle">Righe</span>
+          </div>
+
+          <div class="dimension-control">
+            <label class="dimension-label">Rangées</label>
+            <div class="dimension-input-group">
+              <button type="button" class="dimension-btn" data-action="click->storage-form#decrementRows">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+              <%= f.number_field :rows, value: 3, min: 1, max: 20, class: "dimension-input", data: { storage_form_target: "rowsInput" } %>
+              <button type="button" class="dimension-btn" data-action="click->storage-form#incrementRows">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+            </div>
+            <span class="dimension-subtitle">Righe</span>
+          </div>
+        </div>
+
+        <div class="grid-preview">
+          <div class="grid-preview-container" data-storage-form-target="gridPreview">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit "Créer Stockage", class: "btn-submit-storage" %>
+      </div>
+    <% end %>
   </div>
+</div>
+<script>
+  import { Controller } from "@hotwired/stimulus"
 
-  <div>
-    <%= f.label :category, "Type de stockage" %>
-    <%= f.select :category, Storage::CATEGORIES %>
-  </div>
+export default class extends Controller {
+  static targets = ["rowsInput", "colsInput", "gridPreview"]
 
-  <div>
-    <%= f.label :rows, "Nombre de rangées (lignes)" %>
-    <%= f.number_field :rows, in: 1..20, value: 4 %>
-  </div>
+  connect() {
+    this.updateGridPreview()
+  }
 
-  <div>
-    <%= f.label :cols, "Nombre de colonnes" %>
-    <%= f.number_field :cols, in: 1..20, value: 5 %>
-  </div>
+  incrementRows(event) {
+    event.preventDefault()
+    const input = this.rowsInputTarget
+    const currentValue = parseInt(input.value)
+    if (currentValue < 20) {
+      input.value = currentValue + 1
+      this.updateGridPreview()
+    }
+  }
 
-  <%= f.submit "Créer mon stockage", class: "btn-primary" %>
-<% end %>
+  decrementRows(event) {
+    event.preventDefault()
+    const input = this.rowsInputTarget
+    const currentValue = parseInt(input.value)
+    if (currentValue > 1) {
+      input.value = currentValue - 1
+      this.updateGridPreview()
+    }
+  }
+
+  incrementCols(event) {
+    event.preventDefault()
+    const input = this.colsInputTarget
+    const currentValue = parseInt(input.value)
+    if (currentValue < 20) {
+      input.value = currentValue + 1
+      this.updateGridPreview()
+    }
+  }
+
+  decrementCols(event) {
+    event.preventDefault()
+    const input = this.colsInputTarget
+    const currentValue = parseInt(input.value)
+    if (currentValue > 1) {
+      input.value = currentValue - 1
+      this.updateGridPreview()
+    }
+  }
+
+  selectCategory(event) {
+    document.querySelectorAll('.storage-type-card').forEach(card => {
+      card.classList.remove('active')
+    })
+
+    event.currentTarget.classList.add('active')
+
+    const radio = event.currentTarget.querySelector('input[type="radio"]')
+    if (radio) {
+      radio.checked = true
+    }
+  }
+
+  updateGridPreview() {
+    const rows = parseInt(this.rowsInputTarget.value)
+    const cols = parseInt(this.colsInputTarget.value)
+
+    this.gridPreviewTarget.style.gridTemplateColumns = `repeat(${cols}, 1fr)`
+
+    this.gridPreviewTarget.innerHTML = ''
+
+    const totalSlots = rows * cols
+    for (let i = 0; i < totalSlots; i++) {
+      const slot = document.createElement('div')
+      slot.className = 'bottle-slot'
+      slot.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 2h8l2 10-4 10-4-10z"/>
+          <ellipse cx="12" cy="2" rx="4" ry="1"/>
+        </svg>
+      `
+      this.gridPreviewTarget.appendChild(slot)
+    }
+  }
+}
+
+</script>

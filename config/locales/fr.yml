@@ -1,0 +1,29 @@
+fr:
+  hello: "Bonjour"
+
+  activerecord:
+    models:
+      user: "Utilisateur"
+      storage: "Stockage"
+      wine: "Vin"
+    attributes:
+      user:
+        email: "Email"
+        password: "Mot de passe"
+        password_confirmation: "Confirmation du mot de passe"
+      storage:
+        name: "Nom"
+        category: "Catégorie"
+        rows: "Rangées"
+        cols: "Colonnes"
+      wine:
+        name: "Nom"
+        wine_type: "Type"
+        region: "Région"
+        price: "Prix"
+
+  errors:
+    messages:
+      not_saved:
+        one: "1 erreur a empêché l'enregistrement"
+        other: "%{count} erreurs ont empêché l'enregistrement"

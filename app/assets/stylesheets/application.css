@@ -16,6 +16,8 @@
 @import "components/navbar";
 @import "pages/home";
 @import "pages/devise";
+@import "pages/storage";
+@import "pages/storage_form";
 
 body {
   background-color: #f5f1e8;

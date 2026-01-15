@@ -1,4 +1,50 @@
-<div>
-  <h1 class="font-bold text-4xl">Storages#index</h1>
-  <p>Find me in app/views/storages/index.html.erb</p>
+<div class="storages-container">
+  <!-- Header Section -->
+  <div class="storages-header">
+    <h1 class="storages-title">Mes Stockages</h1>
+    <%= link_to new_storage_path, class: "btn-add-storage" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      Nouveau Stockage
+    <% end %>
+  </div>
+
+  <!-- Storages Grid -->
+  <% if @storages.any? %>
+    <div class="storages-grid">
+      <% @storages.each do |storage| %>
+        <div class="storage-card">
+          <%= link_to storage_path(storage), class: "storage-link" do %>
+            <div class="storage-image">
+              <%= image_tag storage.photo_url, alt: storage.name, class: "storage-photo" %>
+              <div class="storage-overlay">
+                <h3 class="storage-name"><%= storage.name %></h3>
+                <p class="storage-bottles">
+                  <%= storage.wines.where(consumed_at: nil).count %> Bouteilles
+                </p>
+              </div>
+            </div>
+            <div class="storage-footer">
+              <span class="storage-action">VOIR DÉTAILS</span>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <!-- Empty State -->
+    <div class="empty-state">
+      <div class="empty-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 2h8l2 10-4 10-4-10z"/>
+          <ellipse cx="12" cy="2" rx="4" ry="1"/>
+        </svg>
+      </div>
+      <h2 class="empty-title">Aucun stockage pour le moment</h2>
+      <p class="empty-description">Créez votre premier espace de stockage pour commencer à gérer votre cave à vin</p>
+      <%= link_to "Créer mon premier stockage", new_storage_path, class: "btn-primary" %>
+    </div>
+  <% end %>
 </div>
