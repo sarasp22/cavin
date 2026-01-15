@@ -2,12 +2,13 @@
   <div class="storage-form-card">
     <h1 class="form-main-title">Ajouter Nouveau Stockage</h1>
 
-    <%= form_with model: @storage, class: "storage-form", data: { controller: "storage-form" } do |f| %>
+    <%= form_with model: @storage, class: "storage-form", id: "storage-form" do |f| %>
 
+      <!-- Nome dello Stockage -->
       <div class="form-section">
         <label class="form-section-label">Nom du Stockage</label>
         <div class="input-with-icon">
-          <%= f.text_field :name, placeholder: "Ex: Ma Cave Principale", class: "form-text-input" %>
+          <%= f.text_field :name, placeholder: "Ex: Ma Cave Principale", class: "form-text-input", required: true %>
           <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"></circle>
             <path d="m21 21-4.35-4.35"></path>
@@ -15,12 +16,13 @@
         </div>
       </div>
 
+      <!-- Tipo di Stockage -->
       <div class="form-section">
         <label class="form-section-label">Type de Stockage</label>
         <div class="storage-types-grid">
           <% Storage::CATEGORIES.each_with_index do |category, index| %>
-            <div class="storage-type-card" data-action="click->storage-form#selectCategory" data-category="<%= category %>">
-              <%= f.radio_button :category, category, class: "storage-radio-input", id: "category_#{index}" %>
+            <div class="storage-type-card" onclick="selectCategory(this, '<%= category %>')">
+              <%= f.radio_button :category, category, class: "storage-radio-input", id: "category_#{index}", required: true %>
               <label for="category_<%= index %>" class="storage-type-label">
                 <div class="storage-type-image">
                   <% case category %>
@@ -43,145 +45,139 @@
         </div>
       </div>
 
+      <!-- Dimensioni dello Stockage -->
       <div class="form-section">
         <label class="form-section-label">Dimensions du Stockage</label>
 
         <div class="dimensions-grid">
+          <!-- Colonne -->
           <div class="dimension-control">
             <label class="dimension-label">Colonnes</label>
             <div class="dimension-input-group">
-              <button type="button" class="dimension-btn" data-action="click->storage-form#decrementCols">
+              <button type="button" class="dimension-btn" onclick="changeCols(-1)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
               </button>
-              <%= f.number_field :cols, value: 2, min: 1, max: 20, class: "dimension-input", data: { storage_form_target: "colsInput" } %>
-              <button type="button" class="dimension-btn" data-action="click->storage-form#incrementCols">
+              <%= f.number_field :cols, value: 2, min: 1, max: 20, class: "dimension-input", id: "cols-input", onchange: "updateGrid()" %>
+              <button type="button" class="dimension-btn" onclick="changeCols(1)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                   <line x1="12" y1="5" x2="12" y2="19"></line>
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
               </button>
             </div>
-            <span class="dimension-subtitle">Righe</span>
+            <span class="dimension-subtitle">Colonnes</span>
           </div>
 
+          <!-- Righe -->
           <div class="dimension-control">
             <label class="dimension-label">Rangées</label>
             <div class="dimension-input-group">
-              <button type="button" class="dimension-btn" data-action="click->storage-form#decrementRows">
+              <button type="button" class="dimension-btn" onclick="changeRows(-1)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
               </button>
-              <%= f.number_field :rows, value: 3, min: 1, max: 20, class: "dimension-input", data: { storage_form_target: "rowsInput" } %>
-              <button type="button" class="dimension-btn" data-action="click->storage-form#incrementRows">
+              <%= f.number_field :rows, value: 3, min: 1, max: 20, class: "dimension-input", id: "rows-input", onchange: "updateGrid()" %>
+              <button type="button" class="dimension-btn" onclick="changeRows(1)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                   <line x1="12" y1="5" x2="12" y2="19"></line>
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                 </svg>
               </button>
             </div>
-            <span class="dimension-subtitle">Righe</span>
+            <span class="dimension-subtitle">Rangées</span>
           </div>
         </div>
 
+        <!-- Preview Grid -->
         <div class="grid-preview">
-          <div class="grid-preview-container" data-storage-form-target="gridPreview">
+          <div class="grid-preview-container" id="grid-preview">
+            <!-- Grid will be generated by JavaScript -->
           </div>
         </div>
       </div>
 
+      <!-- Submit Button -->
       <div class="form-actions">
         <%= f.submit "Créer Stockage", class: "btn-submit-storage" %>
       </div>
     <% end %>
   </div>
 </div>
+
 <script>
-  import { Controller } from "@hotwired/stimulus"
+  // Initialize grid on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    updateGrid();
+  });
 
-export default class extends Controller {
-  static targets = ["rowsInput", "colsInput", "gridPreview"]
+  // Select category
+  function selectCategory(card, category) {
+    // Remove active class from all cards
+    document.querySelectorAll('.storage-type-card').forEach(c => {
+      c.classList.remove('active');
+    });
 
-  connect() {
-    this.updateGridPreview()
-  }
+    // Add active class to clicked card
+    card.classList.add('active');
 
-  incrementRows(event) {
-    event.preventDefault()
-    const input = this.rowsInputTarget
-    const currentValue = parseInt(input.value)
-    if (currentValue < 20) {
-      input.value = currentValue + 1
-      this.updateGridPreview()
-    }
-  }
-
-  decrementRows(event) {
-    event.preventDefault()
-    const input = this.rowsInputTarget
-    const currentValue = parseInt(input.value)
-    if (currentValue > 1) {
-      input.value = currentValue - 1
-      this.updateGridPreview()
-    }
-  }
-
-  incrementCols(event) {
-    event.preventDefault()
-    const input = this.colsInputTarget
-    const currentValue = parseInt(input.value)
-    if (currentValue < 20) {
-      input.value = currentValue + 1
-      this.updateGridPreview()
-    }
-  }
-
-  decrementCols(event) {
-    event.preventDefault()
-    const input = this.colsInputTarget
-    const currentValue = parseInt(input.value)
-    if (currentValue > 1) {
-      input.value = currentValue - 1
-      this.updateGridPreview()
-    }
-  }
-
-  selectCategory(event) {
-    document.querySelectorAll('.storage-type-card').forEach(card => {
-      card.classList.remove('active')
-    })
-
-    event.currentTarget.classList.add('active')
-
-    const radio = event.currentTarget.querySelector('input[type="radio"]')
+    // Check the radio button
+    const radio = card.querySelector('input[type="radio"]');
     if (radio) {
-      radio.checked = true
+      radio.checked = true;
     }
   }
 
-  updateGridPreview() {
-    const rows = parseInt(this.rowsInputTarget.value)
-    const cols = parseInt(this.colsInputTarget.value)
+  // Change rows
+  function changeRows(delta) {
+    const input = document.getElementById('rows-input');
+    let currentValue = parseInt(input.value) || 3;
+    let newValue = currentValue + delta;
 
-    this.gridPreviewTarget.style.gridTemplateColumns = `repeat(${cols}, 1fr)`
+    if (newValue >= 1 && newValue <= 20) {
+      input.value = newValue;
+      updateGrid();
+    }
+  }
 
-    this.gridPreviewTarget.innerHTML = ''
+  // Change cols
+  function changeCols(delta) {
+    const input = document.getElementById('cols-input');
+    let currentValue = parseInt(input.value) || 2;
+    let newValue = currentValue + delta;
 
-    const totalSlots = rows * cols
+    if (newValue >= 1 && newValue <= 20) {
+      input.value = newValue;
+      updateGrid();
+    }
+  }
+
+  // Update grid preview
+  function updateGrid() {
+    const rows = parseInt(document.getElementById('rows-input').value) || 3;
+    const cols = parseInt(document.getElementById('cols-input').value) || 2;
+    const gridPreview = document.getElementById('grid-preview');
+
+    // Update grid template
+    gridPreview.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+
+    // Clear existing bottles
+    gridPreview.innerHTML = '';
+
+    // Create bottle slots
+    const totalSlots = rows * cols;
     for (let i = 0; i < totalSlots; i++) {
-      const slot = document.createElement('div')
-      slot.className = 'bottle-slot'
+      const slot = document.createElement('div');
+      slot.className = 'bottle-slot';
       slot.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M8 2h8l2 10-4 10-4-10z"/>
           <ellipse cx="12" cy="2" rx="4" ry="1"/>
         </svg>
-      `
-      this.gridPreviewTarget.appendChild(slot)
+      `;
+      gridPreview.appendChild(slot);
     }
   }
-}
-
 </script>

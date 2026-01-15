@@ -19,10 +19,26 @@ class StoragesController < ApplicationController
     @storage.photo_url = set_default_photo(@storage.category)
 
     if @storage.save
-      redirect_to storage_path(@storage), notice: 'Stockage creato con successo!'
+      redirect_to storages_path, notice: 'Stockage créé avec succès!'
     else
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def edit
+  end
+
+  def update
+    if @storage.update(storage_params)
+      redirect_to storage_path(@storage), notice: 'Stockage modifié avec succès!'
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @storage.destroy
+    redirect_to storages_path, notice: 'Stockage supprimé avec succès!'
   end
 
   private
@@ -37,10 +53,16 @@ class StoragesController < ApplicationController
 
   def set_default_photo(category)
     case category
-    when "Cave" then "cave.jpg"
-    when "Vinothèque cucina" then "kitchen_wine.jpg"
-    when "Vinothèque soggiorno" then "living_wine.jpg"
-    else "default_storage.jpg"
+    when "Cave"
+      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800"
+    when "Vinothèque salon"
+      "https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=800"
+    when "Meuble cuisine"
+      "https://images.unsplash.com/photo-1578911373434-0cb395d2cbfb?w=800"
+    when "Vinothèque cuisine"
+      "https://images.unsplash.com/photo-1568213816046-0ee1c42bd559?w=800"
+    else
+      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=800"
     end
   end
 end
