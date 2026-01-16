@@ -20,6 +20,9 @@
 @import "pages/storage_form";
 @import "pages/storage_show";
 @import "pages/wine_form";
+@import "pages/wine_show";
+@import "pages/history";
+
 
 body {
   background-color: #f5f1e8;

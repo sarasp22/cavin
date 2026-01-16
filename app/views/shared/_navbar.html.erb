@@ -18,11 +18,11 @@
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
         </button>
-        <div class="dropdown-menu">
-          <%= link_to "Notre histoire", "#", class: "dropdown-item" %>
-          <%= link_to "Notre équipe", "#", class: "dropdown-item" %>
-          <%= link_to "Contact", "#", class: "dropdown-item" %>
-        </div>
+    <div class="dropdown-menu dropdown-menu-right">
+  <%= link_to "Mes caves", storages_path, class: "dropdown-item" %>
+  <%= link_to "Historique", history_path, class: "dropdown-item" %>
+  <%= link_to "Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item" %>
+</div>
       </div>
 
       <% if user_signed_in? %>
@@ -54,5 +54,7 @@
     <% else %>
       <%= link_to "Connexion", new_user_session_path, class: "mobile-nav-link" %>
     <% end %>
+
+
   </div>
 </nav>

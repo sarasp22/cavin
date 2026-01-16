@@ -1,19 +1,117 @@
-<div class="wine-show-container">
-  <h1><%= @wine.name %></h1>
+<div class="wine-show-page">
+  <div class="wine-show-card">
+    <div class="wine-show-header">
+      <div class="wine-bottle-large">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 2h8l2 10-4 10-4-10z"/>
+          <ellipse cx="12" cy="2" rx="4" ry="1"/>
+        </svg>
+      </div>
+      <h1 class="wine-show-title"><%= @wine.name %></h1>
+      <div class="wine-type-badge <%= @wine.wine_type.downcase %>">
+        <%= @wine.wine_type %>
+      </div>
+    </div>
 
-  <div class="wine-details">
-    <p><strong>Type:</strong> <%= @wine.wine_type %></p>
-    <p><strong>Région:</strong> <%= @wine.region %></p>
-    <p><strong>Prix:</strong> <%= number_to_currency(@wine.price, unit: "€") %></p>
-    <p><strong>Position:</strong> Rangée <%= @wine.row_position %>, Colonne <%= @wine.col_position %></p>
-  </div>
+    <div class="wine-details-grid">
+      <div class="detail-card">
+        <div class="detail-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </div>
+        <div class="detail-content">
+          <p class="detail-label">Région</p>
+          <p class="detail-value"><%= @wine.region %></p>
+        </div>
+      </div>
 
-  <div class="wine-actions">
-    <%= link_to "Retour au stockage", storage_path(@storage), class: "btn-secondary" %>
-    <%= link_to "Modifier", edit_storage_wine_path(@storage, @wine), class: "btn-primary" %>
+      <div class="detail-card">
+        <div class="detail-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="1" x2="12" y2="23"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+        </div>
+        <div class="detail-content">
+          <p class="detail-label">Prix</p>
+          <p class="detail-value"><%= number_to_currency(@wine.price, unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></p>
+        </div>
+      </div>
 
-    <% unless @wine.consumed_at %>
-      <%= button_to "Marquer comme consommé", consume_storage_wine_path(@storage, @wine), method: :patch, class: "btn-consume" %>
+      <div class="detail-card position-card">
+        <div class="detail-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="9" y1="3" x2="9" y2="21"></line>
+            <line x1="15" y1="3" x2="15" y2="21"></line>
+            <line x1="3" y1="9" x2="21" y2="9"></line>
+            <line x1="3" y1="15" x2="21" y2="15"></line>
+          </svg>
+        </div>
+        <div class="detail-content">
+          <p class="detail-label">Position</p>
+          <p class="detail-value">Rangée <%= @wine.row_position %>, Colonne <%= @wine.col_position %></p>
+        </div>
+      </div>
+
+      <div class="detail-card storage-info-card">
+        <div class="detail-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </div>
+        <div class="detail-content">
+          <p class="detail-label">Stockage</p>
+          <p class="detail-value"><%= @storage.name %></p>
+        </div>
+      </div>
+    </div>
+
+    <% if @wine.consumed_at %>
+      <div class="consumed-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Consommé le <%= l(@wine.consumed_at, format: :long) %>
+      </div>
     <% end %>
+
+    <div class="wine-show-actions">
+      <%= link_to storage_path(@storage), class: "btn-action btn-back" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m12 19-7-7 7-7"></path>
+          <path d="M19 12H5"></path>
+        </svg>
+        Retour
+      <% end %>
+
+      <% unless @wine.consumed_at %>
+        <%= link_to edit_storage_wine_path(@storage, @wine), class: "btn-action btn-edit" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path>
+          </svg>
+          Modifier
+        <% end %>
+
+        <%= button_to consume_storage_wine_path(@storage, @wine), method: :patch, class: "btn-action btn-consume", data: { turbo_confirm: "Êtes-vous sûr de vouloir marquer ce vin comme consommé ?" } do %>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <path d="m9 12 2 2 4-4"></path>
+          </svg>
+          Marquer consommé
+        <% end %>
+      <% end %>
+
+      <%= button_to storage_wine_path(@storage, @wine), method: :delete, class: "btn-action btn-delete", data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer ce vin ?" } do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+        Supprimer
+      <% end %>
+    </div>
   </div>
 </div>
