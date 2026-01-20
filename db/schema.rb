@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_20_112236) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_20_173015) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -38,6 +38,17 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_20_112236) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "wine_templates", force: :cascade do |t|
+    t.string "name"
+    t.string "wine_type"
+    t.string "region"
+    t.decimal "price"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_wine_templates_on_user_id"
+  end
+
   create_table "wines", force: :cascade do |t|
     t.string "name"
     t.string "wine_type"
@@ -54,5 +65,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_20_112236) do
   end
 
   add_foreign_key "storages", "users"
+  add_foreign_key "wine_templates", "users"
   add_foreign_key "wines", "storages"
 end

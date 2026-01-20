@@ -5,6 +5,12 @@
   min-height: calc(100vh - 80px);
 }
 
+@media (max-width: 768px) {
+  .storage-show-container {
+    padding: 20px 15px 80px;
+  }
+}
+
 .storage-show-header {
   display: flex;
   justify-content: space-between;
@@ -12,11 +18,14 @@
   margin-bottom: 40px;
   padding-bottom: 20px;
   border-bottom: 2px solid #e8dfc8;
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .storage-show-header {
     flex-direction: column;
-    gap: 20px;
     align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 20px;
   }
 }
 
@@ -26,9 +35,12 @@
   color: #2c1810;
   margin: 0 0 8px 0;
   font-weight: 700;
+}
 
-  @media (max-width: 768px) {
-    font-size: 2rem;
+@media (max-width: 768px) {
+  .storage-show-title {
+    font-size: 1.75rem;
+    margin-bottom: 4px;
   }
 }
 
@@ -39,12 +51,21 @@
   margin: 0;
 }
 
+@media (max-width: 768px) {
+  .storage-show-subtitle {
+    font-size: 0.9rem;
+  }
+}
+
 .storage-show-actions {
   display: flex;
   gap: 15px;
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .storage-show-actions {
     width: 100%;
+    gap: 10px;
   }
 }
 
@@ -61,38 +82,34 @@
   transition: all 0.3s ease;
 }
 
-.btn-back {
-  background-color: #f5f1e8;
-  color: #2c1810;
-  border: 2px solid #e8dfc8;
-
-  &:hover {
-    background-color: #e8dfc8;
-    transform: translateY(-2px);
+@media (max-width: 768px) {
+  .btn-back, .btn-edit {
+    padding: 10px;
+    font-size: 0.85rem;
+    flex: 1;
+    justify-content: center;
+    gap: 5px;
+  }
+  .btn-back svg, .btn-edit svg {
+    width: 16px;
+    height: 16px;
   }
 }
 
-.btn-edit {
-  background-color: #5d2e2e;
-  color: #ffffff;
-  border: 2px solid #5d2e2e;
-
-  &:hover {
-    background-color: #7a3a3a;
-    border-color: #7a3a3a;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(93, 46, 46, 0.3);
-  }
-}
+.btn-back { background: #f5f1e8; color: #2c1810; border: 2px solid #e8dfc8; }
+.btn-edit { background: #5d2e2e; color: #ffffff; border: 2px solid #5d2e2e; }
 
 .wine-grid-container {
   background: #faf8f3;
-  padding: 40px;
+  padding: 30px;
   border-radius: 16px;
   border: 2px solid #e8dfc8;
+}
 
-  @media (max-width: 768px) {
-    padding: 20px;
+@media (max-width: 768px) {
+  .wine-grid-container {
+    padding: 12px;
+    border-radius: 12px;
   }
 }
 
@@ -101,16 +118,16 @@
   gap: 15px;
   max-width: 1000px;
   margin: 0 auto;
+}
 
-  @media (max-width: 768px) {
-    gap: 10px;
+@media (max-width: 768px) {
+  .wine-grid {
+    gap: 8px;
   }
 }
 
 .wine-slot {
   aspect-ratio: 1;
-  background: #ffffff;
-  border: 3px solid #c4a661;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -118,99 +135,111 @@
   justify-content: center;
   text-decoration: none;
   transition: all 0.3s ease;
-  padding: 15px;
+  padding: 10px;
   position: relative;
   overflow: hidden;
+}
 
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+@media (max-width: 768px) {
+  .wine-slot {
+    padding: 6px;
+    border-radius: 8px;
   }
+}
 
-  &.filled {
-    background: linear-gradient(135deg, #5d2e2e 0%, #7a3a3a 100%);
-    border-color: #5d2e2e;
+.wine-slot.filled {
+  background: linear-gradient(135deg, #5d2e2e 0%, #7a3a3a 100%);
+  border: 2px solid #5d2e2e;
+}
 
-    &:hover {
-      background: linear-gradient(135deg, #7a3a3a 0%, #8d4848 100%);
-    }
+.wine-slot.filled:hover {
+  transform: translateY(-4px);
+  background: linear-gradient(135deg, #7a3a3a 0%, #8d4848 100%);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
 
-    .wine-bottle-icon {
-      color: #c4a661;
-      margin-bottom: 10px;
+.wine-slot.filled .wine-bottle-icon {
+  width: 100%;
+  height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
+}
 
-      svg {
-        width: 50px;
-        height: 50px;
+.wine-slot.filled .bottle-image {
+  max-height: 100%;
+  width: auto;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
 
-        @media (max-width: 768px) {
-          width: 35px;
-          height: 35px;
-        }
-      }
-    }
+.wine-slot.filled .wine-info {
+  text-align: center;
+  width: 100%;
+}
 
-    .wine-info {
-      text-align: center;
-      width: 100%;
-    }
+.wine-slot.filled .wine-name {
+  font-family: 'Inria Serif', serif;
+  font-size: 0.85rem;
+  color: #ffffff;
+  margin: 0;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 5px;
+}
 
-    .wine-name {
-      font-family: 'Inria Serif', serif;
-      font-size: 0.9rem;
-      color: #ffffff;
-      margin: 0 0 4px 0;
-      font-weight: 600;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-
-      @media (max-width: 768px) {
-        font-size: 0.8rem;
-      }
-    }
-
-    .wine-type {
-      font-family: 'Inria Serif', serif;
-      font-size: 0.8rem;
-      color: #c4a661;
-      margin: 0;
-
-      @media (max-width: 768px) {
-        font-size: 0.7rem;
-      }
-    }
+@media (max-width: 768px) {
+  .wine-slot.filled .wine-name {
+    font-size: 0.7rem;
+    padding: 0 2px;
   }
+}
 
-  &.empty {
-    border-style: dashed;
-    border-color: #c4a661;
-    background: #fefefe;
+.wine-slot.filled .wine-type {
+  font-size: 0.7rem;
+  color: #c4a661;
+  margin: 0;
+  text-transform: uppercase;
+}
 
-    &:hover {
-      background: #f5f1e8;
-      border-color: #5d2e2e;
+@media (max-width: 768px) {
+  .wine-slot.filled .wine-type {
+    font-size: 0.55rem;
+    letter-spacing: 0px;
+  }
+}
 
-      .add-wine-icon {
-        color: #5d2e2e;
-        transform: scale(1.1);
-      }
-    }
+.wine-slot.empty {
+  border: 2px dashed #c4a661;
+  background: #fefefe;
+}
 
-    .add-wine-icon {
-      color: #c4a661;
-      transition: all 0.3s ease;
-    }
+.wine-slot.empty:hover {
+  background: #f5f1e8;
+  border-color: #5d2e2e;
+}
 
-    .slot-position {
-      font-family: 'Inria Serif', serif;
-      font-size: 0.85rem;
-      color: #888;
-      margin: 8px 0 0 0;
-      font-weight: 600;
-    }
+.wine-slot.empty .add-wine-icon { color: #c4a661; }
+
+@media (max-width: 768px) {
+  .wine-slot.empty .add-wine-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.wine-slot.empty .slot-position {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+  .wine-slot.empty .slot-position {
+    font-size: 0.6rem;
+    margin-top: 2px;
   }
 }
 
@@ -218,38 +247,27 @@
   position: fixed;
   bottom: 40px;
   right: 40px;
-  width: 70px;
-  height: 70px;
-  background: linear-gradient(135deg, #5d2e2e 0%, #7a3a3a 100%);
+  width: 60px;
+  height: 60px;
+  background: #2c1810;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 24px rgba(93, 46, 46, 0.4);
-  transition: all 0.3s ease;
-  z-index: 100;
-  color: #ffffff;
-  text-decoration: none;
+  color: white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 99;
+}
 
-  &:hover {
-    transform: translateY(-4px) scale(1.05);
-    box-shadow: 0 12px 32px rgba(93, 46, 46, 0.5);
-    background: linear-gradient(135deg, #7a3a3a 0%, #8d4848 100%);
+@media (max-width: 768px) {
+  .floating-add-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
   }
-
-  &:active {
-    transform: translateY(-2px) scale(1.02);
-  }
-
-  @media (max-width: 768px) {
-    width: 60px;
-    height: 60px;
-    bottom: 30px;
-    right: 30px;
-
-    svg {
-      width: 24px;
-      height: 24px;
-    }
+  .floating-add-btn svg {
+    width: 24px;
+    height: 24px;
   }
 }

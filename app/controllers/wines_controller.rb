@@ -10,15 +10,24 @@ class WinesController < ApplicationController
     @wine = @storage.wines.build
   end
 
-  def create
-    @wine = @storage.wines.build(wine_params)
+ def create
+  @wine = @storage.wines.build(wine_params)
 
-    if @wine.save
-      redirect_to storage_path(@storage), notice: 'Vin ajouté avec succès!'
-    else
-      render :new, status: :unprocessable_entity
+  if @wine.save
+    if params[:wine][:save_as_template] == "1"
+      current_user.wine_templates.create(
+        name: @wine.name,
+        wine_type: @wine.wine_type,
+        region: @wine.region,
+        price: @wine.price
+      )
     end
+
+    redirect_to storage_path(@storage), notice: 'Vin ajouté avec succès!'
+  else
+    render :new, status: :unprocessable_entity
   end
+end
 
   def edit
   end
