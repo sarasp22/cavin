@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   resources :storages do
     resources :wines, only: [:new, :create, :edit, :update, :show, :destroy] do
       member do
-        patch :consume
+        get :consume
+        patch :mark_consumed
       end
     end
   end

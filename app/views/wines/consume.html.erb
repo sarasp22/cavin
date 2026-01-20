@@ -1,0 +1,64 @@
+<div class="consume-page">
+  <div class="consume-card">
+    <div class="consume-header">
+      <div class="consume-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          <path d="m9 12 2 2 4-4"></path>
+        </svg>
+      </div>
+      <h1 class="consume-title">Marquer comme consommé</h1>
+      <p class="consume-subtitle">Comment était ce vin ?</p>
+    </div>
+
+    <div class="wine-info-box">
+      <div class="wine-info-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 2h8l2 10-4 10-4-10z"/>
+          <ellipse cx="12" cy="2" rx="4" ry="1"/>
+        </svg>
+      </div>
+      <div class="wine-info-text">
+        <h3><%= @wine.name %></h3>
+        <p><%= @wine.wine_type %> • <%= @wine.region %></p>
+      </div>
+    </div>
+
+<%= form_with url: mark_consumed_storage_wine_path(@storage, @wine), method: :patch, class: "consume-form" do |f| %>
+  <div class="form-group">
+    <%= label_tag 'wine[notes]', "Vos notes de dégustation", class: "form-label" %>
+    <%= text_area_tag 'wine[notes]', nil,
+        rows: 6,
+        class: "form-textarea",
+        placeholder: "Ex: Arômes de fruits rouges, excellent équilibre, parfait avec le fromage...",
+        maxlength: 500 %>
+    <span class="char-count" id="char-count">0 / 500</span>
+  </div>
+
+  <div class="consume-actions">
+    <%= link_to "Annuler", storage_wine_path(@storage, @wine), class: "btn-cancel" %>
+    <%= f.submit "Marquer comme consommé", class: "btn-submit-consume" %>
+  </div>
+<% end %>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const textarea = document.querySelector('.form-textarea');
+    const charCount = document.getElementById('char-count');
+
+    if (textarea && charCount) {
+      textarea.addEventListener('input', function() {
+        const length = this.value.length;
+        charCount.textContent = `${length} / 500`;
+
+        if (length > 450) {
+          charCount.style.color = '#d32f2f';
+        } else {
+          charCount.style.color = '#888';
+        }
+      });
+    }
+  });
+</script>

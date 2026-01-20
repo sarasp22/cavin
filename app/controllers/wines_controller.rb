@@ -1,7 +1,7 @@
 class WinesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_storage
-  before_action :set_wine, only: [:show, :edit, :update, :destroy]
+  before_action :set_storage, except: [:history]
+  before_action :set_wine, only: [:show, :edit, :update, :destroy, :consume, :mark_consumed]
 
   def show
   end
@@ -36,24 +36,27 @@ class WinesController < ApplicationController
     redirect_to storage_path(@storage), notice: 'Vin supprimé avec succès!'
   end
 
+  def consume
+  end
+
+  def mark_consumed
+    if @wine.update(consumed_at: Time.current, notes: wine_consume_params[:notes])
+      redirect_to storage_path(@storage), notice: 'Vin marqué comme consommé!'
+    else
+      render :consume, status: :unprocessable_entity
+    end
+  end
+
   def history
     @consumed_wines = current_user.storages.includes(:wines).flat_map do |storage|
       storage.wines.where.not(consumed_at: nil)
     end.sort_by(&:consumed_at).reverse
   end
 
-  def consume
-    @storage = current_user.storages.find(params[:storage_id])
-    @wine = @storage.wines.find(params[:id])
-
-    @wine.update(consumed_at: Time.current)
-    redirect_to storage_path(@storage), notice: 'Vin marqué comme consommé!'
-  end
-
   private
 
   def set_storage
-    @storage = current_user.storages.find(params[:storage_id]) if params[:storage_id]
+    @storage = current_user.storages.find(params[:storage_id])
   end
 
   def set_wine
@@ -62,5 +65,9 @@ class WinesController < ApplicationController
 
   def wine_params
     params.require(:wine).permit(:name, :wine_type, :region, :price, :row_position, :col_position)
+  end
+
+  def wine_consume_params
+    params.require(:wine).permit(:notes)
   end
 end

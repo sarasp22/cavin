@@ -253,6 +253,39 @@
   }
 }
 
+.wine-notes {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid #f5f1e8;
+  display: flex;
+  gap: 12px;
+}
+
+.notes-icon {
+  flex-shrink: 0;
+  width: 35px;
+  height: 35px;
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    color: #ffffff;
+  }
+}
+
+.notes-text {
+  flex: 1;
+  font-family: 'Inria Serif', serif;
+  font-size: 0.95rem;
+  color: #2c1810;
+  font-style: italic;
+  line-height: 1.6;
+  margin: 0;
+}
+
 .history-empty {
   text-align: center;
   padding: 80px 20px;

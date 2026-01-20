@@ -22,6 +22,7 @@
 @import "pages/wine_form";
 @import "pages/wine_show";
 @import "pages/history";
+@import "pages/consume";
 
 
 body {

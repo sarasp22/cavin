@@ -1,0 +1,224 @@
+.consume-page {
+  min-height: calc(100vh - 80px);
+  background: linear-gradient(135deg, #f5f1e8 0%, #e8dfc8 100%);
+  padding: 60px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.consume-card {
+  max-width: 650px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 50px 40px;
+  box-shadow: 0 12px 48px rgba(93, 46, 46, 0.2);
+
+  @media (max-width: 768px) {
+    padding: 40px 30px;
+  }
+
+  @media (max-width: 576px) {
+    padding: 30px 20px;
+  }
+}
+
+.consume-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.consume-icon {
+  display: inline-flex;
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.3);
+
+  svg {
+    color: #ffffff;
+  }
+}
+
+.consume-title {
+  font-family: 'Inria Serif', serif;
+  font-size: 2.2rem;
+  color: #2c1810;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+  }
+}
+
+.consume-subtitle {
+  font-family: 'Inria Serif', serif;
+  font-size: 1.1rem;
+  color: #6b6b6b;
+  margin: 0;
+}
+
+.wine-info-box {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 25px;
+  background: linear-gradient(135deg, #faf8f3 0%, #f5f1e8 100%);
+  border: 2px solid #e8dfc8;
+  border-radius: 16px;
+  margin-bottom: 35px;
+}
+
+.wine-info-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #5d2e2e 0%, #7a3a3a 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    color: #c4a661;
+  }
+}
+
+.wine-info-text {
+  flex: 1;
+
+  h3 {
+    font-family: 'Inria Serif', serif;
+    font-size: 1.4rem;
+    color: #2c1810;
+    margin: 0 0 8px 0;
+    font-weight: 700;
+  }
+
+  p {
+    font-family: 'Inria Serif', serif;
+    font-size: 1rem;
+    color: #6b6b6b;
+    margin: 0;
+  }
+}
+
+
+.consume-form {
+  .form-group {
+    margin-bottom: 30px;
+  }
+
+  .form-label {
+    display: block;
+    font-family: 'Inria Serif', serif;
+    font-size: 1.1rem;
+    color: #2c1810;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .form-textarea {
+    width: 100%;
+    padding: 16px;
+    font-family: 'Inria Serif', serif;
+    font-size: 1rem;
+    color: #2c1810;
+    background-color: #f8f8f8;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    resize: vertical;
+    min-height: 150px;
+    transition: all 0.3s ease;
+    line-height: 1.6;
+
+    &:focus {
+      outline: none;
+      border-color: #4caf50;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+    }
+
+    &::placeholder {
+      color: #aaa;
+    }
+  }
+
+  .char-count {
+    display: block;
+    text-align: right;
+    font-family: 'Inria Serif', serif;
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 8px;
+    transition: color 0.3s ease;
+  }
+}
+
+.consume-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 35px;
+
+  @media (max-width: 576px) {
+    flex-direction: column;
+  }
+}
+
+.btn-cancel {
+  padding: 14px 35px;
+  background-color: #f5f1e8;
+  color: #2c1810;
+  font-family: 'Inria Serif', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 10px;
+  border: 2px solid #e8dfc8;
+  transition: all 0.3s ease;
+  text-align: center;
+
+  &:hover {
+    background-color: #e8dfc8;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 576px) {
+    width: 100%;
+  }
+}
+
+.btn-submit-consume {
+  padding: 14px 35px;
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  color: #ffffff;
+  font-family: 'Inria Serif', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+
+  &:hover {
+    background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 576px) {
+    width: 100%;
+  }
+}
