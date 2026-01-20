@@ -1,6 +1,5 @@
 <div class="wine-show-page">
   <div class="wine-show-card">
-    <!-- Header with bottle icon -->
     <div class="wine-show-header">
       <div class="wine-bottle-large">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -14,9 +13,7 @@
       </div>
     </div>
 
-    <!-- Wine Details Grid -->
     <div class="wine-details-grid">
-      <!-- Region -->
       <div class="detail-card">
         <div class="detail-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -30,7 +27,6 @@
         </div>
       </div>
 
-      <!-- Price -->
       <div class="detail-card">
         <div class="detail-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -44,7 +40,6 @@
         </div>
       </div>
 
-      <!-- Position -->
       <div class="detail-card position-card">
         <div class="detail-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -61,7 +56,6 @@
         </div>
       </div>
 
-      <!-- Storage Info -->
       <div class="detail-card storage-info-card">
         <div class="detail-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -76,7 +70,6 @@
       </div>
     </div>
 
-    <!-- Status Badge if consumed -->
     <% if @wine.consumed_at %>
       <div class="consumed-badge">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -86,7 +79,6 @@
       </div>
     <% end %>
 
-    <!-- Actions -->
     <div class="wine-show-actions">
       <%= link_to storage_path(@storage), class: "btn-action btn-back" do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

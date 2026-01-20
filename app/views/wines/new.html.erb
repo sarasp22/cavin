@@ -11,11 +11,36 @@
       <p class="wine-form-subtitle">Ajoutez une nouvelle bouteille à <%= @storage.name %></p>
     </div>
 
-    <%= form_with model: [@storage, @wine], class: "wine-form" do |f| %>
+    <%= form_with model: [@storage, @wine], class: "wine-form", id: "wine-form" do |f| %>
+
+      <% if current_user.wine_templates.any? %>
+        <div class="wine-form-group">
+          <label class="wine-form-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            Sélectionner depuis ma bibliothèque
+          </label>
+          <select class="wine-form-input" id="wine-template-select" onchange="fillFromTemplate()">
+            <option value="">-- Choisir un vin sauvegardé --</option>
+            <% current_user.wine_templates.order(:name).each do |template| %>
+              <option value="<%= template.id %>"
+                      data-name="<%= template.name %>"
+                      data-type="<%= template.wine_type %>"
+                      data-region="<%= template.region %>"
+                      data-price="<%= template.price %>">
+                <%= template.name %> (<%= template.wine_type %> - <%= template.region %>)
+              </option>
+            <% end %>
+          </select>
+          <p class="form-hint">Ou remplissez manuellement ci-dessous</p>
+        </div>
+      <% end %>
 
       <div class="wine-form-group">
         <%= f.label :name, "Nom du Vin", class: "wine-form-label" %>
-        <%= f.text_field :name, placeholder: "Ex: Château Margaux 2015", class: "wine-form-input", required: true %>
+        <%= f.text_field :name, placeholder: "Ex: Château Margaux 2015", class: "wine-form-input", required: true, id: "wine-name" %>
       </div>
 
       <div class="wine-form-group">

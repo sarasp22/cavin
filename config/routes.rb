@@ -11,6 +11,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :wine_templates, only: [:index, :create, :destroy]
+
   get "history", to: "wines#history"
 
   get "up" => "rails/health#show", as: :rails_health_check

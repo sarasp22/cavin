@@ -13,7 +13,7 @@
   box-shadow: 0 8px 32px rgba(93, 46, 46, 0.15);
 
   @media (max-width: 768px) {
-    padding: 35px 25px;
+    padding: 30px 20px;
   }
 }
 
@@ -102,7 +102,7 @@
   cursor: pointer;
 
   @media (max-width: 576px) {
-    min-width: 100%;
+    min-width: calc(50% - 6px);
   }
 }
 
@@ -114,17 +114,17 @@
     background-color: #5d2e2e;
     color: #ffffff;
     border-color: #5d2e2e;
-    transform: scale(1.05);
+    transform: scale(1.02);
     box-shadow: 0 4px 12px rgba(93, 46, 46, 0.3);
   }
 }
 
 .wine-type-label {
   display: block;
-  padding: 14px 20px;
+  padding: 14px 10px;
   text-align: center;
   font-family: 'Inria Serif', serif;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   border: 2px solid #e0e0e0;
   border-radius: 10px;
@@ -135,30 +135,6 @@
   &:hover {
     border-color: #5d2e2e;
     background-color: #ffffff;
-  }
-
-  &.rouge {
-    &:hover {
-      border-color: #8b0000;
-    }
-  }
-
-  &.blanc {
-    &:hover {
-      border-color: #f4e4c1;
-    }
-  }
-
-  &.rosé {
-    &:hover {
-      border-color: #ff69b4;
-    }
-  }
-
-  &.champagne {
-    &:hover {
-      border-color: #ffd700;
-    }
   }
 }
 
@@ -204,6 +180,7 @@
 
   @media (max-width: 576px) {
     grid-template-columns: 1fr;
+    gap: 15px;
   }
 }
 
@@ -226,10 +203,13 @@
 
 .position-preview {
   margin-top: 30px;
-  padding: 25px;
+  padding: 20px;
   background: #faf8f3;
   border-radius: 12px;
   border: 2px solid #e8dfc8;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .preview-label {
@@ -241,35 +221,51 @@
   margin-bottom: 20px;
 }
 
+.preview-grid-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: center;
+}
+
 .preview-grid {
   display: grid;
-  gap: 8px;
-  max-width: 500px;
+  gap: 6px;
   margin: 0 auto;
+  width: fit-content;
+  max-width: 100%;
 }
 
 .preview-slot {
-  aspect-ratio: 1;
+  width: 40px;
+  height: 40px;
   background: #ffffff;
   border: 2px solid #c4a661;
-  border-radius: 8px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  @media (max-width: 576px) {
+    width: 35px;
+    height: 35px;
+  }
 
   .slot-label {
     font-family: 'Inria Serif', serif;
-    font-size: 0.75rem;
+    font-size: 0.6rem;
     color: #888;
     font-weight: 600;
+    pointer-events: none;
   }
 
   &:hover:not(.occupied) {
     background-color: #f5f1e8;
     border-color: #5d2e2e;
-    transform: scale(1.05);
   }
 
   &.occupied {
@@ -277,21 +273,15 @@
     border-color: #999;
     cursor: not-allowed;
     opacity: 0.5;
-
-    svg {
-      color: #666;
-    }
   }
 
   &.selected {
     background-color: #5d2e2e;
     border-color: #5d2e2e;
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(93, 46, 46, 0.3);
+    box-shadow: 0 2px 8px rgba(93, 46, 46, 0.3);
 
     .slot-label {
       color: #ffffff;
-      font-weight: 700;
     }
   }
 }
@@ -299,16 +289,76 @@
 .wine-form-actions {
   display: flex;
   gap: 15px;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 40px;
 
   @media (max-width: 576px) {
-    flex-direction: column;
+    flex-direction: column-reverse;
+  }
+}
+
+.submit-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-end;
+
+  @media (max-width: 576px) {
+    width: 100%;
+    align-items: stretch;
+  }
+}
+
+.save-template-checkbox {
+  display: none;
+
+  &:checked + .save-template-label::before {
+    background-color: #4caf50;
+    border-color: #4caf50;
+  }
+
+  &:checked + .save-template-label::after {
+    opacity: 1;
+  }
+}
+
+.save-template-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Inria Serif', serif;
+  font-size: 0.9rem;
+  color: #6b6b6b;
+  cursor: pointer;
+  position: relative;
+  padding-left: 28px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #ffffff;
+  }
+
+  &::after {
+    content: '✓';
+    position: absolute;
+    left: 4px;
+    top: 0;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    opacity: 0;
   }
 }
 
 .btn-cancel {
-  padding: 14px 35px;
+  padding: 14px 30px;
   background-color: #f5f1e8;
   color: #2c1810;
   font-family: 'Inria Serif', serif;
@@ -317,17 +367,20 @@
   text-decoration: none;
   border-radius: 10px;
   border: 2px solid #e8dfc8;
-  transition: all 0.3s ease;
   text-align: center;
+  transition: all 0.3s ease;
+
+  @media (max-width: 576px) {
+    width: 100%;
+  }
 
   &:hover {
     background-color: #e8dfc8;
-    transform: translateY(-2px);
   }
 }
 
 .btn-submit-wine {
-  padding: 14px 35px;
+  padding: 14px 40px;
   background-color: #5d2e2e;
   color: #ffffff;
   font-family: 'Inria Serif', serif;
@@ -336,16 +389,15 @@
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(93, 46, 46, 0.2);
+  transition: all 0.3s ease;
+
+  @media (max-width: 576px) {
+    width: 100%;
+  }
 
   &:hover {
     background-color: #7a3a3a;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(93, 46, 46, 0.3);
-  }
-
-  &:active {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
   }
 }

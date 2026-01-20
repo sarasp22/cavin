@@ -23,6 +23,7 @@
 @import "pages/wine_show";
 @import "pages/history";
 @import "pages/consume";
+@import "pages/wine_library";
 
 
 body {
