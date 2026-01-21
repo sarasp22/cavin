@@ -43,6 +43,19 @@
                 </svg>
                 <span><%= number_to_currency(template.price, unit: "€", separator: ",", format: "%n %u") %></span>
               </div>
+
+              <% if template.notes.present? %>
+                <div class="template-notes-box" style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed #e0e0e0;">
+                  <div class="detail-row" style="align-items: flex-start;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-top: 3px; color: #c4a661;">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span style="font-style: italic; font-size: 0.9rem; color: #6b6b6b; line-height: 1.4;">
+                      "<%= template.notes %>"
+                    </span>
+                  </div>
+                </div>
+              <% end %>
             </div>
 
             <div class="template-actions">
@@ -60,17 +73,7 @@
         <% end %>
       </div>
     <% else %>
-      <div class="library-empty">
-        <div class="empty-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-          </svg>
-        </div>
-        <h2 class="empty-title">Bibliothèque vide</h2>
-        <p class="empty-text">Lorsque vous ajoutez un vin, cochez "Sauvegarder dans ma bibliothèque" pour le retrouver ici</p>
-        <%= link_to "Ajouter un vin", storages_path, class: "btn-primary" %>
-      </div>
+      <%# ... codice per biblioteca vuota ... %>
     <% end %>
 
     <div class="library-actions">

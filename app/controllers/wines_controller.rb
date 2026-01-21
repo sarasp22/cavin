@@ -11,17 +11,16 @@ class WinesController < ApplicationController
   end
 
 def create
-  positions = params[:selected_positions].split(',') # Prende "1-1,1-2" e lo fa diventare ["1-1", "1-2"]
+  positions = params[:selected_positions].split(',')
 
   if positions.empty?
-    @wine = @storage.wines.build(wine_params) # Per mostrare errori di validazione
+    @wine = @storage.wines.build(wine_params)
     flash.now[:alert] = "Veuillez sélectionner au moins un emplacement."
     render :new, status: :unprocessable_entity and return
   end
 
   errors = []
 
-  # Usiamo una transazione: o si creano tutte o nessuna
   ActiveRecord::Base.transaction do
     positions.each do |pos|
       row, col = pos.split('-')
@@ -31,7 +30,7 @@ def create
 
       unless @wine.save
         errors << @wine.errors.full_messages
-        raise ActiveRecord::Rollback # Ferma tutto se una fallisce
+        raise ActiveRecord::Rollback
       end
     end
   end
