@@ -68,24 +68,6 @@ $cream-cavin: #f5f1e8;
     gap: 20px;
   }
 
-  .btn-primary-full {
-    width: 100%;
-    background: $primary-wine;
-    color: white;
-    border: none;
-    padding: 18px;
-    border-radius: 12px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: transform 0.2s;
-
-    &:hover {
-      background: #4a2525;
-      transform: translateY(-2px);
-    }
-  }
-
   .secondary-actions {
     margin-top: 25px;
     display: flex;
@@ -125,4 +107,33 @@ $cream-cavin: #f5f1e8;
 
 .storage-radio-input:checked + .storage-type-label .storage-type-overlay {
   background: linear-gradient(to top, rgba(93, 46, 46, 0.9), rgba(93, 46, 46, 0.6)) !important;
+}
+
+.form-actions {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.btn-submit-storage {
+  padding: 18px 60px;
+  background-color: #5d2e2e;
+  color: #ffffff;
+  font-family: 'Inria Serif', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(93, 46, 46, 0.2);
+
+  &:hover {
+    background-color: #7a3a3a;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(93, 46, 46, 0.3);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
 }
