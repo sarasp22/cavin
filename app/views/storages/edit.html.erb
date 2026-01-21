@@ -1,4 +1,83 @@
-<div>
-  <h1 class="font-bold text-4xl">Storages#edit</h1>
-  <p>Find me in app/views/storages/edit.html.erb</p>
+<div class="storage-form-container">
+  <div class="storage-form-card">
+    <h1 class="form-main-title">Modifier votre Stockage</h1>
+
+    <%= form_with(model: @storage, class: "storage-form") do |f| %>
+
+      <%# Sezione Nome %>
+      <div class="form-section">
+        <label class="form-section-label">Nom du stockage</label>
+        <div class="input-with-icon">
+          <%= f.text_field :name, class: "form-text-input", placeholder: "Ex: Ma Cave Privée" %>
+          <div class="input-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          </div>
+        </div>
+      </div>
+
+<%# Sezione Categoria %>
+<div class="form-section">
+  <label class="form-section-label">Choisir le type de stockage</label>
+  <div class="storage-types-grid">
+    <% ["Cave", "Vinothèque salon", "Meuble cuisine", "Vinothèque cuisine"].each do |category| %>
+      <div class="storage-type-card">
+        <%= f.radio_button :category, category, id: "category_#{category.parameterize}", class: "storage-radio-input" %>
+        <label for="category_<%= category.parameterize %>" class="storage-type-label">
+          <div class="storage-type-image">
+            <%# Usiamo una logica che punta ai nomi file corretti %>
+            <%
+              file_name = case category
+                when "Cave" then "cave.jpg"
+                when "Vinothèque salon" then "vinotheque_salon.png"
+                when "Meuble cuisine" then "meuble_cuisine.jpg"
+                when "Vinothèque cuisine" then "vinotheque_cuisine.png"
+                else "default_storage.jpg"
+              end
+            %>
+            <%= image_tag file_name, class: "category-img" %>
+            <div class="storage-type-overlay">
+              <p class="storage-type-name"><%= category %></p>
+            </div>
+          </div>
+        </label>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+      <%# Sezione Dimensioni %>
+      <div class="dimensions-grid">
+        <div class="dimension-control">
+          <label class="dimension-label">Nombre de lignes</label>
+          <div class="dimension-input-group">
+            <button type="button" class="dimension-btn" onclick="this.parentNode.querySelector('input').stepDown()">-</button>
+            <%= f.number_field :rows, class: "dimension-input", min: 1 %>
+            <button type="button" class="dimension-btn" onclick="this.parentNode.querySelector('input').stepUp()">+</button>
+          </div>
+        </div>
+
+        <div class="dimension-control">
+          <label class="dimension-label">Nombre de colonnes</label>
+          <div class="dimension-input-group">
+            <button type="button" class="dimension-btn" onclick="this.parentNode.querySelector('input').stepDown()">-</button>
+            <%= f.number_field :cols, class: "dimension-input", min: 1 %>
+            <button type="button" class="dimension-btn" onclick="this.parentNode.querySelector('input').stepUp()">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit "Enregistrer les modifications", class: "btn-submit-storage" %>
+      </div>
+    <% end %>
+
+    <%# Tasto Elimina separato %>
+<div class="form-actions" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 30px;">
+  <%= link_to "Supprimer le stockage",
+      storage_path(@storage),
+      data: { turbo_method: :delete, turbo_confirm: "Êtes-vous sûr ? Toutes les bouteilles de ce stockage seront supprimées." },
+      class: "btn-submit-storage",
+      style: "background-color: #991b1b; padding: 12px 30px; font-size: 1rem; text-decoration: none; display: inline-block;" %>
+</div>
+  </div>
 </div>

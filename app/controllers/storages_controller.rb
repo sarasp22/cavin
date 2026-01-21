@@ -28,18 +28,26 @@ class StoragesController < ApplicationController
   def edit
   end
 
-  def update
-    if @storage.update(storage_params)
-      redirect_to storage_path(@storage), notice: 'Stockage modifié avec succès!'
-    else
-      render :edit, status: :unprocessable_entity
-    end
-  end
+def update
+  @storage.assign_attributes(storage_params)
+  @storage.photo_url = set_default_photo(@storage.category)
 
-  def destroy
-    @storage.destroy
-    redirect_to storages_path, notice: 'Stockage supprimé avec succès!'
+  if @storage.save
+    redirect_to storage_path(@storage), notice: 'Stockage modifié avec succès!'
+  else
+    render :edit, status: :unprocessable_entity
   end
+end
+
+def destroy
+  @storage = current_user.storages.find(params[:id])
+  @storage.destroy
+
+  respond_to do |format|
+    format.html { redirect_to storages_path, status: :see_other, notice: 'Stockage supprimé avec succès!' }
+    format.json { head :no_content }
+  end
+end
 
   private
 
