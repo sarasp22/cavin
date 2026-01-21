@@ -118,7 +118,6 @@ $cream-cavin: #f5f1e8;
   }
 }
 
-/* Assicurati che l'immagine cambi bordo quando selezionata */
 .storage-radio-input:checked + .storage-type-label .storage-type-image {
   border-color: #c4a661 !important;
   box-shadow: 0 0 0 4px rgba(196, 166, 97, 0.3) !important;

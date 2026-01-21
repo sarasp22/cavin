@@ -4,7 +4,6 @@
 
     <%= form_with(model: @storage, class: "storage-form") do |f| %>
 
-      <%# Sezione Nome %>
       <div class="form-section">
         <label class="form-section-label">Nom du stockage</label>
         <div class="input-with-icon">
@@ -15,7 +14,6 @@
         </div>
       </div>
 
-<%# Sezione Categoria %>
 <div class="form-section">
   <label class="form-section-label">Choisir le type de stockage</label>
   <div class="storage-types-grid">
@@ -24,7 +22,6 @@
         <%= f.radio_button :category, category, id: "category_#{category.parameterize}", class: "storage-radio-input" %>
         <label for="category_<%= category.parameterize %>" class="storage-type-label">
           <div class="storage-type-image">
-            <%# Usiamo una logica che punta ai nomi file corretti %>
             <%
               file_name = case category
                 when "Cave" then "cave.jpg"
@@ -45,7 +42,6 @@
   </div>
 </div>
 
-      <%# Sezione Dimensioni %>
       <div class="dimensions-grid">
         <div class="dimension-control">
           <label class="dimension-label">Nombre de lignes</label>
@@ -71,7 +67,6 @@
       </div>
     <% end %>
 
-    <%# Tasto Elimina separato %>
 <div class="form-actions" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 30px;">
   <%= link_to "Supprimer le stockage",
       storage_path(@storage),
