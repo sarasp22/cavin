@@ -201,14 +201,19 @@
   padding-top: 30px;
   border-top: 2px solid #e8dfc8;
 
+  form {
+    display: contents;
+  }
+
   @media (max-width: 576px) {
     flex-direction: column;
   }
 }
 
-.btn-action {
+.btn-action, .btn-delete-wine {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   padding: 12px 24px;
   font-family: 'Inria Serif', serif;
@@ -216,10 +221,12 @@
   font-weight: 600;
   text-decoration: none;
   border-radius: 10px;
-  border: 2px solid;
+  border: 2px solid transparent;
   transition: all 0.3s ease;
   cursor: pointer;
   white-space: nowrap;
+  touch-action: manipulation;
+  min-height: 44px;
 
   svg {
     flex-shrink: 0;
@@ -230,12 +237,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
-  &:active {
-    transform: translateY(0);
-  }
-
   @media (max-width: 576px) {
-    justify-content: center;
     width: 100%;
   }
 }
@@ -244,47 +246,27 @@
   background-color: #f5f1e8;
   color: #2c1810;
   border-color: #e8dfc8;
-
-  &:hover {
-    background-color: #e8dfc8;
-  }
+  &:hover { background-color: #e8dfc8; }
 }
 
 .btn-edit {
   background-color: #5d2e2e;
   color: #ffffff;
-  border-color: #5d2e2e;
-
-  &:hover {
-    background-color: #7a3a3a;
-    border-color: #7a3a3a;
-  }
+  &:hover { background-color: #7a3a3a; }
 }
 
 .btn-consume {
   background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
   color: #ffffff;
-  border-color: #4caf50;
-
-  &:hover {
-    background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
-    border-color: #66bb6a;
-  }
+  &:hover { opacity: 0.9; }
 }
 
-.btn-delete {
+.btn-delete-wine {
   background-color: #ffffff;
   color: #d32f2f;
-  border-color: #d32f2f;
-
+  border: 2px solid #d32f2f;
   &:hover {
     background-color: #d32f2f;
     color: #ffffff;
   }
-}
-.btn-delete-wine {
-  cursor: pointer;
-  z-index: 10;
-  touch-action: manipulation;
-  min-height: 44px; 
 }
