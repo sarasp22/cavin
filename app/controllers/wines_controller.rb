@@ -10,21 +10,37 @@ class WinesController < ApplicationController
     @wine = @storage.wines.build
   end
 
- def create
-  @wine = @storage.wines.build(wine_params)
+def create
+  positions = params[:selected_positions].split(',') # Prende "1-1,1-2" e lo fa diventare ["1-1", "1-2"]
 
-  if @wine.save
-    if params[:wine][:save_as_template] == "1"
-      current_user.wine_templates.create(
-        name: @wine.name,
-        wine_type: @wine.wine_type,
-        region: @wine.region,
-        price: @wine.price
-      )
+  if positions.empty?
+    @wine = @storage.wines.build(wine_params) # Per mostrare errori di validazione
+    flash.now[:alert] = "Veuillez sélectionner au moins un emplacement."
+    render :new, status: :unprocessable_entity and return
+  end
+
+  errors = []
+
+  # Usiamo una transazione: o si creano tutte o nessuna
+  ActiveRecord::Base.transaction do
+    positions.each do |pos|
+      row, col = pos.split('-')
+      @wine = @storage.wines.build(wine_params)
+      @wine.row_position = row
+      @wine.col_position = col
+
+      unless @wine.save
+        errors << @wine.errors.full_messages
+        raise ActiveRecord::Rollback # Ferma tutto se una fallisce
+      end
     end
+  end
 
-    redirect_to storage_path(@storage), notice: 'Vin ajouté avec succès!'
+  if errors.empty?
+    redirect_to storage_path(@storage), notice: "#{positions.count} vins ajoutés con succès!"
   else
+    @wine = @storage.wines.build(wine_params)
+    flash.now[:alert] = "Erreur lors dell'ajout: #{errors.first.join(', ')}"
     render :new, status: :unprocessable_entity
   end
 end
@@ -48,13 +64,23 @@ end
   def consume
   end
 
-  def mark_consumed
-    if @wine.update(consumed_at: Time.current, notes: wine_consume_params[:notes])
-      redirect_to storage_path(@storage), notice: 'Vin marqué comme consommé!'
-    else
-      render :consume, status: :unprocessable_entity
+def mark_consumed
+  if @wine.update(consumed_at: Time.current, notes: params[:wine][:notes])
+    if params[:save_as_template] == "1"
+      current_user.wine_templates.find_or_create_by(
+        name: @wine.name,
+        wine_type: @wine.wine_type,
+        region: @wine.region
+      ) do |t|
+        t.price = @wine.price
+      end
     end
+
+    redirect_to storage_path(@storage), notice: 'Vin marqué comme consommé!'
+  else
+    render :consume, status: :unprocessable_entity
   end
+end
 
   def history
     @consumed_wines = current_user.storages.includes(:wines).flat_map do |storage|

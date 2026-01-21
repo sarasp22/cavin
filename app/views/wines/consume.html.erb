@@ -29,23 +29,42 @@
     <%= label_tag 'wine[notes]', "Vos notes de dégustation", class: "form-label" %>
     <%= text_area_tag 'wine[notes]', nil,
         rows: 6,
+        id: "wine_notes_area",
         class: "form-textarea",
-        placeholder: "Ex: Arômes de fruits rouges, excellent équilibre, parfait avec le fromage...",
+        placeholder: "Ex: Arômes de fruits rouges...",
         maxlength: 500 %>
     <span class="char-count" id="char-count">0 / 500</span>
   </div>
+
+<div class="form-group favorite-section">
+  <%= check_box_tag 'save_as_template', '1', false, class: "favorite-checkbox", id: "favorite-checkbox" %>
+
+  <label for="favorite-checkbox" class="favorite-label">
+    <div class="favorite-content">
+
+
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+      </svg>
+
+      <div>
+        <strong>Ajouter à mes favoris</strong>
+        <p>Sauvegarder ce vin dans ma bibliothèque pour l'ajouter à mes favoris</p>
+      </div>
+    </div>
+  </label>
+</div>
 
   <div class="consume-actions">
     <%= link_to "Annuler", storage_wine_path(@storage, @wine), class: "btn-cancel" %>
     <%= f.submit "Marquer comme consommé", class: "btn-submit-consume" %>
   </div>
 <% end %>
-  </div>
-</div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const textarea = document.querySelector('.form-textarea');
+
+  const initCharCount = () => {
+    const textarea = document.getElementById('wine_notes_area');
     const charCount = document.getElementById('char-count');
 
     if (textarea && charCount) {
@@ -55,10 +74,15 @@
 
         if (length > 450) {
           charCount.style.color = '#d32f2f';
+          charCount.style.fontWeight = 'bold';
         } else {
           charCount.style.color = '#888';
+          charCount.style.fontWeight = 'normal';
         }
       });
     }
-  });
+  };
+
+  document.addEventListener('DOMContentLoaded', initCharCount);
+  document.addEventListener('turbo:load', initCharCount);
 </script>

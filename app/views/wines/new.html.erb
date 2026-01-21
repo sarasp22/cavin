@@ -12,14 +12,9 @@
     </div>
 
     <%= form_with model: [@storage, @wine], class: "wine-form", id: "wine-form" do |f| %>
-
       <% if current_user.wine_templates.any? %>
         <div class="wine-form-group">
           <label class="wine-form-label">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-            </svg>
             Sélectionner depuis ma bibliothèque
           </label>
           <select class="wine-form-input" id="wine-template-select" onchange="fillFromTemplate()">
@@ -46,8 +41,7 @@
       <div class="wine-form-group">
         <%= f.label :wine_type, "Type de Vin", class: "wine-form-label" %>
         <div class="wine-type-buttons">
-          <% wine_types = ["Rouge", "Blanc", "Rosé", "Champagne", "Pétillant"] %>
-          <% wine_types.each do |type| %>
+          <% ["Rouge", "Blanc", "Rosé", "Champagne", "Pétillant"].each do |type| %>
             <label class="wine-type-option">
               <%= f.radio_button :wine_type, type, class: "wine-type-radio", required: true %>
               <span class="wine-type-label <%= type.downcase %>"><%= type %></span>
@@ -70,44 +64,25 @@
       </div>
 
       <div class="wine-form-section">
-        <h3 class="section-title">Position dans le Stockage</h3>
+        <h3 class="section-title">Positions dans le Stockage</h3>
+        <p class="section-explanation" style="font-size: 0.9rem; color: #6b6b6b; margin-bottom: 15px; font-style: italic;">
+          Vous avez plusieurs bouteilles du même vin ? Sélectionnez simplement tous les emplacements souhaités ci-dessous pour les ajouter en une seule fois.
+        </p>
 
-        <div class="position-grid">
-          <div class="position-control">
-            <%= f.label :row_position, "Rangée", class: "wine-form-label" %>
-            <%= f.number_field :row_position,
-                value: params[:row] || 1,
-                min: 1,
-                max: @storage.rows,
-                class: "wine-form-input position-input",
-                required: true %>
-            <span class="position-hint">De 1 à <%= @storage.rows %></span>
-          </div>
-
-          <div class="position-control">
-            <%= f.label :col_position, "Colonne", class: "wine-form-label" %>
-            <%= f.number_field :col_position,
-                value: params[:col] || 1,
-                min: 1,
-                max: @storage.cols,
-                class: "wine-form-input position-input",
-                required: true %>
-            <span class="position-hint">De 1 à <%= @storage.cols %></span>
-          </div>
-        </div>
+        <%= hidden_field_tag :selected_positions, "", id: "selected-positions-input" %>
 
         <div class="position-preview">
-          <p class="preview-label">Aperçu de la position</p>
+          <p class="preview-label">Sélectionnez les emplacements (<span id="count-display" style="font-weight: bold; color: #4caf50;">0</span> bouteilles)</p>
           <div class="preview-grid" id="position-preview" style="grid-template-columns: repeat(<%= @storage.cols %>, 1fr);">
             <% (@storage.rows * @storage.cols).times do |index| %>
               <% row = (index / @storage.cols) + 1 %>
               <% col = (index % @storage.cols) + 1 %>
               <% wine = @storage.wines.where(consumed_at: nil).find { |w| w.row_position == row && w.col_position == col } %>
 
-              <div class="preview-slot <%= 'occupied' if wine %> <%= 'selected' if row == (params[:row]&.to_i || 1) && col == (params[:col]&.to_i || 1) %>"
+              <div class="preview-slot <%= 'occupied' if wine %>"
                    data-row="<%= row %>"
                    data-col="<%= col %>"
-                   onclick="selectPosition(<%= row %>, <%= col %>)">
+                   onclick="togglePosition(this, <%= row %>, <%= col %>)">
                 <% if wine %>
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M8 2h8l2 10-4 10-4-10z"/>
@@ -122,41 +97,48 @@
         </div>
       </div>
 
-      <div class="wine-form-actions">
-        <%= link_to "Annuler", storage_path(@storage), class: "btn-cancel" %>
-        <%= f.submit "Ajouter le Vin", class: "btn-submit-wine" %>
+      <div class="wine-form-actions" style="display: flex; justify-content: center; gap: 20px; margin-top: 40px; width: 100%;">
+        <%= link_to "Annuler", storage_path(@storage), class: "btn-cancel", style: "margin: 0;" %>
+        <%= f.submit "Ajouter le Vin", class: "btn-submit-wine", style: "margin: 0;" %>
       </div>
     <% end %>
   </div>
 </div>
 
 <script>
-  function selectPosition(row, col) {
-    document.getElementById('wine_row_position').value = row;
-    document.getElementById('wine_col_position').value = col;
+  let selectedPositions = [];
 
-    document.querySelectorAll('.preview-slot').forEach(slot => {
-      slot.classList.remove('selected');
-    });
-
-    const selectedSlot = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
-    if (selectedSlot && !selectedSlot.classList.contains('occupied')) {
-      selectedSlot.classList.add('selected');
+  function togglePosition(element, row, col) {
+    if (element.classList.contains('occupied')) return;
+    const posIndex = selectedPositions.findIndex(p => p.row === row && p.col === col);
+    if (posIndex > -1) {
+      selectedPositions.splice(posIndex, 1);
+      element.classList.remove('selected');
+    } else {
+      selectedPositions.push({row: row, col: col});
+      element.classList.add('selected');
     }
+    updateHiddenInput();
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    const rowInput = document.getElementById('wine_row_position');
-    const colInput = document.getElementById('wine_col_position');
+  function updateHiddenInput() {
+    const input = document.getElementById('selected-positions-input');
+    const countDisplay = document.getElementById('count-display');
+    const posString = selectedPositions.map(p => `${p.row}-${p.col}`).join(',');
+    input.value = posString;
+    countDisplay.textContent = selectedPositions.length;
+  }
 
-    if (rowInput && colInput) {
-      rowInput.addEventListener('change', function() {
-        selectPosition(parseInt(this.value), parseInt(colInput.value));
-      });
-
-      colInput.addEventListener('change', function() {
-        selectPosition(parseInt(rowInput.value), parseInt(this.value));
-      });
+  function fillFromTemplate() {
+    const select = document.getElementById('wine-template-select');
+    const option = select.options[select.selectedIndex];
+    if (option.value) {
+      document.getElementById('wine-name').value = option.dataset.name;
+      document.getElementById('wine_region').value = option.dataset.region;
+      document.getElementById('wine_price').value = option.dataset.price;
+      const type = option.dataset.type;
+      const radio = document.querySelector(`input[name="wine[wine_type]"][value="${type}"]`);
+      if (radio) radio.checked = true;
     }
-  });
+  }
 </script>
