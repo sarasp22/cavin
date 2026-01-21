@@ -3,7 +3,7 @@ class StoragesController < ApplicationController
   before_action :set_storage, only: [:show, :edit, :update, :destroy]
 
   def index
-    @storages = current_user.storages
+    @storages = current_user.storages.includes(:wines)
   end
 
   def show

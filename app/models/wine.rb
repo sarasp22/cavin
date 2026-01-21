@@ -1,3 +1,3 @@
 class Wine < ApplicationRecord
-  belongs_to :storage
+ belongs_to :storage, touch: true
 end

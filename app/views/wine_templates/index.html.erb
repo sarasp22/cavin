@@ -44,8 +44,7 @@
                 <span><%= number_to_currency(template.price, unit: "€", separator: ",", format: "%n %u") %></span>
               </div>
 
-              <% if template.notes.present? %>
-                <div class="template-notes-box" style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed #e0e0e0;">
+               <% if template.notes.present? && template.notes.strip != "" %>                <div class="template-notes-box" style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed #e0e0e0;">
                   <div class="detail-row" style="align-items: flex-start;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-top: 3px; color: #c4a661;">
                       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>

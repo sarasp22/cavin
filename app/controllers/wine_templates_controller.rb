@@ -29,7 +29,7 @@ class WineTemplatesController < ApplicationController
 
   private
 
-  def wine_template_params
-    params.require(:wine_template).permit(:name, :wine_type, :region, :price)
-  end
+def wine_template_params
+  params.require(:wine_template).permit(:name, :wine_type, :region, :price, :notes)
+end
 end
