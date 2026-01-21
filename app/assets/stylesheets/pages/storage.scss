@@ -1,4 +1,3 @@
-// Storages Container
 .storages-container {
   max-width: 1400px;
   margin: 0 auto;
@@ -10,7 +9,6 @@
   }
 }
 
-// Header
 .storages-header {
   display: flex;
   justify-content: space-between;
@@ -63,7 +61,6 @@
   }
 }
 
-// Storages Grid
 .storages-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -74,7 +71,6 @@
   }
 }
 
-// Storage Card
 .storage-card {
   background: #ffffff;
   border-radius: 16px;

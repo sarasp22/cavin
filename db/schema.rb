@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_21_115507) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_21_145528) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -58,14 +58,17 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_21_115507) do
     t.integer "row_position"
     t.integer "col_position"
     t.datetime "consumed_at"
-    t.bigint "storage_id", null: false
+    t.bigint "storage_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "notes"
+    t.bigint "user_id"
     t.index ["storage_id"], name: "index_wines_on_storage_id"
+    t.index ["user_id"], name: "index_wines_on_user_id"
   end
 
   add_foreign_key "storages", "users"
   add_foreign_key "wine_templates", "users"
   add_foreign_key "wines", "storages"
+  add_foreign_key "wines", "users"
 end

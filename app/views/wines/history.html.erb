@@ -45,7 +45,7 @@
           </svg>
         </div>
         <div class="stat-content">
-          <p class="stat-value"><%= number_to_currency(@consumed_wines.sum(&:price) / [@consumed_wines.count, 1].max, unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></p>
+          <p class="stat-value"><%= number_to_currency(@consumed_wines.any? ? (@consumed_wines.sum(&:price) / @consumed_wines.count) : 0, unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></p>
           <p class="stat-label">Prix Moyen</p>
         </div>
       </div>
@@ -53,7 +53,7 @@
 
     <% if @consumed_wines.any? %>
       <div class="history-list">
-        <% @consumed_wines.group_by { |w| w.consumed_at.to_date }.each do |date, wines| %>
+        <% @consumed_wines.group_by { |w| w.consumed_at&.to_date || Date.today }.each do |date, wines| %>
           <div class="history-date-group">
             <h2 class="date-header">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -75,7 +75,7 @@
                         <ellipse cx="12" cy="2" rx="4" ry="1"/>
                       </svg>
                     </div>
-                    <span class="wine-card-type <%= wine.wine_type.downcase %>"><%= wine.wine_type %></span>
+                    <span class="wine-card-type <%= wine.wine_type&.downcase %>"><%= wine.wine_type %></span>
                   </div>
 
                   <h3 class="wine-card-name"><%= wine.name %></h3>
@@ -101,7 +101,7 @@
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                       </svg>
-                      <span><%= wine.storage.name %></span>
+                      <span><%= wine.storage&.name || "Stockage supprimé" %></span>
                     </div>
 
                     <div class="detail-item">
@@ -109,7 +109,7 @@
                         <circle cx="12" cy="12" r="10"></circle>
                         <polyline points="12 6 12 12 16 14"></polyline>
                       </svg>
-                      <span><%= l(wine.consumed_at, format: :short) %></span>
+                      <span><%= wine.consumed_at ? l(wine.consumed_at, format: :short) : "N/A" %></span>
                     </div>
                   </div>
 

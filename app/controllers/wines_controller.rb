@@ -6,38 +6,41 @@ class WinesController < ApplicationController
   def show
   end
 
-def new
-  @wine = Wine.new
-end
-
-def create
-  positions = params[:selected_positions].to_s.split(',').reject(&:blank?)
-
-  if positions.empty?
-    @wine = Wine.new(wine_params)
-    flash.now[:alert] = "Veuillez sélectionner au moins un emplacement."
-    render :new, status: :unprocessable_entity and return
+  def new
+    @wine = Wine.new
   end
 
-  begin
-    ActiveRecord::Base.transaction do
-      positions.each do |pos|
-        row, col = pos.strip.split('-')
+  def create
+    positions = params[:selected_positions].to_s.split(',').reject(&:blank?)
 
-        new_wine = Wine.new(wine_params)
-        new_wine.storage = @storage
-        new_wine.row_position = row.to_i
-        new_wine.col_position = col.to_i
-
-        new_wine.save!
-      end
+    if positions.empty?
+      @wine = Wine.new(wine_params)
+      flash.now[:alert] = "Veuillez sélectionner au moins un emplacement."
+      render :new, status: :unprocessable_entity and return
     end
-    redirect_to storage_path(@storage), notice: "Vins ajoutés con succès!"
-  rescue => e
-    @wine = Wine.new(wine_params)
-    render :new, status: :unprocessable_entity
+
+    begin
+      ActiveRecord::Base.transaction do
+        positions.each do |pos|
+          row, col = pos.strip.split('-')
+
+          new_wine = Wine.new(wine_params)
+          new_wine.storage = @storage
+          new_wine.user = current_user
+          new_wine.row_position = row.to_i
+          new_wine.col_position = col.to_i
+
+          new_wine.save!
+        end
+      end
+      redirect_to storage_path(@storage), notice: "Vins ajoutés avec succès!"
+    rescue => e
+     puts "ERRORE SALVATAGGIO: #{e.message}" 
+     @wine = Wine.new(wine_params)
+     flash.now[:alert] = "Erreur: #{e.message}"
+     render :new, status: :unprocessable_entity
+    end
   end
-end
 
   def edit
   end
@@ -52,7 +55,7 @@ end
 
   def destroy
     @wine.destroy
-    redirect_to storage_path(@storage), notice: 'Vin supprimé avec successo!'
+    redirect_to storage_path(@storage), notice: 'Vin supprimé avec succès!'
   end
 
   def consume
@@ -77,9 +80,7 @@ end
   end
 
   def history
-    @consumed_wines = current_user.storages.includes(:wines).flat_map do |storage|
-      storage.wines.where.not(consumed_at: nil)
-    end.sort_by(&:consumed_at).reverse
+    @consumed_wines = current_user.wines.where.not(consumed_at: nil).order(consumed_at: :desc)
   end
 
   private
