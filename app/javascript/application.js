@@ -2,3 +2,13 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 
+document.addEventListener('turbo:load', () => {
+  const flash = document.getElementById('flash-message');
+  if (flash) {
+    setTimeout(() => {
+      flash.style.transition = "opacity 0.6s ease";
+      flash.style.opacity = "0";
+      setTimeout(() => flash.remove(), 600);
+    }, 4000);
+  }
+});
