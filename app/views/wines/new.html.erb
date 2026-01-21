@@ -73,27 +73,28 @@
 
         <div class="position-preview">
           <p class="preview-label">Sélectionnez les emplacements (<span id="count-display" style="font-weight: bold; color: #4caf50;">0</span> bouteilles)</p>
-          <div class="preview-grid" id="position-preview" style="grid-template-columns: repeat(<%= @storage.cols %>, 1fr);">
-            <% (@storage.rows * @storage.cols).times do |index| %>
-              <% row = (index / @storage.cols) + 1 %>
-              <% col = (index % @storage.cols) + 1 %>
-              <% wine = @storage.wines.where(consumed_at: nil).find { |w| w.row_position == row && w.col_position == col } %>
+<div class="preview-grid" id="position-preview" style="grid-template-columns: repeat(<%= @storage.cols %>, 1fr);">
+<% occupied_positions = Wine.where(storage_id: @storage.id, consumed_at: nil).pluck(:row_position, :col_position) %>
+  <% (1..@storage.rows).each do |row| %>
+    <% (1..@storage.cols).each do |col| %>
+      <% is_occupied = occupied_positions.include?([row, col]) %>
 
-              <div class="preview-slot <%= 'occupied' if wine %>"
-                   data-row="<%= row %>"
-                   data-col="<%= col %>"
-                   onclick="togglePosition(this, <%= row %>, <%= col %>)">
-                <% if wine %>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 2h8l2 10-4 10-4-10z"/>
-                    <ellipse cx="12" cy="2" rx="4" ry="1"/>
-                  </svg>
-                <% else %>
-                  <span class="slot-label">R<%= row %>C<%= col %></span>
-                <% end %>
-              </div>
-            <% end %>
-          </div>
+      <div class="preview-slot <%= 'occupied' if is_occupied %>"
+           data-row="<%= row %>"
+           data-col="<%= col %>"
+           onclick="togglePosition(this, <%= row %>, <%= col %>)">
+        <% if is_occupied %>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 2h8l2 10-4 10-4-10z"/>
+            <ellipse cx="12" cy="2" rx="4" ry="1"/>
+          </svg>
+        <% else %>
+          <span class="slot-label">R<%= row %>C<%= col %></span>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
         </div>
       </div>
 
@@ -110,7 +111,9 @@
 
   function togglePosition(element, row, col) {
     if (element.classList.contains('occupied')) return;
+
     const posIndex = selectedPositions.findIndex(p => p.row === row && p.col === col);
+
     if (posIndex > -1) {
       selectedPositions.splice(posIndex, 1);
       element.classList.remove('selected');
@@ -124,9 +127,13 @@
   function updateHiddenInput() {
     const input = document.getElementById('selected-positions-input');
     const countDisplay = document.getElementById('count-display');
+
     const posString = selectedPositions.map(p => `${p.row}-${p.col}`).join(',');
+
     input.value = posString;
     countDisplay.textContent = selectedPositions.length;
+
+    console.log("Posizioni selezionate:", posString);
   }
 
   function fillFromTemplate() {
@@ -137,8 +144,29 @@
       document.getElementById('wine_region').value = option.dataset.region;
       document.getElementById('wine_price').value = option.dataset.price;
       const type = option.dataset.type;
-      const radio = document.querySelector(`input[name="wine[wine_type]"][value="${type}"]`);
+      const radio = document.querySelector(`input[type="radio"][value="${type}"]`);
       if (radio) radio.checked = true;
     }
   }
+
+  document.addEventListener("turbo:load", () => {
+    selectedPositions = [];
+    const input = document.getElementById('selected-positions-input');
+    if (input) input.value = "";
+  });
+
+  // Questo resetta TUTTO ogni volta che la pagina viene caricata
+document.addEventListener("turbo:load", function() {
+  selectedPositions = [];
+  const input = document.getElementById('selected-positions-input');
+  const countDisplay = document.getElementById('count-display');
+
+  if (input) input.value = "";
+  if (countDisplay) countDisplay.textContent = "0";
+
+  // Rimuove la classe 'selected' da eventuali slot rimasti evidenziati
+  document.querySelectorAll('.preview-slot.selected').forEach(slot => {
+    slot.classList.remove('selected');
+  });
+});
 </script>

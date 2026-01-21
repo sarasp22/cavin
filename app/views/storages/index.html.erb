@@ -34,12 +34,6 @@
   <% else %>
 
     <div class="empty-state">
-      <div class="empty-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M8 2h8l2 10-4 10-4-10z"/>
-          <ellipse cx="12" cy="2" rx="4" ry="1"/>
-        </svg>
-      </div>
       <h2 class="empty-title">Aucun stockage pour le moment</h2>
       <p class="empty-description">Créez votre premier espace de stockage pour commencer à gérer votre cave à vin</p>
       <%= link_to "Créer mon premier stockage", new_storage_path, class: "btn-primary" %>

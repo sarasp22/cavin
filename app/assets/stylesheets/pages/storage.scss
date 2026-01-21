@@ -157,7 +157,6 @@
   letter-spacing: 1px;
 }
 
-// Empty State
 .empty-state {
   text-align: center;
   padding: 80px 20px;
@@ -165,15 +164,6 @@
   margin: 0 auto;
 }
 
-.empty-icon {
-  color: #c4a661;
-  margin-bottom: 30px;
-  opacity: 0.7;
-
-  svg {
-    fill: #c4a661;
-  }
-}
 
 .empty-title {
   font-family: 'Inria Serif', serif;

@@ -2,9 +2,9 @@
   <div class="storage-show-header">
     <div>
       <h1 class="storage-show-title"><%= @storage.name %></h1>
-      <p class="storage-show-subtitle">
-        <%= @storage.category %> • <%= @wines.count %> bouteilles
-      </p>
+<p class="storage-show-subtitle">
+  <%= @storage.category %> • <%= @storage.wines.where(consumed_at: nil).count %> bouteilles
+</p>
     </div>
     <div class="storage-show-actions">
       <%= link_to storages_path, class: "btn-back" do %>
