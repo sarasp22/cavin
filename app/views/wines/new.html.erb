@@ -63,6 +63,11 @@
         </div>
       </div>
 
+      <div class="wine-form-group">
+  <%= f.label :size, "Format de la bouteille", class: "wine-form-label" %>
+  <%= f.select :size, Wine::SIZES, { prompt: "Sélectionnez un format" }, class: "wine-form-input", required: true %>
+</div>
+
       <div class="wine-form-section">
         <h3 class="section-title">Positions dans le Stockage</h3>
         <p class="section-explanation" style="font-size: 0.9rem; color: #6b6b6b; margin-bottom: 15px; font-style: italic;">

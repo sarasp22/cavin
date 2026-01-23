@@ -25,6 +25,7 @@
           <p class="detail-label">Région</p>
           <p class="detail-value"><%= @wine.region %></p>
         </div>
+
       </div>
 
       <div class="detail-card">
@@ -50,11 +51,11 @@
             <line x1="3" y1="15" x2="21" y2="15"></line>
           </svg>
         </div>
-        <div class="detail-content">
-          <p class="detail-label">Position</p>
-          <p class="detail-value">Rangée <%= @wine.row_position %>, Colonne <%= @wine.col_position %></p>
-        </div>
-      </div>
+          <div class="detail-content">
+            <p class="detail-label">Format</p>
+            <p class="detail-value"><%= @wine.size.present? ? @wine.size : "75cl" %></p>
+          </div>
+       </div>
 
       <div class="detail-card storage-info-card">
         <div class="detail-icon">
