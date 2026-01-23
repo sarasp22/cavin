@@ -25,6 +25,17 @@
     </div>
 
 <%= form_with url: mark_consumed_storage_wine_path(@storage, @wine), method: :patch, class: "consume-form" do |f| %>
+<div class="form-group">
+  <label>Votre évaluation</label>
+  <div class="star-rating">
+    <% 5.downto(1) do |i| %>
+      <input type="radio" value="<%= i %>" name="wine[rating]" id="rating_<%= i %>" class="star-input">
+      <label for="rating_<%= i %>" class="star-label">★</label>
+    <% end %>
+  </div>
+</div>
+
+
   <div class="form-group">
     <%= label_tag 'wine[notes]', "Vos notes de dégustation", class: "form-label" %>
     <%= text_area_tag 'wine[notes]', nil,

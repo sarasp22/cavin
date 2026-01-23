@@ -283,3 +283,65 @@
     margin: 0;
   }
 }
+
+.form-group {
+  margin-bottom: 25px;
+
+  label {
+    display: block;
+    font-family: 'Inria Serif', serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #5d2e2e;
+    margin-bottom: 10px;
+  }
+
+  .rating-select-wrapper {
+    position: relative;
+    width: 100%;
+
+    &::after {
+      content: '▼';
+      font-size: 0.8rem;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      position: absolute;
+      color: #c4a661;
+      pointer-events: none;
+    }
+  }
+
+  .star-input { display: none; }
+
+  .star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  gap: 5px;
+
+  input[type="radio"] {
+    display: none;
+  }
+
+  label {
+    font-size: 3rem;
+    color: #e0e0e0;
+    cursor: pointer;
+    transition: color 0.1s ease;
+  }
+
+  label:hover,
+  label:hover ~ label {
+    color: #ffc107;
+  }
+
+  input:checked ~ label {
+    color: #ffc107;
+  }
+
+  label:active {
+    transform: scale(0.9);
+  }
+}
+}
