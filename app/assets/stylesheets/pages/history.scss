@@ -387,3 +387,48 @@
     }
   }
 }
+
+  .wine-card-header-clickable {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px 0;
+  }
+
+  .wine-card-collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, opacity 0.2s ease;
+    opacity: 0;
+  }
+
+  .accordion-item.is-open .wine-card-collapsible-content {
+    max-height: 600px;
+    opacity: 1;
+    margin-top: 10px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .expand-icon {
+    transition: transform 0.3s ease;
+    color: #8b4513;
+  }
+
+  .accordion-item.is-open .expand-icon {
+    transform: rotate(45deg);
+    color: #e74c3c;
+  }
+
+  @media (max-width: 768px) {
+    .history-wine-card {
+      padding: 12px 15px;
+      margin-bottom: 8px;
+    }
+    .wine-card-name {
+      font-size: 1rem;
+      margin-bottom: 0;
+      flex: 1;
+      padding-right: 10px;
+    }
+  }
