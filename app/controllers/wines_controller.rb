@@ -60,24 +60,22 @@ class WinesController < ApplicationController
 
   def consume
   end
+def mark_consumed
+  @wine = Wine.find(params[:id])
+  @storage = Storage.find(params[:storage_id])
 
-  def mark_consumed
-    if @wine.update(consumed_at: Time.current, notes: params[:wine][:notes])
-      if params[:save_as_template] == "1"
-        current_user.wine_templates.find_or_create_by(
-          name: @wine.name,
-          wine_type: @wine.wine_type,
-          region: @wine.region
-        ) do |t|
-          t.price = @wine.price
-          t.notes = @wine.notes
-        end
-      end
-      redirect_to storage_path(@storage), notice: 'Vin marqué comme consommé!'
-    else
-      render :consume, status: :unprocessable_entity
-    end
+  rating_from_form = params[:wine][:rating]
+
+  if @wine.update(
+    consumed_at: Time.current,
+    notes: params[:wine][:notes],
+    rating: rating_from_form.to_i
+  )
+    redirect_to storage_path(@storage), notice: 'Vin marqué comme consommé!'
+  else
+    render :consume, status: :unprocessable_entity
   end
+end
 
   def history
     @consumed_wines = current_user.wines.where.not(consumed_at: nil).order(consumed_at: :desc)
@@ -93,11 +91,11 @@ class WinesController < ApplicationController
     @wine = @storage.wines.find(params[:id])
   end
 
-def wine_params
-  params.require(:wine).permit(:name, :wine_type, :region, :price, :size, :row_position, :col_position)
-end
-
-  def wine_consume_params
-    params.require(:wine).permit(:notes)
+  def wine_params
+    params.require(:wine).permit(:name, :wine_type, :region, :price, :size, :row_position, :col_position,:notes, :rating)
   end
+
+def wine_consume_params
+  params.require(:wine).permit(:notes, :rating)
+end
 end

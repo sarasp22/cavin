@@ -345,3 +345,45 @@
     box-shadow: 0 8px 24px rgba(93, 46, 46, 0.3);
   }
 }
+
+.wine-rating-display {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 10px;
+
+  .star {
+    font-size: 1.5rem;
+    line-height: 1;
+
+    &.filled {
+      color: #ffc107 !important;
+      display: inline-block;
+    }
+
+    &.empty {
+      color: #e0e0e0 !important;
+      display: inline-block;
+    }
+  }
+}
+
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+
+  input[type="radio"] {
+    display: none;
+  }
+
+  label {
+    font-size: 3rem;
+    color: #e0e0e0;
+    cursor: pointer;
+
+    &:hover, &:hover ~ label,
+    input:checked ~ label {
+      color: #ffc107;
+    }
+  }
+}
