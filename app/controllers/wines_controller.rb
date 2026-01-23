@@ -35,7 +35,7 @@ class WinesController < ApplicationController
       end
       redirect_to storage_path(@storage), notice: "Vins ajoutés avec succès!"
     rescue => e
-     puts "ERRORE SALVATAGGIO: #{e.message}" 
+     puts "ERRORE SALVATAGGIO: #{e.message}"
      @wine = Wine.new(wine_params)
      flash.now[:alert] = "Erreur: #{e.message}"
      render :new, status: :unprocessable_entity
@@ -93,9 +93,9 @@ class WinesController < ApplicationController
     @wine = @storage.wines.find(params[:id])
   end
 
-  def wine_params
-    params.require(:wine).permit(:name, :wine_type, :region, :price, :row_position, :col_position)
-  end
+def wine_params
+  params.require(:wine).permit(:name, :wine_type, :region, :price, :size, :row_position, :col_position)
+end
 
   def wine_consume_params
     params.require(:wine).permit(:notes)
