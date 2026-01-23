@@ -78,8 +78,9 @@
                     <span class="wine-card-type <%= wine.wine_type&.downcase %>"><%= wine.wine_type %></span>
                   </div>
 
-                  <h3 class="wine-card-name"><%= wine.name %></h3>
-
+<h3 class="wine-card-name">
+  <%= wine.name %> - <%= wine.size.present? ? wine.size : "75cl" %>
+</h3>
                   <div class="wine-card-details">
                     <div class="detail-item">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
