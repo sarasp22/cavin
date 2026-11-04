@@ -1,112 +1,147 @@
-# 🍷 Cavin
+# 🍷 Cavin — Wine Cellar Management & AI Sommelier
 
-> **Your premium digital wine library for organizing collections and preserving tasting memories**
-
-Cavin is a full-stack Ruby on Rails application designed for wine enthusiasts who seek to transform their cellar management into an elegant, visual experience. The platform allows users to map their physical wine storage—from professional cellars to kitchen racks—and track every bottle from acquisition to the final pour.
+**Cavin** is a web application designed for wine enthusiasts who want to organize, visualize, and manage their personal wine cellars with elegance and precision, enhanced by an **AI-powered Personal Sommelier** and **multi-language support (French, Italian, English)**.
 
 ---
 
-## 🚀 Quick Start
-You can begin organizing your collection in three simple steps:
+## ✨ Key Features
 
-1.  **Register a new account**: Create your private profile to start building your personal wine library.
-2.  **Create your Storage**: Define your first storage unit (Cellar, Wine Cooler, etc.) by specifying its grid dimensions (rows and columns).
-3.  **Add your Bottles**: Populate your storage by placing wines into specific coordinates on your visual grid.
+### 1. 🏛️ Tailored Cellar Management (`/storages`)
+- Create and configure multiple custom storage spaces: **Cave** (Underground Cellar), **Vinothèque salon** (Living Room Wine Fridge), **Meuble cuisine** (Kitchen Cabinet), and **Vinothèque cuisine** (Kitchen Wine Fridge).
+- Custom grid dimensions (**Rows × Columns**) with an interactive visual representation of your racks and slots.
+- Real-time capacity and bottle count tracking across all cellars.
 
-> [!TIP]
-> **New to Cavin?** Start by creating a "Cave" with 5 rows and 5 columns to see how the visual grid mapping works before expanding to your full collection.
+### 2. 🍾 Wine Cataloging & Multi-Slot Placement (`/wines`)
+- Detailed bottle records: name, wine type (*Rouge, Blanc, Rosé, Champagne, Pétillant*), region, vintage, price, and bottle format (*0.375L, 0.75L, 1.5L Magnum, 3L, 5L, 6L*).
+- **Multi-Slot Selection**: select multiple grid positions at once to add several bottles of the same wine in a single action.
+- Live search and filtering by wine type directly inside each cellar, dynamically highlighting matching bottles on the rack.
 
-## ✨ Features
+### 3. ✨ AI Personal Sommelier (`/sommelier`)
+- Intelligent sommelier assistant that analyzes **exclusively the bottles currently available** in your cellars.
+- Recommends up to **3 ideal wine pairings** based on your dish, occasion, or season.
+- Displays for each recommended bottle:
+  - **Exact cellar location** (*Cellar name, Row, and Column*) so you can find it immediately.
+  - **Sommelier pairing notes** explaining why the wine matches your request.
+  - **Serving advice** (ideal temperature, decanting tips, and glassware).
+- Automatically responds in the user's selected language (**FR / IT / EN**) and includes a built-in oenological pairing engine as a seamless fallback.
 
-### 📦 Storage Management
+### 4. 📖 Tasting Notes, History & Statistics (`/history`)
+- When opening a bottle (*Mark as consumed*), rate it from **1 to 5 stars** and record your **tasting notes**.
+- Dedicated history dashboard with **live statistics**: total bottles tasted, total collection value enjoyed, and average price per bottle, grouped chronologically.
 
-- **Visual Grid Mapping**: Every storage unit is rendered as a dynamic grid, allowing you to pinpoint the exact location of every bottle.
-- **Category Customization**: Choose between different storage types (Cave, Vinothèque, Meuble cuisine) with custom-themed imagery.
-- **Live Dimension Control**: Adjust the size of your storage anytime with an intuitive +/- interface that updates your cellar capacity.
-- **Smart Validation**: The system prevents placing bottles in occupied slots or outside the storage boundaries.
+### 5. 📚 Favorites Library (`/wine_templates`)
+- Save your favorite bottles to your personal **Wine Library** when marking them as consumed.
+- Quickly pre-fill the "Add a Wine" form from your saved templates with a single click.
 
-### 🍷 Wine Library
-
-- **Detailed Tracking**: Record vintage, region, grape variety, and winery for every bottle.
-- **Inventory Status**: Easily distinguish between your active collection and your historical tasting log.
-- **Consumption Mode**: Mark bottles as "Consumed" with a single click to move them from your cellar to your personal history.
-- **Template System**: Quickly add popular wine types using pre-configured templates.
-
-### 🎯 Platform Intelligence
-
-- **Dynamic Visuals**: The UI adapts based on your storage category, providing a thematic experience for each room in your house.
-- **Animated Feedback**: Custom-styled flash alerts provide elegant confirmation for every action (Successful login, wine added, storage updated).
-- **Responsive Grid**: Your cellar map is fully responsive, allowing you to check your bottle locations on your phone while standing in front of your rack.
-- **Secure Data**: Powered by Devise to ensure your private collection and tasting notes remain personal.
-
----
-
-## 🛠 Tech Stack
-
-| Category | Technologies |
-|----------|-------------|
-| **Framework** | Ruby on Rails 7.1.6 |
-| **Database** | PostgreSQL |
-| **Authentication** | Devise |
-| **Frontend** | Sass (Custom SCSS Architecture), Hotwire (Turbo/Stimulus), Lucide Icons |
-| **Styling** | Custom Premium Theme (Inria Serif Typography) |
-| **Deployment** | Heroku (production ready) |
+### 6. 🌍 Multi-Language Interface (`FR` / `IT` / `EN`)
+- Built-in language switcher in the navigation bar (**FR · IT · EN**) with automatic preference persistence.
+- Instant translation across the entire UI, forms, quick-prompt chips, and AI Sommelier responses.
 
 ---
 
-## 🗃 Database Architecture
+## 🛠️ Tech Stack
 
-The platform uses a clean relational structure to maintain your cellar's integrity:
-
-
-
-**Key Models:**
-- **Users**: Manages authentication and personalizes the wine collection.
-- **Storages**: Defines physical containers (belongs to User) with `rows` and `cols` attributes.
-- **Wines**: The core entity (belongs to User and Storage) tracked via `row` and `column` coordinates.
+- **Backend**: Ruby on Rails 7
+- **Database**: PostgreSQL
+- **Authentication**: Devise
+- **Frontend**: ERB Views, SCSS (*Inria Serif* & *Imperial Script* typography), JavaScript / Turbo
+- **Artificial Intelligence**: Google Gemini API (`gemini-2.5-flash`) with built-in local oenological fallback
+- **Deployment**: Heroku
 
 ---
 
-## ⚠️ Technical Hurdles Resolved
+## 🚀 Getting Started Locally
 
-During development, we tackled several technical challenges to ensure a smooth production experience:
-- **Asset Pipeline Optimization**: Converted the legacy manifest system to a modern SCSS architecture to resolve deployment errors on Linux servers.
-- **Turbo Integration**: Implemented specific Rails 7 `see_other` status codes to handle seamless redirects during storage and wine deletion.
-- **Dynamic Image Pathing**: Built a custom logic handler to map French category names (with accents) to safe web-friendly asset paths.
+### 1. Prerequisites
+- **Ruby** `>= 3.1`
+- **PostgreSQL** running locally
+- **Bundler** (`gem install bundler`)
 
----
-
-## ⚙️ Installation & Setup
-
-### 1. Clone the Repository
+### 2. Clone the repository & install dependencies
 ```bash
-git clone [https://github.com/sarasp22/cavin.git](https://github.com/sarasp22/cavin.git)
+git clone <your-repository-url>
 cd cavin
-2. Install Dependencies
-Bash
-
 bundle install
-3. Database Configuration
-Bash
+```
 
+### 3. Environment Variables
+Create or update the `.env` file in the project root to enable the Gemini API for the AI Sommelier:
+```env
+GEMINI_API_KEY=your_gemini_api_key
+```
+*(Note: If `GEMINI_API_KEY` is not set, the AI Sommelier still works seamlessly using its built-in oenological pairing engine).*
+
+### 4. Database Setup
+```bash
 rails db:create
 rails db:migrate
-4. Start the Server
-Bash
+rails db:seed
+```
 
-bin/dev
-Visit: http://localhost:3000
+### 5. Start the Rails Server
+```bash
+rails server
+```
+Visit **`http://localhost:3000`** in your browser.
 
-🚀 Deployment
-Cavin is production-ready and configured for Heroku:
+---
 
-Bash
+## ☁️ Deploying to Heroku
 
-# Set your master key for encrypted credentials
-heroku config:set RAILS_MASTER_KEY=$(cat config/master.key)
+1. Log in to Heroku CLI:
+   ```bash
+   heroku login
+   ```
+2. Set your Gemini API key (optional):
+   ```bash
+   heroku config:set GEMINI_API_KEY=your_gemini_api_key
+   ```
+3. Push to production:
+   ```bash
+   git add .
+   git commit -m "Update Cavin with AI Sommelier and multi-language support"
+   git push heroku main
+   ```
+   *(Or `git push origin main` if **Automatic Deploys** from GitHub are enabled on your Heroku dashboard).*
+4. Run database migrations if needed:
+   ```bash
+   heroku run rails db:migrate
+   ```
 
-# Push to production
-git push heroku main
+---
 
-# Run migrations on the server
-heroku run rails db:migrate
+## 📂 Project Structure
+
+```text
+cavin/
+├── app/
+│   ├── assets/
+│   │   ├── images/              # Visual assets, cellar backgrounds, and bottle icons
+│   │   └── stylesheets/         # SCSS stylesheets (home, storages, wines, sommelier, etc.)
+│   ├── controllers/
+│   │   ├── storages_controller.rb       # Cellar management and interactive rack grid
+│   │   ├── wines_controller.rb          # Wine CRUD, consumption, and tasting history
+│   │   ├── wine_templates_controller.rb # Saved favorite wine templates
+│   │   └── sommelier_controller.rb      # AI Sommelier & pairing recommendation engine
+│   ├── models/
+│   │   ├── user.rb
+│   │   ├── storage.rb
+│   │   ├── wine.rb
+│   │   └── wine_template.rb
+│   └── views/
+│       ├── pages/home.html.erb
+│       ├── shared/_navbar.html.erb      # Navbar + Language Switcher (FR/IT/EN)
+│       ├── sommelier/index.html.erb     # AI Sommelier interface
+│       ├── storages/                    # Cellar views & interactive rack grid
+│       ├── wines/                       # Add/edit wine forms & tasting history
+│       └── wine_templates/              # Wine library view
+├── config/
+│   └── routes.rb
+└── db/
+    ├── migrate/
+    └── seeds.rb
+```
+
+---
+
+> *"For true connoisseurs, every bottle tells a story."*
