@@ -1,0 +1,60 @@
+<div class="sommelier-page">
+  <div class="sommelier-container">
+    <div class="sommelier-header">
+      <div class="sommelier-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 22h8"></path>
+          <path d="M12 11v11"></path>
+          <path d="M7 3h10l-.5 6a4.5 4.5 0 0 1-9 0z"></path>
+        </svg>
+      </div>
+      <h1 class="sommelier-title">Mon Sommelier</h1>
+      <p class="sommelier-subtitle">Dites-moi l'occasion ou le plat, je choisis dans votre cave.</p>
+    </div>
+
+    <%= form_with url: sommelier_path, method: :post, class: "sommelier-form", data: { turbo: false }, html: { id: "sommelier-form" } do %>
+      <textarea name="request" class="sommelier-input" rows="3" maxlength="400"
+                placeholder="Ex. : dîner entre amis avec un risotto aux champignons, ou anniversaire de mariage…"><%= @request_text %></textarea>
+      <button type="submit" class="sommelier-submit" id="sommelier-submit">Conseillez-moi</button>
+    <% end %>
+
+    <% if @result %>
+      <% if @result.ok? %>
+        <% if @result.intro.present? %>
+          <p class="sommelier-intro"><%= @result.intro %></p>
+        <% end %>
+
+        <div class="sommelier-results">
+          <% @result.picks.each do |pick| %>
+            <% wine = pick.wine %>
+            <div class="sommelier-card">
+              <div class="sommelier-card-head">
+                <h3 class="sommelier-wine-name"><%= wine.name %></h3>
+                <span class="sommelier-wine-type"><%= wine.wine_type %></span>
+              </div>
+              <p class="sommelier-wine-meta">
+                <%= [wine.region.presence, wine.size.presence].compact.join(" • ") %>
+              </p>
+              <p class="sommelier-reason"><%= pick.reason %></p>
+              <% if wine.storage %>
+                <%= link_to storage_wine_path(wine.storage, wine), class: "sommelier-location" do %>
+                  <%= wine.storage.name %> — rangée <%= wine.row_position %>, colonne <%= wine.col_position %>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="sommelier-error"><%= @result.error %></div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  document.getElementById('sommelier-form').addEventListener('submit', function () {
+    var btn = document.getElementById('sommelier-submit');
+    btn.disabled = true;
+    btn.textContent = 'Le sommelier réfléchit…';
+  });
+</script>

@@ -11,7 +11,7 @@
   max-width: 700px;
   width: 100%;
   background: #ffffff;
-  border-radius: 24px;
+  border-radius: 30px;
   padding: 50px 40px;
   box-shadow: 0 12px 48px rgba(93, 46, 46, 0.2);
 
@@ -65,7 +65,7 @@
 .wine-type-badge {
   display: inline-block;
   padding: 8px 24px;
-  border-radius: 20px;
+  border-radius: 28px;
   font-family: 'Inria Serif', serif;
   font-size: 0.95rem;
   font-weight: 600;
@@ -113,7 +113,7 @@
 .detail-card {
   background: linear-gradient(135deg, #faf8f3 0%, #f5f1e8 100%);
   border: 2px solid #e8dfc8;
-  border-radius: 16px;
+  border-radius: 24px;
   padding: 25px;
   display: flex;
   align-items: flex-start;
@@ -136,7 +136,7 @@
   width: 50px;
   height: 50px;
   background: linear-gradient(135deg, #5d2e2e 0%, #7a3a3a 100%);
-  border-radius: 12px;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -180,7 +180,7 @@
   padding: 15px 25px;
   background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
   color: #ffffff;
-  border-radius: 12px;
+  border-radius: 18px;
   font-family: 'Inria Serif', serif;
   font-size: 1rem;
   font-weight: 600;
@@ -220,7 +220,7 @@
   font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
-  border-radius: 10px;
+  border-radius: 16px;
   border: 2px solid transparent;
   transition: all 0.3s ease;
   cursor: pointer;

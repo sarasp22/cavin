@@ -58,7 +58,7 @@
 
 .stat-card {
   background: #ffffff;
-  border-radius: 16px;
+  border-radius: 24px;
   padding: 30px;
   display: flex;
   align-items: center;
@@ -78,7 +78,7 @@
   width: 60px;
   height: 60px;
   background: linear-gradient(135deg, #5d2e2e 0%, #7a3a3a 100%);
-  border-radius: 12px;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -130,7 +130,7 @@
   margin-bottom: 25px;
   padding: 15px 20px;
   background: #ffffff;
-  border-radius: 12px;
+  border-radius: 18px;
   border-left: 5px solid #5d2e2e;
   display: flex;
   align-items: center;
@@ -149,7 +149,7 @@
 
 .history-wine-card {
   background: #ffffff;
-  border-radius: 16px;
+  border-radius: 24px;
   padding: 25px;
   border: 2px solid #e8dfc8;
   transition: all 0.3s ease;
@@ -173,7 +173,7 @@
   width: 45px;
   height: 45px;
   background: linear-gradient(135deg, #5d2e2e 0%, #7a3a3a 100%);
-  border-radius: 10px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -187,7 +187,7 @@
 
 .wine-card-type {
   padding: 6px 16px;
-  border-radius: 20px;
+  border-radius: 28px;
   font-family: 'Inria Serif', serif;
   font-size: 0.8rem;
   font-weight: 600;
@@ -266,7 +266,7 @@
   width: 35px;
   height: 35px;
   background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-  border-radius: 8px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -290,7 +290,7 @@
   text-align: center;
   padding: 80px 20px;
   background: #ffffff;
-  border-radius: 20px;
+  border-radius: 28px;
   margin-bottom: 40px;
 }
 
@@ -335,7 +335,7 @@
   font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
-  border-radius: 10px;
+  border-radius: 16px;
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px rgba(93, 46, 46, 0.2);
 
