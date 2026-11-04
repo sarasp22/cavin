@@ -1,60 +1,236 @@
 <div class="sommelier-page">
   <div class="sommelier-container">
-    <div class="sommelier-header">
-      <div class="sommelier-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M8 22h8"></path>
-          <path d="M12 11v11"></path>
-          <path d="M7 3h10l-.5 6a4.5 4.5 0 0 1-9 0z"></path>
+    <div class="sommelier-hero-card">
+      <div class="sommelier-badge-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M12 3l1.912 5.813a2 2 0 0 0 1.275 1.275L21 12l-5.813 1.912a2 2 0 0 0-1.275 1.275L12 21l-1.912-5.813a2 2 0 0 0-1.275-1.275L3 12l5.813-1.912a2 2 0 0 0 1.275-1.275L12 3Z"/>
         </svg>
       </div>
-      <h1 class="sommelier-title">Mon Sommelier</h1>
-      <p class="sommelier-subtitle">Dites-moi l'occasion ou le plat, je choisis dans votre cave.</p>
+      <h1 class="sommelier-title">Votre Sommelier Personnel IA</h1>
+      <p class="sommelier-subtitle">
+        Dites-moi ce que vous mangez ou quelle est l'occasion, et je choisirai la bouteille idéale parmi les <strong><%= @total_bottles %> bouteilles</strong> disponibles dans vos caves.
+      </p>
+
+      <div class="sommelier-stock-summary">
+        <% @storages_summary.each do |st| %>
+          <span class="stock-chip">
+            <strong><%= st[:name] %></strong> · <%= st[:count] %> bout.
+          </span>
+        <% end %>
+      </div>
+
+      <form id="sommelier-form" class="sommelier-form" onsubmit="askSommelier(event)">
+        <div class="sommelier-input-wrapper">
+          <textarea
+            id="sommelier-prompt"
+            class="sommelier-textarea"
+            rows="3"
+            placeholder="Ex: Ce soir je prépare un filet de bœuf aux morilles pour un dîner romantique..."
+            required
+          ></textarea>
+        </div>
+
+        <div class="sommelier-suggestions">
+          <span class="suggestions-label">Idées rapides :</span>
+          <button type="button" class="suggestion-btn" onclick="setSuggestionByIndex(0)">Filet de bœuf & dîner romantique</button>
+          <button type="button" class="suggestion-btn" onclick="setSuggestionByIndex(1)">Apéritif festif & célébration</button>
+          <button type="button" class="suggestion-btn" onclick="setSuggestionByIndex(2)">Fruits de mer & poisson</button>
+          <button type="button" class="suggestion-btn" onclick="setSuggestionByIndex(3)">Fromages affinés & charcuterie</button>
+          <button type="button" class="suggestion-btn" onclick="setSuggestionByIndex(4)">Soirée d'été & cuisine légère</button>
+        </div>
+
+        <div class="sommelier-submit-row">
+          <button type="submit" id="sommelier-submit-btn" class="btn-sommelier-submit">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 3l1.912 5.813a2 2 0 0 0 1.275 1.275L21 12l-5.813 1.912a2 2 0 0 0-1.275 1.275L12 21l-1.912-5.813a2 2 0 0 0-1.275-1.275L3 12l5.813-1.912a2 2 0 0 0 1.275-1.275L12 3Z"/>
+            </svg>
+            <span>Demander conseil au Sommelier</span>
+          </button>
+        </div>
+      </form>
     </div>
 
-    <%= form_with url: sommelier_path, method: :post, class: "sommelier-form", data: { turbo: false }, html: { id: "sommelier-form" } do %>
-      <textarea name="request" class="sommelier-input" rows="3" maxlength="400"
-                placeholder="Ex. : dîner entre amis avec un risotto aux champignons, ou anniversaire de mariage…"><%= @request_text %></textarea>
-      <button type="submit" class="sommelier-submit" id="sommelier-submit">Conseillez-moi</button>
-    <% end %>
+    <div id="sommelier-loading" class="sommelier-loading" style="display: none;">
+      <div class="sommelier-spinner"></div>
+      <p>Inspection de vos caves et sélection des meilleurs accords...</p>
+    </div>
 
-    <% if @result %>
-      <% if @result.ok? %>
-        <% if @result.intro.present? %>
-          <p class="sommelier-intro"><%= @result.intro %></p>
-        <% end %>
+    <div id="sommelier-error" class="sommelier-error-box" style="display: none;"></div>
 
-        <div class="sommelier-results">
-          <% @result.picks.each do |pick| %>
-            <% wine = pick.wine %>
-            <div class="sommelier-card">
-              <div class="sommelier-card-head">
-                <h3 class="sommelier-wine-name"><%= wine.name %></h3>
-                <span class="sommelier-wine-type"><%= wine.wine_type %></span>
-              </div>
-              <p class="sommelier-wine-meta">
-                <%= [wine.region.presence, wine.size.presence].compact.join(" • ") %>
-              </p>
-              <p class="sommelier-reason"><%= pick.reason %></p>
-              <% if wine.storage %>
-                <%= link_to storage_wine_path(wine.storage, wine), class: "sommelier-location" do %>
-                  <%= wine.storage.name %> — rangée <%= wine.row_position %>, colonne <%= wine.col_position %>
-                <% end %>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-      <% else %>
-        <div class="sommelier-error"><%= @result.error %></div>
+    <div id="sommelier-results" class="sommelier-results" style="display: none;">
+      <div class="sommelier-intro-card">
+        <div class="sommelier-quote-icon">“</div>
+        <p id="sommelier-intro-text" class="sommelier-intro-text"></p>
+      </div>
+
+      <h2 class="sommelier-section-heading">Bouteilles recommandées dans vos caves</h2>
+      <div id="sommelier-cards-grid" class="sommelier-cards-grid"></div>
+    </div>
+
+    <div class="history-actions" style="margin-top: 40px;">
+      <%= link_to storages_path, class: "btn-back-history" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m12 19-7-7 7-7"></path>
+          <path d="M19 12H5"></path>
+        </svg>
+        <span>Retour à Mes Caves</span>
       <% end %>
-    <% end %>
+    </div>
   </div>
 </div>
 
 <script>
-  document.getElementById('sommelier-form').addEventListener('submit', function () {
-    var btn = document.getElementById('sommelier-submit');
-    btn.disabled = true;
-    btn.textContent = 'Le sommelier réfléchit…';
-  });
+  const BOTTLE_IMAGES = {
+    rouge: "<%= asset_path('rosso.png') %>",
+    blanc: "<%= asset_path('bianco.png') %>",
+    rose: "<%= asset_path('rose.png') %>",
+    champagne: "<%= asset_path('champagne.png') %>",
+    petillant: "<%= asset_path('frizzante.png') %>"
+  };
+
+  const SOMMELIER_SUGGESTIONS = {
+    fr: [
+      "Dîner romantique avec un filet de bœuf et gratin dauphinois",
+      "Apéritif festif pour célébrer une grande occasion",
+      "Plateau de fruits de mer, huîtres et poisson grillé",
+      "Soirée entre amis avec un plateau de fromages affinés et charcuterie",
+      "Soirée détente en terrasse avec cuisine méditerranéenne légère"
+    ],
+    it: [
+      "Cena romantica con filetto di manzo e patate gratinate",
+      "Aperitivo festivo per celebrare una grande occasione",
+      "Crudo di mare, ostriche e pesce alla griglia",
+      "Serata tra amici con tagliere di formaggi stagionati e salumi",
+      "Serata estiva in terrazza con cucina mediterranea leggera"
+    ],
+    en: [
+      "Romantic dinner with beef tenderloin and potato gratin",
+      "Festive aperitif to celebrate a special occasion",
+      "Seafood platter, oysters and grilled fish",
+      "Evening with friends around aged cheeses and charcuterie",
+      "Relaxing summer evening on the terrace with light Mediterranean cuisine"
+    ]
+  };
+
+  function setSuggestionByIndex(idx) {
+    const lang = typeof getCavinLang === 'function' ? getCavinLang() : 'fr';
+    const list = SOMMELIER_SUGGESTIONS[lang] || SOMMELIER_SUGGESTIONS.fr;
+    const input = document.getElementById('sommelier-prompt');
+    if (input && list[idx]) {
+      input.value = list[idx];
+      input.focus();
+    }
+  }
+
+  function getBottleImage(wineType) {
+    const wt = (wineType || '').toLowerCase();
+    if (wt.includes('blanc') || wt.includes('bianco') || wt.includes('white')) return BOTTLE_IMAGES.blanc;
+    if (wt.includes('rosé') || wt.includes('rose') || wt.includes('rosato')) return BOTTLE_IMAGES.rose;
+    if (wt.includes('champagne')) return BOTTLE_IMAGES.champagne;
+    if (wt.includes('pétillant') || wt.includes('petillant') || wt.includes('frizzante') || wt.includes('sparkling')) return BOTTLE_IMAGES.petillant;
+    return BOTTLE_IMAGES.rouge;
+  }
+
+  async function askSommelier(event) {
+    event.preventDefault();
+    const promptInput = document.getElementById('sommelier-prompt');
+    const query = promptInput.value.trim();
+    if (!query) return;
+
+    const locale = typeof getCavinLang === 'function' ? getCavinLang() : 'fr';
+    const submitBtn = document.getElementById('sommelier-submit-btn');
+    const loadingEl = document.getElementById('sommelier-loading');
+    const errorEl = document.getElementById('sommelier-error');
+    const resultsEl = document.getElementById('sommelier-results');
+    const introTextEl = document.getElementById('sommelier-intro-text');
+    const cardsGridEl = document.getElementById('sommelier-cards-grid');
+
+    submitBtn.disabled = true;
+    loadingEl.style.display = 'flex';
+    errorEl.style.display = 'none';
+    resultsEl.style.display = 'none';
+
+    try {
+      const url = `/sommelier?query=${encodeURIComponent(query)}&locale=${encodeURIComponent(locale)}`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      const rawText = await response.text();
+      let data;
+      try {
+        data = JSON.parse(rawText);
+      } catch (_parseErr) {
+        throw new Error('Manca return recommend if params[:query].present? in SommelierController#index (oppure riavvia rails server).');
+      }
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Une erreur est survenue lors de la consultation du sommelier.');
+      }
+
+      introTextEl.textContent = data.sommelier_intro || '';
+      cardsGridEl.innerHTML = '';
+
+      (data.recommendations || []).forEach((rec, index) => {
+        const card = document.createElement('div');
+        card.className = 'sommelier-wine-card';
+        const imgSrc = getBottleImage(rec.wine_type);
+        const formattedPrice = Number(rec.price || 0).toFixed(2).replace('.', ',') + ' €';
+
+        card.innerHTML = `
+          <div class="sommelier-card-top">
+            <div class="sommelier-rank-badge">#${index + 1} Choix du Sommelier</div>
+            <span class="wine-card-type ${(rec.wine_type || 'rouge').toLowerCase()}">${rec.wine_type || 'Vin'}</span>
+          </div>
+
+          <div class="sommelier-bottle-Visual">
+            <img src="${imgSrc}" alt="${rec.wine_name}" class="sommelier-bottle-img">
+            <div class="sommelier-bottle-meta">
+              <h3 class="sommelier-wine-title">${rec.wine_name}</h3>
+              <p class="sommelier-wine-region">${rec.region} • ${formattedPrice}</p>
+              <div class="sommelier-location-tag">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                </svg>
+                <span><strong>${rec.storage_name}</strong> — Rangée ${rec.row_position}, Colonne ${rec.col_position}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="sommelier-reason-box">
+            <h4>Pourquoi ce vin ?</h4>
+            <p>${rec.pairing_reason}</p>
+          </div>
+
+          <div class="sommelier-tip-box">
+            <strong>Conseil de service :</strong> ${rec.serving_tip}
+          </div>
+
+          <div class="sommelier-card-actions">
+            <a href="/storages/${rec.storage_id}/wines/${rec.wine_id}" class="btn-sommelier-secondary">
+              Voir dans la cave
+            </a>
+            <a href="/storages/${rec.storage_id}/wines/${rec.wine_id}/consume" class="btn-sommelier-primary">
+              Ouvrir cette bouteille
+            </a>
+          </div>
+        `;
+        cardsGridEl.appendChild(card);
+      });
+
+      resultsEl.style.display = 'block';
+      if (typeof applyCavinLanguage === 'function') {
+        applyCavinLanguage(locale);
+      }
+    } catch (err) {
+      errorEl.textContent = err.message || 'Impossible de contacter le Sommelier IA.';
+      errorEl.style.display = 'block';
+    } finally {
+      submitBtn.disabled = false;
+      loadingEl.style.display = 'none';
+    }
+  }
 </script>

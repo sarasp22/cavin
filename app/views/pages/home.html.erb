@@ -21,7 +21,13 @@
       <div class="features-grid">
         <div class="feature-card">
           <div class="feature-icon-wrapper">
-            <%= image_tag "Icona1.png", alt: "Stockage", class: "feature-icon-img" %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" class="feature-icon-img" fill="none">
+              <path d="M10 34L40 12L70 34" stroke="#4a1c1c" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16 30V66H64V30" stroke="#4a1c1c" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M25 32H29V40C31.5 41.5 32.5 44 32.5 47V64H21.5V47C21.5 44 22.5 41.5 25 40V32Z" fill="#4a1c1c"/>
+              <path d="M38 32H42V40C44.5 41.5 45.5 44 45.5 47V64H34.5V47C34.5 44 35.5 41.5 38 40V32Z" fill="#4a1c1c"/>
+              <path d="M51 32H55V40C57.5 41.5 58.5 44 58.5 47V64H47.5V47C47.5 44 48.5 41.5 51 40V32Z" fill="#4a1c1c"/>
+            </svg>
           </div>
           <h3 class="feature-title">1. Créez vos stockages</h3>
           <p class="feature-description">Configurez vos espaces personnalisés, de la cave naturelle au petit cellier de cuisine.</p>
@@ -29,18 +35,45 @@
 
         <div class="feature-card">
           <div class="feature-icon-wrapper">
-            <%= image_tag "Icona2.png", alt: "Ajout", class: "feature-icon-img" %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" class="feature-icon-img" fill="none">
+              <defs>
+                <mask id="bottle-plus-cutout">
+                  <rect width="80" height="80" fill="white"/>
+                  <rect x="38" y="40" width="28" height="24" rx="5" fill="black"/>
+                </mask>
+              </defs>
+              <path d="M30 10H38V14H37V24C42 27 45 32 45 38V65C45 67.2 43.2 69 41 69H27C24.8 69 23 67.2 23 65V38C23 32 26 27 31 24V14H30V10Z" fill="#4a1c1c" mask="url(#bottle-plus-cutout)"/>
+              <path d="M51 43V61M42 52H60" stroke="#4a1c1c" stroke-width="5.5" stroke-linecap="round"/>
+            </svg>
           </div>
           <h3 class="feature-title">2. Ajoutez vos vins</h3>
-          <p class="feature-description">Répertoriez vos bouteilles précieuses avec leurs notes de dégustation e caractéristiques.</p>
+          <p class="feature-description">Répertoriez vos bouteilles précieuses avec leurs notes de dégustation et caractéristiques.</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon-wrapper">
-            <%= image_tag "Icona3.png", alt: "Gestion", class: "feature-icon-img" %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" class="feature-icon-img" fill="none">
+              <circle cx="34" cy="34" r="19" stroke="#4a1c1c" stroke-width="6.5"/>
+              <path d="M48 48L65 65" stroke="#4a1c1c" stroke-width="9" stroke-linecap="round"/>
+            </svg>
           </div>
           <h3 class="feature-title">3. Explorez et Gérez</h3>
           <p class="feature-description">Visualisez vos emplacements en temps réel et sachez toujours quelle bouteille ouvrir.</p>
+        </div>
+
+        <div class="feature-card feature-card-sommelier">
+          <div class="feature-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" class="feature-icon-img" fill="none">
+              <path d="M20 16H48L45.2 31C44.2 37.8 39.5 42 34 42C28.5 42 23.8 37.8 22.8 31L20 16Z" stroke="#4a1c1c" stroke-width="5.5" stroke-linejoin="round"/>
+              <path d="M22.5 27H45.5L45 31C44 37.5 39.5 41.5 34 41.5C28.5 41.5 24 37.5 23 31L22.5 27Z" fill="#4a1c1c"/>
+              <path d="M34 42V64" stroke="#4a1c1c" stroke-width="5.5" stroke-linecap="round"/>
+              <path d="M23 64H45" stroke="#4a1c1c" stroke-width="5.5" stroke-linecap="round"/>
+              <path d="M58 12L60.6 19.4L68 22L60.6 24.6L58 32L55.4 24.6L48 22L55.4 19.4L58 12Z" fill="#4a1c1c"/>
+              <path d="M59 36L60.3 39.7L64 41L60.3 42.3L59 46L57.7 42.3L54 41L57.7 39.7L59 36Z" fill="#4a1c1c"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">4. Consultez le Sommelier IA</h3>
+          <p class="feature-description">Indiquez votre plat ou votre occasion : notre intelligence artificielle sélectionne la bouteille idéale parmi vos caves.</p>
         </div>
       </div>
     </div>

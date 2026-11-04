@@ -1,14 +1,21 @@
 <div class="storages-container">
-
   <div class="storages-header">
     <h1 class="storages-title">Mes Stockages</h1>
-    <%= link_to new_storage_path, class: "btn-add-storage" do %>
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="12" y1="5" x2="12" y2="19"></line>
-        <line x1="5" y1="12" x2="19" y2="12"></line>
-      </svg>
-      Nouveau Stockage
-    <% end %>
+    <div class="storages-header-actions">
+      <%= link_to sommelier_path, class: "btn-sommelier-action" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 3l1.912 5.813a2 2 0 0 0 1.275 1.275L21 12l-5.813 1.912a2 2 0 0 0-1.275 1.275L12 21l-1.912-5.813a2 2 0 0 0-1.275-1.275L3 12l5.813-1.912a2 2 0 0 0 1.275-1.275L12 3Z"/>
+        </svg>
+        Quel vin ouvrir ? (Sommelier IA)
+      <% end %>
+      <%= link_to new_storage_path, class: "btn-add-storage" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Nouveau Stockage
+      <% end %>
+    </div>
   </div>
 
   <% if @storages.any? %>
@@ -17,7 +24,8 @@
         <div class="storage-card">
           <%= link_to storage_path(storage), class: "storage-link" do %>
             <div class="storage-image">
-              <%= image_tag storage.photo_url, alt: storage.name, class: "storage-photo" %>              <div class="storage-overlay">
+              <%= image_tag storage.photo_url, alt: storage.name, class: "storage-photo" %>
+              <div class="storage-overlay">
                 <h3 class="storage-name"><%= storage.name %></h3>
                 <p class="storage-bottles">
                   <%= storage.wines.where(consumed_at: nil).count %> Bouteilles
@@ -32,7 +40,6 @@
       <% end %>
     </div>
   <% else %>
-
     <div class="empty-state">
       <h2 class="empty-title">Aucun stockage pour le moment</h2>
       <p class="empty-description">Créez votre premier espace de stockage pour commencer à gérer votre cave à vin</p>

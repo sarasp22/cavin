@@ -1,15 +1,8 @@
-$primary-color: #5d2e2e;
-$primary-hover: #7a3a3a;
-$gold-color: #c4a661;
-$cream-bg: #fdfaf5;
-$cream-darker: #f5f1e8;
-$text-dark: #2c1810;
-$white: #ffffff;
-
+/* Home */
 .home-container {
   width: 100%;
   overflow-x: hidden;
-  background-color: $cream-bg;
+  background-color: #fdfaf5;
 }
 
 .hero-section {
@@ -18,19 +11,21 @@ $white: #ffffff;
   min-height: 600px;
   width: 96%;
   max-width: 1400px;
-  margin: 20px auto;
+  margin: 24px auto;
   background-image: asset-url('sfondo.jpg');
   background-size: cover;
   background-position: center;
-  border-radius: 40px;
+  border-radius: 44px;
   overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 25px 55px -12px rgba(44, 24, 16, 0.45);
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .hero-section {
     height: 70vh;
-    width: 100%;
-    margin: 0;
-    border-radius: 0;
+    width: 96%;
+    margin: 12px auto;
+    border-radius: 32px;
   }
 }
 
@@ -54,12 +49,14 @@ $white: #ffffff;
   font-family: 'Inria Serif', serif;
   font-size: 4.5rem;
   font-weight: 700;
-  color: $white;
+  color: #ffffff;
   line-height: 1.1;
   margin-bottom: 20px;
   text-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .hero-title {
     font-size: 2.8rem;
   }
 }
@@ -67,13 +64,15 @@ $white: #ffffff;
 .hero-subtitle {
   font-family: 'Inria Serif', serif;
   font-size: 1rem;
-  color: $gold-color;
+  color: #c4a661;
   letter-spacing: 12px;
   margin-bottom: 40px;
   font-weight: 400;
   display: block;
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .hero-subtitle {
     letter-spacing: 6px;
     font-size: 0.8rem;
   }
@@ -81,80 +80,93 @@ $white: #ffffff;
 
 .btn-primary {
   display: inline-block;
-  padding: 18px 45px;
-  background-color: $primary-color;
-  color: $white;
+  padding: 18px 48px;
+  background-color: #5d2e2e;
+  color: #ffffff;
   font-family: 'Inria Serif', serif;
   font-size: 1.1rem;
   font-weight: 600;
   text-decoration: none;
-  border-radius: 14px;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 9999px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   border: none;
-  box-shadow: 0 10px 20px rgba(93, 46, 46, 0.4);
+  box-shadow: 0 12px 28px rgba(93, 46, 46, 0.38);
+  cursor: pointer;
+}
 
-  &:hover {
-    background-color: $gold-color;
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(196, 166, 97, 0.4);
-  }
+.btn-primary:hover {
+  background-color: #c4a661;
+  transform: translateY(-4px);
+  box-shadow: 0 16px 34px rgba(196, 166, 97, 0.42);
 }
 
 .features-section {
-  padding: 120px 20px;
-  background-color: $cream-bg;
-
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+  padding: 110px 20px;
+  background-color: #fdfaf5;
 }
 
-.section-title {
+.features-section .container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.features-section .section-title {
   font-family: 'Inria Serif', serif;
   font-size: 3rem;
-  color: $text-dark;
-  margin-bottom: 80px;
+  color: #2c1810;
+  margin-bottom: 75px;
   text-align: center;
   position: relative;
+}
 
-  &::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 3px;
-    background: $gold-color;
-    margin: 20px auto 0;
-  }
+.features-section .section-title::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 4px;
+  border-radius: 999px;
+  background: #c4a661;
+  margin: 20px auto 0;
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .features-section .section-title {
     font-size: 2.2rem;
   }
 }
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
 
-  @media (max-width: 992px) {
+@media (max-width: 1100px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .features-grid {
     grid-template-columns: 1fr;
   }
 }
 
 .feature-card {
-  background: $white;
-  padding: 50px 40px;
-  border-radius: 30px;
+  background: #ffffff;
+  padding: 42px 28px;
+  border-radius: 36px;
   text-align: center;
-  transition: all 0.4s ease;
-  border: 1px solid rgba($primary-color, 0.05);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1.5px solid rgba(232, 223, 200, 0.7);
+  box-shadow: 0 14px 36px rgba(44, 24, 16, 0.05);
+}
 
-  &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-  }
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 22px 46px rgba(93, 46, 46, 0.1);
+  border-color: rgba(196, 166, 97, 0.5);
 }
 
 .feature-icon-wrapper {
@@ -163,18 +175,18 @@ $white: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
+}
 
-  .feature-icon-img {
-    width: 80px;
-    height: auto;
-    object-fit: contain;
-  }
+.feature-icon-wrapper .feature-icon-img {
+  width: 80px;
+  height: auto;
+  object-fit: contain;
 }
 
 .feature-title {
   font-family: 'Inria Serif', serif;
   font-size: 1.4rem;
-  color: $text-dark;
+  color: #2c1810;
   margin-bottom: 15px;
   font-weight: 700;
 }
@@ -187,9 +199,10 @@ $white: #ffffff;
 }
 
 .cta-section {
-  background-color: $primary-color;
+  background-color: #5d2e2e;
   margin-top: 100px;
   padding: 0 20px;
+  border-radius: 48px 48px 0 0;
 }
 
 .cta-container {
@@ -202,8 +215,10 @@ $white: #ffffff;
   align-items: center;
   justify-content: center;
   gap: 60px;
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .cta-content {
     flex-direction: column;
     padding-bottom: 60px;
   }
@@ -212,16 +227,18 @@ $white: #ffffff;
 .wine-glass-wrapper {
   flex-shrink: 0;
   margin-top: -80px;
+}
 
-  .wine-glass-img {
-    width: 320px;
-    height: auto;
-    filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+.wine-glass-wrapper .wine-glass-img {
+  width: 320px;
+  height: auto;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+}
 
-    @media (max-width: 768px) {
-      width: 220px;
-      margin-top: -60px;
-    }
+@media (max-width: 768px) {
+  .wine-glass-wrapper .wine-glass-img {
+    width: 220px;
+    margin-top: -60px;
   }
 }
 
@@ -232,11 +249,13 @@ $white: #ffffff;
 .cta-quote {
   font-family: 'Imperial Script', cursive !important;
   font-size: 4.5rem;
-  color: $white;
+  color: #ffffff;
   line-height: 1.2;
   margin: 0;
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
+  .cta-quote {
     font-size: 2.8rem;
     text-align: center;
   }

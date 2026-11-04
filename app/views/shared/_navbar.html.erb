@@ -3,20 +3,33 @@
     <div class="navbar-brand">
       <%= link_to root_path, class: "logo-link" do %>
         <div class="logo-icon">
-         <%= image_tag "logo.png", alt: "logo Cavin", width: 40, height: 40 %>
+          <%= image_tag "logo.png", alt: "logo Cavin", width: 40, height: 40 %>
         </div>
       <% end %>
     </div>
 
     <div class="navbar-actions">
+      <div class="lang-switcher" role="group" aria-label="Language selector">
+        <button type="button" class="lang-btn active" data-lang="fr" onclick="setCavinLang('fr')">FR</button>
+        <button type="button" class="lang-btn" data-lang="it" onclick="setCavinLang('it')">IT</button>
+        <button type="button" class="lang-btn" data-lang="en" onclick="setCavinLang('en')">EN</button>
+      </div>
+
       <% if user_signed_in? %>
+        <%= link_to sommelier_path, class: "btn-sommelier-nav" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 3l1.912 5.813a2 2 0 0 0 1.275 1.275L21 12l-5.813 1.912a2 2 0 0 0-1.275 1.275L12 21l-1.912-5.813a2 2 0 0 0-1.275-1.275L3 12l5.813-1.912a2 2 0 0 0 1.275-1.275L12 3Z"/>
+          </svg>
+          <span>Sommelier IA</span>
+        <% end %>
+
         <div class="nav-dropdown">
-          <button class="dropdown-toggle-profile">
+          <button class="dropdown-toggle-profile" type="button">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            Profil
+            <span>Profil</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
@@ -26,39 +39,36 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
               </svg>
-              Mes Caves
+              <span>Mes Caves</span>
             <% end %>
-            <%= link_to history_path, class: "dropdown-item" do %>
+            <%= link_to sommelier_path, class: "dropdown-item" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 3l1.912 5.813a2 2 0 0 0 1.275 1.275L21 12l-5.813 1.912a2 2 0 0 0-1.275 1.275L12 21l-1.912-5.813a2 2 0 0 0-1.275-1.275L3 12l5.813-1.912a2 2 0 0 0 1.275-1.275L12 3Z"/>
+              </svg>
+              <span>Sommelier IA</span>
+            <% end %>
+            <%= link_to "/history", class: "dropdown-item" do %>
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"></circle>
                 <polyline points="12 6 12 12 16 14"></polyline>
               </svg>
-              Historique
+              <span>Historique</span>
             <% end %>
-
-                <%= link_to wine_templates_path, class: "dropdown-item" do %>
-                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                </svg>
-                Ma Bibliothèque
-             <% end %>
-            <div class="dropdown-divider"></div>
-                        <%= link_to sommelier_path, class: "dropdown-item" do %>
+            <%= link_to wine_templates_path, class: "dropdown-item" do %>
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M8 22h8"></path>
-                <path d="M12 11v11"></path>
-                <path d="M7 3h10l-.5 6a4.5 4.5 0 0 1-9 0z"></path>
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
               </svg>
-              Mon Sommelier
+              <span>Ma Bibliothèque</span>
             <% end %>
-            <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item logout" do %>
+            <div class="dropdown-divider"></div>
+            <%= button_to destroy_user_session_path, method: :delete, class: "dropdown-item logout" do %>
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                 <polyline points="16 17 21 12 16 7"></polyline>
                 <line x1="21" y1="12" x2="9" y2="12"></line>
               </svg>
-              Déconnexion
+              <span>Déconnexion</span>
             <% end %>
           </div>
         </div>
@@ -67,7 +77,7 @@
       <% end %>
     </div>
 
-    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+    <button class="mobile-menu-toggle" type="button" onclick="toggleMobileMenu()">
       <span></span>
       <span></span>
       <span></span>
@@ -75,44 +85,48 @@
   </div>
 
   <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-lang-switcher">
+      <div class="lang-switcher" role="group" aria-label="Language selector mobile">
+        <button type="button" class="lang-btn active" data-lang="fr" onclick="setCavinLang('fr')">FR</button>
+        <button type="button" class="lang-btn" data-lang="it" onclick="setCavinLang('it')">IT</button>
+        <button type="button" class="lang-btn" data-lang="en" onclick="setCavinLang('en')">EN</button>
+      </div>
+    </div>
     <% if user_signed_in? %>
       <div class="mobile-divider">Mon Compte</div>
       <%= link_to storages_path, class: "mobile-nav-link" do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
         </svg>
-        Mes Caves
+        <span>Mes Caves</span>
       <% end %>
-      <%= link_to history_path, class: "mobile-nav-link" do %>
+      <%= link_to sommelier_path, class: "mobile-nav-link" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 3l1.912 5.813a2 2 0 0 0 1.275 1.275L21 12l-5.813 1.912a2 2 0 0 0-1.275 1.275L12 21l-1.912-5.813a2 2 0 0 0-1.275-1.275L3 12l5.813-1.912a2 2 0 0 0 1.275-1.275L12 3Z"/>
+        </svg>
+        <span>Sommelier IA</span>
+      <% end %>
+      <%= link_to "/history", class: "mobile-nav-link" do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"></circle>
           <polyline points="12 6 12 12 16 14"></polyline>
         </svg>
-        Historique
+        <span>Historique</span>
       <% end %>
-
-                <%= link_to wine_templates_path, class: "mobile-nav-link" do %>
-                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                </svg>
-                Ma Bibliothèque
-             <% end %>
-                   <%= link_to sommelier_path, class: "mobile-nav-link" do %>
+      <%= link_to wine_templates_path, class: "mobile-nav-link" do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M8 22h8"></path>
-          <path d="M12 11v11"></path>
-          <path d="M7 3h10l-.5 6a4.5 4.5 0 0 1-9 0z"></path>
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
         </svg>
-        Mon Sommelier
+        <span>Ma Bibliothèque</span>
       <% end %>
-      <%= link_to destroy_user_session_path, data: { turbo_method: :delete }, class: "mobile-nav-link logout" do %>
+      <%= button_to destroy_user_session_path, method: :delete, class: "mobile-nav-link logout" do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
           <polyline points="16 17 21 12 16 7"></polyline>
           <line x1="21" y1="12" x2="9" y2="12"></line>
         </svg>
-        Déconnexion
+        <span>Déconnexion</span>
       <% end %>
     <% else %>
       <%= link_to "Connexion", new_user_session_path, class: "mobile-nav-link btn-mobile-login" %>
@@ -124,8 +138,400 @@
   function toggleMobileMenu() {
     const mobileMenu = document.getElementById('mobile-menu');
     const toggleButton = document.querySelector('.mobile-menu-toggle');
-
-    mobileMenu.classList.toggle('active');
-    toggleButton.classList.toggle('active');
+    if (mobileMenu) mobileMenu.classList.toggle('active');
+    if (toggleButton) toggleButton.classList.toggle('active');
   }
+
+  const CAVIN_TRANSLATIONS = {
+    it: {
+      "Sommelier IA": "Sommelier IA",
+      "Profil": "Profilo",
+      "Mes Caves": "Le mie Cantine",
+      "Historique": "Storico",
+      "Ma Bibliothèque": "La mia Biblioteca",
+      "Déconnexion": "Disconnetti",
+      "Connexion": "Accedi",
+      "Mon Compte": "Il mio Account",
+      "L'ordre parfait pour votre cave à vin": "L'ordine perfetto per la tua cantina",
+      "VOTRE PASSION, BIEN RÉPERTORIÉE": "LA TUA PASSIONE, BEN ORGANIZZATA",
+      "L'ART DE CONSERVER": "L'ARTE DI CONSERVARE",
+      "Sublimez Votre Cave à Vin": "Valorizza la Tua Cantina",
+      "Voir mes caves": "Vedi le mie cantine",
+      "Accéder à mes caves": "Accedi alle mie cantine",
+      "Commencer l'expérience": "Inizia l'esperienza",
+      "Comment ça marche": "Come funziona",
+      "Une Gestion Sur Mesure": "Una Gestione su Misura",
+      "1. Créez vos stockages": "1. Crea le tue cantine",
+      "Configurez vos espaces personnalisés, de la cave naturelle au petit cellier de cuisine.": "Configura i tuoi spazi personalizzati, dalla cantina naturale alla piccola vinoteca da cucina.",
+      "2. Ajoutez vos vins": "2. Aggiungi i tuoi vini",
+      "Répertoriez vos bouteilles précieuses avec leurs notes de dégustation et caractéristiques.": "Cataloga le tue bottiglie preziose con note di degustazione e caratteristiche.",
+      "3. Explorez et Gérez": "3. Esplora e Gestisci",
+      "4. Consultez le Sommelier IA": "4. Consulta il Sommelier IA",
+      "Indiquez votre plat ou votre occasion : notre intelligence artificielle sélectionne la bouteille idéale parmi vos caves.": "Indica il tuo piatto o l'occasione: la nostra intelligenza artificiale seleziona la bottiglia ideale tra le tue cantine.",
+      "Visualisez vos emplacements en temps réel et sachez toujours quelle bouteille ouvrir.": "Visualizza le tue posizioni in tempo reale e sappi sempre quale bottiglia stappare.",
+      "\"Pour les vrais connaisseurs, chaque bouteille a une histoire.\"": "\"Per i veri intenditori, ogni bottiglia racconta una storia.\"",
+      "Chaque bouteille raconte une histoire, offrez-lui l'écrin qu'elle mérite.": "Ogni bottiglia racconta una storia, offrile lo scrigno che merita.",
+      "Accédez à votre cave personnelle": "Accedi alla tua cantina personale",
+      "Mot de passe": "Password",
+      "Se souvenir de moi": "Ricordami",
+      "Se connecter": "Accedi",
+      "S'inscrire": "Registrati",
+      "Inscription": "Registrazione",
+      "Créez votre compte et commencez à gérer votre cave": "Crea il tuo account e inizia a gestire la tua cantina",
+      "(6 caractères minimum)": "(minimo 6 caratteri)",
+      "Confirmation du mot de passe": "Conferma password",
+      "Mes Stockages": "Le mie Cantine",
+      "Quel vin ouvrir ? (Sommelier IA)": "Che vino aprire? (Sommelier IA)",
+      "Nouveau Stockage": "Nuova Cantina",
+      "VOIR DÉTAILS": "VEDI DETTAGLI",
+      "Aucun stockage pour le moment": "Nessuna cantina al momento",
+      "Créez votre premier espace de stockage pour commencer à gérer votre cave à vin": "Crea il tuo primo spazio di stoccaggio per iniziare a gestire la tua cantina",
+      "Créer mon premier stockage": "Crea la mia prima cantina",
+      "Retour": "Indietro",
+      "Modifier": "Modifica",
+      "Ajouter Nouveau Stockage": "Aggiungi Nuova Cantina",
+      "Nom du Stockage": "Nome della Cantina",
+      "Nom du stockage": "Nome della cantina",
+      "Type de Stockage": "Tipo di Cantina",
+      "Choisir le type de stockage": "Scegli il tipo di cantina",
+      "Dimensions du Stockage": "Dimensioni della Cantina",
+      "Colonnes": "Colonne",
+      "Rangées": "Righe",
+      "Nombre de lignes": "Numero di righe",
+      "Nombre de colonnes": "Numero di colonne",
+      "Créer Stockage": "Crea Cantina",
+      "Modifier votre Stockage": "Modifica la tua Cantina",
+      "Enregistrer les modifications": "Salva modifiche",
+      "Supprimer le stockage": "Elimina la cantina",
+      "Cave": "Cantina",
+      "Vinothèque salon": "Vinoteca salotto",
+      "Meuble cuisine": "Mobile cucina",
+      "Vinothèque cuisine": "Vinoteca cucina",
+      "Ajouter un Vin": "Aggiungi un Vino",
+      "Modifier le Vin": "Modifica il Vino",
+      "Sélectionner depuis ma bibliothèque": "Seleziona dalla mia biblioteca",
+      "-- Choisir un vin sauvegardé --": "-- Scegli un vino salvato --",
+      "Ou remplissez manuellement ci-dessous": "Oppure compila manualmente qui sotto",
+      "Nom du Vin": "Nome del Vino",
+      "Nom du vin": "Nome del vino",
+      "Type de Vin": "Tipo di Vino",
+      "Type de vin": "Tipo di vino",
+      "Rouge": "Rosso",
+      "Blanc": "Bianco",
+      "Rosé": "Rosato",
+      "Champagne": "Champagne",
+      "Pétillant": "Frizzante",
+      "Région": "Regione",
+      "Prix (€)": "Prezzo (€)",
+      "Prix": "Prezzo",
+      "Format de la bouteille": "Formato della bottiglia",
+      "Format": "Formato",
+      "Stockage": "Cantina",
+      "Positions dans le Stockage": "Posizioni nella Cantina",
+      "Vous avez plusieurs bouteilles du même vin ? Sélectionnez simplement tous les emplacements souhaités ci-dessous pour les ajouter en une seule fois.": "Hai più bottiglie dello stesso vino? Seleziona tutte le posizioni desiderate qui sotto per aggiungerle in una sola volta.",
+      "Annuler": "Annulla",
+      "Ajouter le Vin": "Aggiungi il Vino",
+      "Mettre à jour": "Aggiorna",
+      "Rangée": "Riga",
+      "Colonne": "Colonna",
+      "Marquer consommé": "Segna consumato",
+      "Supprimer": "Elimina",
+      "Marquer comme consommé": "Segna come consumato",
+      "Comment était ce vin ?": "Com'era questo vino?",
+      "Votre évaluation": "La tua valutazione",
+      "Vos notes de dégustation": "Le tue note di degustazione",
+      "Ajouter à mes favoris": "Aggiungi ai miei preferiti",
+      "Sauvegarder ce vin dans ma bibliothèque pour l'ajouter à mes favoris": "Salva questo vino nella mia biblioteca per aggiungerlo ai preferiti",
+      "Historique des Vins Consommés": "Storico dei Vini Consumati",
+      "Tous les vins que vous avez dégustés": "Tutti i vini che hai degustato",
+      "Vins Consommés": "Vini Consumati",
+      "Valeur Totale": "Valore Totale",
+      "Prix Moyen": "Prezzo Medio",
+      "Aucun vin consommé": "Nessun vino consumato",
+      "Vous n'avez pas encore marqué de vin comme consommé": "Non hai ancora segnato alcun vino come consumato",
+      "Voir mes stockages": "Vedi le mie cantine",
+      "Retour aux Stockages": "Torna alle Cantine",
+      "Retour à Mes Caves": "Torna alle mie Cantine",
+      "Stockage supprimé": "Cantina eliminata",
+      "Ma Bibliothèque de Vins": "La mia Biblioteca dei Vini",
+      "Vos vins favoris sauvegardés pour un ajout rapide": "I tuoi vini preferiti salvati per un'aggiunta rapida",
+      "Votre bibliothèque est vide": "La tua biblioteca è vuota",
+      "Marquez un vin comme consommé et cochez \"Ajouter à mes favoris\" pour le retrouver ici.": "Segna un vino come consumato e spunta \"Aggiungi ai miei preferiti\" per ritrovarlo qui.",
+      "Votre Sommelier Personnel IA": "Il Tuo Sommelier Personale IA",
+      "Idées rapides :": "Idee rapide:",
+      "Filet de bœuf & dîner romantique": "Filetto di manzo e cena romantica",
+      "Apéritif festif & célébration": "Aperitivo festivo e celebrazione",
+      "Fruits de mer & poisson": "Frutti di mare e pesce",
+      "Fromages affinés & charcuterie": "Formaggi stagionati e salumi",
+      "Soirée d'été & cuisine légère": "Serata estiva e cucina leggera",
+      "Demander conseil au Sommelier": "Chiedi consiglio al Sommelier",
+      "Inspection de vos caves et sélection des meilleurs accords...": "Ispezione delle tue cantine e selezione dei migliori abbinamenti...",
+      "Bouteilles recommandées dans vos caves": "Bottiglie consigliate nelle tue cantine",
+      "Pourquoi ce vin ?": "Perché questo vino?",
+      "Conseil de service :": "Consiglio di servizio:",
+      "Voir dans la cave": "Vedi nella cantina",
+      "Ouvrir cette bouteille": "Apri questa bottiglia"
+    },
+    en: {
+      "Sommelier IA": "AI Sommelier",
+      "Profil": "Profile",
+      "Mes Caves": "My Cellars",
+      "Historique": "History",
+      "Ma Bibliothèque": "My Library",
+      "Déconnexion": "Sign out",
+      "Connexion": "Sign in",
+      "Mon Compte": "My Account",
+      "L'ordre parfait pour votre cave à vin": "The perfect order for your wine cellar",
+      "VOTRE PASSION, BIEN RÉPERTORIÉE": "YOUR PASSION, BEAUTIFULLY ORGANIZED",
+      "L'ART DE CONSERVER": "THE ART OF CELLARING",
+      "Sublimez Votre Cave à Vin": "Elevate Your Wine Cellar",
+      "Voir mes caves": "View my cellars",
+      "Accéder à mes caves": "Access my cellars",
+      "Commencer l'expérience": "Start the experience",
+      "Comment ça marche": "How it works",
+      "Une Gestion Sur Mesure": "Tailored Cellar Management",
+      "1. Créez vos stockages": "1. Create your cellars",
+      "Configurez vos espaces personnalisés, de la cave naturelle au petit cellier de cuisine.": "Configure your custom spaces, from a natural underground cellar to a kitchen wine fridge.",
+      "2. Ajoutez vos vins": "2. Add your wines",
+      "Répertoriez vos bouteilles précieuses avec leurs notes de dégustation et caractéristiques.": "Catalog your prized bottles with tasting notes and characteristics.",
+      "3. Explorez et Gérez": "3. Explore & Manage",
+      "Visualisez vos emplacements en temps réel et sachez toujours quelle bouteille ouvrir.": "Visualize your slots in real time and always know which bottle to open.",
+      "4. Consultez le Sommelier IA": "4. Ask the AI Sommelier",
+      "Indiquez votre plat ou votre occasion : notre intelligence artificielle sélectionne la bouteille idéale parmi vos caves.": "Tell us your dish or occasion: our artificial intelligence selects the ideal bottle directly from your cellars.",
+      "\"Pour les vrais connaisseurs, chaque bouteille a une histoire.\"": "\"For true connoisseurs, every bottle tells a story.\"",
+      "Chaque bouteille raconte une histoire, offrez-lui l'écrin qu'elle mérite.": "Every bottle tells a story—give it the setting it deserves.",
+      "Accédez à votre cave personnelle": "Access your personal wine cellar",
+      "Mot de passe": "Password",
+      "Se souvenir de moi": "Remember me",
+      "Se connecter": "Sign in",
+      "S'inscrire": "Sign up",
+      "Inscription": "Sign up",
+      "Créez votre compte et commencez à gérer votre cave": "Create your account and start managing your cellar",
+      "(6 caractères minimum)": "(6 characters minimum)",
+      "Confirmation du mot de passe": "Password confirmation",
+      "Mes Stockages": "My Cellars",
+      "Quel vin ouvrir ? (Sommelier IA)": "Which wine to open? (AI Sommelier)",
+      "Nouveau Stockage": "New Cellar",
+      "VOIR DÉTAILS": "VIEW DETAILS",
+      "Aucun stockage pour le moment": "No cellars yet",
+      "Créez votre premier espace de stockage pour commencer à gérer votre cave à vin": "Create your first storage space to start managing your wine cellar",
+      "Créer mon premier stockage": "Create my first cellar",
+      "Retour": "Back",
+      "Modifier": "Edit",
+      "Ajouter Nouveau Stockage": "Add New Cellar",
+      "Nom du Stockage": "Cellar Name",
+      "Nom du stockage": "Cellar name",
+      "Type de Stockage": "Cellar Type",
+      "Choisir le type de stockage": "Choose cellar type",
+      "Dimensions du Stockage": "Cellar Dimensions",
+      "Colonnes": "Columns",
+      "Rangées": "Rows",
+      "Nombre de lignes": "Number of rows",
+      "Nombre de colonnes": "Number of columns",
+      "Créer Stockage": "Create Cellar",
+      "Modifier votre Stockage": "Edit your Cellar",
+      "Enregistrer les modifications": "Save changes",
+      "Supprimer le stockage": "Delete cellar",
+      "Cave": "Cellar",
+      "Vinothèque salon": "Living room wine cabinet",
+      "Meuble cuisine": "Kitchen rack",
+      "Vinothèque cuisine": "Kitchen wine fridge",
+      "Ajouter un Vin": "Add a Wine",
+      "Modifier le Vin": "Edit Wine",
+      "Sélectionner depuis ma bibliothèque": "Select from my library",
+      "-- Choisir un vin sauvegardé --": "-- Choose a saved wine --",
+      "Ou remplissez manuellement ci-dessous": "Or fill in manually below",
+      "Nom du Vin": "Wine Name",
+      "Nom du vin": "Wine name",
+      "Type de Vin": "Wine Type",
+      "Type de vin": "Wine type",
+      "Rouge": "Red",
+      "Blanc": "White",
+      "Rosé": "Rosé",
+      "Champagne": "Champagne",
+      "Pétillant": "Sparkling",
+      "Région": "Region",
+      "Prix (€)": "Price (€)",
+      "Prix": "Price",
+      "Format de la bouteille": "Bottle size",
+      "Format": "Size",
+      "Stockage": "Cellar",
+      "Positions dans le Stockage": "Positions in Cellar",
+      "Vous avez plusieurs bouteilles du même vin ? Sélectionnez simplement tous les emplacements souhaités ci-dessous pour les ajouter en une seule fois.": "Have multiple bottles of the same wine? Simply select all desired slots below to add them at once.",
+      "Annuler": "Cancel",
+      "Ajouter le Vin": "Add Wine",
+      "Mettre à jour": "Update",
+      "Rangée": "Row",
+      "Colonne": "Column",
+      "Marquer consommé": "Mark consumed",
+      "Supprimer": "Delete",
+      "Marquer comme consommé": "Mark as consumed",
+      "Comment était ce vin ?": "How was this wine?",
+      "Votre évaluation": "Your rating",
+      "Vos notes de dégustation": "Your tasting notes",
+      "Ajouter à mes favoris": "Add to my favorites",
+      "Sauvegarder ce vin dans ma bibliothèque pour l'ajouter à mes favoris": "Save this wine in my library for quick future additions",
+      "Historique des Vins Consommés": "Consumed Wines History",
+      "Tous les vins que vous avez dégustés": "All the wines you have tasted",
+      "Vins Consommés": "Consumed Wines",
+      "Valeur Totale": "Total Value",
+      "Prix Moyen": "Average Price",
+      "Aucun vin consommé": "No consumed wines yet",
+      "Vous n'avez pas encore marqué de vin comme consommé": "You haven't marked any wine as consumed yet",
+      "Voir mes stockages": "View my cellars",
+      "Retour aux Stockages": "Back to Cellars",
+      "Retour à Mes Caves": "Back to My Cellars",
+      "Stockage supprimé": "Deleted cellar",
+      "Ma Bibliothèque de Vins": "My Wine Library",
+      "Vos vins favoris sauvegardés pour un ajout rapide": "Your favorite saved wines for quick addition",
+      "Votre bibliothèque est vide": "Your library is empty",
+      "Marquez un vin comme consommé et cochez \"Ajouter à mes favoris\" pour le retrouver ici.": "Mark a wine as consumed and check \"Add to my favorites\" to find it here.",
+      "Votre Sommelier Personnel IA": "Your Personal AI Sommelier",
+      "Idées rapides :": "Quick ideas:",
+      "Filet de bœuf & dîner romantique": "Beef tenderloin & romantic dinner",
+      "Apéritif festif & célébration": "Festive aperitif & celebration",
+      "Fruits de mer & poisson": "Seafood platter & grilled fish",
+      "Fromages affinés & charcuterie": "Aged cheeses & charcuterie",
+      "Soirée d'été & cuisine légère": "Summer evening & light cuisine",
+      "Demander conseil au Sommelier": "Ask the Sommelier",
+      "Inspection de vos caves et sélection des meilleurs accords...": "Inspecting your cellars and selecting the best pairings...",
+      "Bouteilles recommandées dans vos caves": "Recommended bottles from your cellars",
+      "Pourquoi ce vin ?": "Why this wine?",
+      "Conseil de service :": "Serving tip:",
+      "Voir dans la cave": "View in cellar",
+      "Ouvrir cette bouteille": "Open this bottle"
+    }
+  };
+
+  const CAVIN_PLACEHOLDERS = {
+    it: {
+      "Ex: Ce soir je prépare un filet de bœuf aux morilles pour un dîner romantique...": "Es: Stasera preparo un filetto di manzo ai porcini per una cena romantica...",
+      "Ex: Ma Cave Principale": "Es: La mia Cantina Principale",
+      "Ex: Ma Cave Privée": "Es: La mia Cantina Privata",
+      "Ex: Château Margaux 2015": "Es: Château Margaux 2015",
+      "Ex: Bordeaux, Bourgogne, Toscane...": "Es: Bordeaux, Borgogna, Toscana...",
+      "Ex: Arômes de fruits rouges...": "Es: Aromi di frutti rossi, tannini setosi..."
+    },
+    en: {
+      "Ex: Ce soir je prépare un filet de bœuf aux morilles pour un dîner romantique...": "Ex: Tonight I'm cooking beef tenderloin with morels for a romantic dinner...",
+      "Ex: Ma Cave Principale": "Ex: My Main Cellar",
+      "Ex: Ma Cave Privée": "Ex: My Private Cellar",
+      "Ex: Château Margaux 2015": "Ex: Château Margaux 2015",
+      "Ex: Bordeaux, Bourgogne, Toscane...": "Ex: Bordeaux, Burgundy, Tuscany...",
+      "Ex: Arômes de fruits rouges...": "Ex: Red fruit aromas, silky tannins..."
+    }
+  };
+
+  function getCavinLang() {
+    return localStorage.getItem('cavin_lang') || 'fr';
+  }
+
+  function translateDynamicText(orig, lang) {
+    if (lang === 'fr') return orig;
+    const dict = CAVIN_TRANSLATIONS[lang] || {};
+    if (dict[orig]) return dict[orig];
+
+    let res = orig;
+    if (lang === 'it') {
+      res = res.replace(/^(\d+)\s+Bouteilles$/i, '$1 Bottiglie');
+      res = res.replace(/•\s*(\d+)\s+bouteilles/i, '• $1 bottiglie');
+      res = res.replace(/·\s*(\d+)\s+bout\./i, '· $1 bott.');
+      res = res.replace(/^Dites-moi ce que vous mangez ou quelle est l'occasion, et je choisirai la bouteille idéale parmi les$/i, 'Dimmi cosa mangi o qual è l\'occasione, e sceglierò la bottiglia ideale tra le');
+      res = res.replace(/^bouteilles$/i, 'bottiglie');
+      res = res.replace(/^disponibles dans vos caves\.$/i, 'disponibili nelle tue cantine.');
+      res = res.replace(/^Ajoutez une nouvelle bouteille à\s+(.+)$/i, 'Aggiungi una nuova bottiglia a $1');
+      res = res.replace(/^Consommé le\s+(.+)$/i, 'Consumato il $1');
+      res = res.replace(/^#(\d+)\s+Choix du Sommelier$/i, '#$1 Scelta del Sommelier');
+      res = res.replace(/—\s*Rangée\s+(\d+),\s*Colonne\s+(\d+)/i, '— Riga $1, Colonna $2');
+      res = res.replace(/^Sélectionnez les emplacements\s*\(/i, 'Seleziona le posizioni (');
+      res = res.replace(/\s*bouteilles\)$/i, ' bottiglie)');
+    } else if (lang === 'en') {
+      res = res.replace(/^(\d+)\s+Bouteilles$/i, '$1 Bottles');
+      res = res.replace(/•\s*(\d+)\s+bouteilles/i, '• $1 bottles');
+      res = res.replace(/·\s*(\d+)\s+bout\./i, '· $1 bot.');
+      res = res.replace(/^Dites-moi ce que vous mangez ou quelle est l'occasion, et je choisirai la bouteille idéale parmi les$/i, 'Tell me what you are eating or the occasion, and I will pick the ideal bottle among the');
+      res = res.replace(/^bouteilles$/i, 'bottles');
+      res = res.replace(/^disponibles dans vos caves\.$/i, 'available in your cellars.');
+      res = res.replace(/^Ajoutez une nouvelle bouteille à\s+(.+)$/i, 'Add a new bottle to $1');
+      res = res.replace(/^Consommé le\s+(.+)$/i, 'Consumed on $1');
+      res = res.replace(/^#(\d+)\s+Choix du Sommelier$/i, '#$1 Sommelier\'s Pick');
+      res = res.replace(/—\s*Rangée\s+(\d+),\s*Colonne\s+(\d+)/i, '— Row $1, Column $2');
+      res = res.replace(/^Sélectionnez les emplacements\s*\(/i, 'Select slots (');
+      res = res.replace(/\s*bouteilles\)$/i, ' bottles)');
+    }
+    return res;
+  }
+
+  function applyCavinLanguage(lang) {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+    const textNodes = [];
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      const parentTag = node.parentElement ? node.parentElement.tagName : '';
+      if (parentTag === 'SCRIPT' || parentTag === 'STYLE') continue;
+      textNodes.push(node);
+    }
+
+    textNodes.forEach(node => {
+      const raw = node.nodeValue || '';
+      const trimmed = raw.trim();
+      if (!trimmed) return;
+      if (!node.__cavinOrig) {
+        node.__cavinOrig = trimmed.replace(/\s+/g, ' ');
+      }
+      const translated = translateDynamicText(node.__cavinOrig, lang);
+      const lead = raw.match(/^\s*/)[0];
+      const trail = raw.match(/\s*$/)[0];
+      node.nodeValue = lead + translated + trail;
+    });
+
+    document.querySelectorAll('input[type="submit"]').forEach(el => {
+      if (!el.dataset.origValue) {
+        el.dataset.origValue = (el.value || '').trim();
+      }
+      const origV = el.dataset.origValue;
+      if (origV) {
+        el.value = translateDynamicText(origV, lang);
+      }
+    });
+
+    document.querySelectorAll('input[placeholder], textarea[placeholder]').forEach(el => {
+      if (!el.dataset.origPlaceholder) {
+        el.dataset.origPlaceholder = el.getAttribute('placeholder');
+      }
+      const origP = el.dataset.origPlaceholder;
+      if (lang === 'fr') {
+        el.setAttribute('placeholder', origP);
+      } else {
+        const pMap = CAVIN_PLACEHOLDERS[lang] || {};
+        if (pMap[origP]) el.setAttribute('placeholder', pMap[origP]);
+      }
+    });
+  }
+
+  function setCavinLang(lang) {
+    localStorage.setItem('cavin_lang', lang);
+    document.cookie = 'cavin_locale=' + lang + ';path=/;max-age=31536000';
+    applyCavinLanguage(lang);
+  }
+
+  function initCavinI18n() {
+    applyCavinLanguage(getCavinLang());
+    const observer = new MutationObserver(() => {
+      const current = getCavinLang();
+      if (current !== 'fr') applyCavinLanguage(current);
+    });
+    const resultsEl = document.getElementById('sommelier-results');
+    if (resultsEl) {
+      observer.observe(resultsEl, { childList: true, subtree: true });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', initCavinI18n);
+  document.addEventListener('turbo:load', initCavinI18n);
 </script>

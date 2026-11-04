@@ -1,181 +1,512 @@
+/* AI Sommelier Navbar & Header Buttons + Language Switcher */
+.lang-switcher {
+  display: inline-flex;
+  align-items: center;
+  background-color: #efe8d8;
+  padding: 4px;
+  border-radius: 9999px;
+  border: 1px solid rgba(196, 166, 97, 0.45);
+  gap: 2px;
+}
+
+.lang-btn {
+  font-family: 'Inria Serif', serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #5d2e2e;
+  background: transparent;
+  border: none;
+  border-radius: 9999px;
+  padding: 6px 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+
+  &:hover {
+    color: #2c1810;
+    background-color: rgba(255, 255, 255, 0.55);
+  }
+
+  &.active {
+    background-color: #5d2e2e;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(93, 46, 46, 0.25);
+  }
+}
+
+.mobile-lang-switcher {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 6px;
+}
+
+.btn-sommelier-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #fdfaf5 0%, #f3ead8 100%);
+  color: #5d2e2e;
+  font-family: 'Inria Serif', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 10px 22px;
+  border: 1.5px solid #c4a661;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(196, 166, 97, 0.2);
+
+  svg {
+    color: #c4a661;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, #c4a661 0%, #b3924b 100%);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(196, 166, 97, 0.35);
+
+    svg {
+      color: #ffffff;
+    }
+  }
+}
+
+.storages-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btn-sommelier-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 26px;
+  background: linear-gradient(135deg, #fffdf9 0%, #f5ebd6 100%);
+  color: #5d2e2e;
+  font-family: 'Inria Serif', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 9999px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 2px solid #c4a661;
+  box-shadow: 0 6px 18px rgba(196, 166, 97, 0.22);
+
+  svg {
+    color: #c4a661;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, #c4a661 0%, #b3924b 100%);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(196, 166, 97, 0.35);
+
+    svg {
+      color: #ffffff;
+    }
+  }
+}
+
+/* AI Sommelier Page — Soft & Organic */
 .sommelier-page {
   min-height: calc(100vh - 80px);
   background: linear-gradient(135deg, #f5f1e8 0%, #e8dfc8 100%);
-  padding: 60px 20px;
+  padding: 50px 20px 90px;
 }
 
 .sommelier-container {
-  max-width: 760px;
+  max-width: 1050px;
   margin: 0 auto;
 }
 
-.sommelier-header {
+.sommelier-hero-card {
+  background: #ffffff;
+  border-radius: 36px;
+  padding: 48px 44px;
+  box-shadow: 0 20px 54px rgba(93, 46, 46, 0.11);
+  border: 1.5px solid rgba(196, 166, 97, 0.35);
   text-align: center;
-  margin-bottom: 35px;
+  margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    padding: 34px 22px;
+    border-radius: 28px;
+  }
 }
 
-.sommelier-icon {
+.sommelier-badge-icon {
   display: inline-flex;
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, #5d2e2e 0%, #7a3a3a 100%);
+  width: 78px;
+  height: 78px;
   border-radius: 50%;
+  background: linear-gradient(135deg, #5d2e2e 0%, #7a3a3a 100%);
+  color: #c4a661;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
-  box-shadow: 0 8px 24px rgba(93, 46, 46, 0.3);
-
-  svg { color: #c4a661; }
+  margin-bottom: 22px;
+  box-shadow: 0 10px 26px rgba(93, 46, 46, 0.26);
 }
 
 .sommelier-title {
   font-family: 'Inria Serif', serif;
   font-size: 2.5rem;
   color: #2c1810;
-  margin: 0 0 10px 0;
+  margin: 0 0 12px 0;
   font-weight: 700;
 
-  @media (max-width: 768px) { font-size: 2rem; }
+  @media (max-width: 768px) {
+    font-size: 1.9rem;
+  }
 }
 
 .sommelier-subtitle {
   font-family: 'Inria Serif', serif;
-  font-size: 1.15rem;
+  font-size: 1.12rem;
   color: #6b6b6b;
-  margin: 0;
+  max-width: 680px;
+  margin: 0 auto 24px;
+  line-height: 1.6;
+}
+
+.sommelier-stock-summary {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.stock-chip {
+  font-family: 'Inria Serif', serif;
+  font-size: 0.9rem;
+  color: #5d2e2e;
+  background-color: #faf6ed;
+  border: 1px solid #e6dac2;
+  padding: 7px 16px;
+  border-radius: 9999px;
 }
 
 .sommelier-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  background: #ffffff;
-  padding: 25px;
-  border-radius: 24px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  max-width: 760px;
+  margin: 0 auto;
 }
 
-.sommelier-input {
+.sommelier-input-wrapper {
+  margin-bottom: 18px;
+}
+
+.sommelier-textarea {
   width: 100%;
+  padding: 20px 24px;
   font-family: 'Inria Serif', serif;
-  font-size: 1rem;
+  font-size: 1.08rem;
   color: #2c1810;
-  padding: 14px 18px;
-  border: 2px solid #e8dfc8;
-  border-radius: 16px;
-  background: #faf8f3;
+  background-color: #faf7f2;
+  border: 1.5px solid #e2d6c1;
+  border-radius: 26px;
   resize: vertical;
-  box-sizing: border-box;
+  transition: all 0.25s ease;
+  line-height: 1.55;
 
   &:focus {
     outline: none;
     border-color: #5d2e2e;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(93, 46, 46, 0.08);
   }
 }
 
-.sommelier-submit {
-  align-self: flex-end;
+.sommelier-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.suggestions-label {
+  font-size: 0.9rem;
+  color: #888;
+  margin-right: 4px;
+}
+
+.suggestion-btn {
   font-family: 'Inria Serif', serif;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #ffffff;
-  background: #5d2e2e;
-  border: none;
-  border-radius: 999px;
-  padding: 12px 30px;
+  font-size: 0.86rem;
+  color: #2c1810;
+  background: #f5f1e8;
+  border: 1px solid #e2d6c1;
+  border-radius: 9999px;
+  padding: 8px 16px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #5d2e2e;
+    color: #ffffff;
+    border-color: #5d2e2e;
+    transform: translateY(-1px);
+  }
+}
+
+.sommelier-submit-row {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-sommelier-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 42px;
+  background: linear-gradient(135deg, #5d2e2e 0%, #7a3a3a 100%);
+  color: #ffffff;
+  font-family: 'Inria Serif', serif;
+  font-size: 1.12rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 26px rgba(93, 46, 46, 0.28);
+
+  svg {
+    color: #c4a661;
+  }
 
   &:hover:not(:disabled) {
-    background: #7a3a3a;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(93, 46, 46, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(93, 46, 46, 0.36);
   }
 
-  &:disabled { opacity: 0.7; cursor: wait; }
-
-  @media (max-width: 768px) { align-self: stretch; }
+  &:disabled {
+    opacity: 0.65;
+    cursor: wait;
+  }
 }
 
-.sommelier-intro {
-  font-family: 'Inria Serif', serif;
-  font-size: 1.1rem;
-  color: #2c1810;
-  margin: 30px 0 15px;
-  text-align: center;
-}
-
-.sommelier-results {
+.sommelier-loading {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  margin-top: 20px;
-}
-
-.sommelier-card {
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
   background: #ffffff;
-  border-radius: 24px;
-  padding: 22px 26px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  font-family: 'Inria Serif', serif;
+  border-radius: 32px;
+  margin-bottom: 30px;
+  box-shadow: 0 12px 32px rgba(44, 24, 16, 0.07);
 }
 
-.sommelier-card-head {
+.sommelier-spinner {
+  width: 44px;
+  height: 44px;
+  border: 3.5px solid #f0e8d8;
+  border-top-color: #5d2e2e;
+  border-radius: 50%;
+  animation: sommelierSpin 0.85s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes sommelierSpin {
+  to { transform: rotate(360deg); }
+}
+
+.sommelier-error-box {
+  background-color: #fef2f2;
+  border: 1.5px solid #fecaca;
+  color: #991b1b;
+  padding: 18px 26px;
+  border-radius: 24px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.sommelier-intro-card {
+  position: relative;
+  background: linear-gradient(135deg, #5d2e2e 0%, #462020 100%);
+  color: #ffffff;
+  border-radius: 30px;
+  padding: 32px 38px;
+  margin-bottom: 36px;
+  box-shadow: 0 14px 36px rgba(93, 46, 46, 0.22);
+}
+
+.sommelier-quote-icon {
+  font-family: 'Imperial Script', cursive;
+  font-size: 4rem;
+  color: #c4a661;
+  line-height: 0.6;
+  margin-bottom: 8px;
+}
+
+.sommelier-intro-text {
+  font-size: 1.15rem;
+  line-height: 1.65;
+  margin: 0;
+  color: #fdfaf5;
+}
+
+.sommelier-section-heading {
+  font-family: 'Inria Serif', serif;
+  font-size: 1.7rem;
+  color: #2c1810;
+  text-align: center;
+  margin: 0 0 26px 0;
+}
+
+.sommelier-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 26px;
+}
+
+.sommelier-wine-card {
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 28px;
+  border: 1.5px solid #e8dfc8;
+  box-shadow: 0 12px 32px rgba(44, 24, 16, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.25s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: #c4a661;
+    box-shadow: 0 18px 40px rgba(93, 46, 46, 0.14);
+  }
+}
+
+.sommelier-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.sommelier-rank-badge {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #5d2e2e;
+  background: #faf3e3;
+  border: 1px solid #c4a661;
+  padding: 5px 14px;
+  border-radius: 9999px;
+}
+
+.sommelier-bottle-Visual {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #f0e9da;
+  margin-bottom: 18px;
 }
 
-.sommelier-wine-name {
+.sommelier-bottle-img {
+  height: 84px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.18));
+}
+
+.sommelier-bottle-meta {
+  flex: 1;
+}
+
+.sommelier-wine-title {
   font-size: 1.35rem;
   color: #2c1810;
-  margin: 0;
+  margin: 0 0 6px 0;
+  font-weight: 700;
 }
 
-.sommelier-wine-type {
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.sommelier-wine-region {
+  font-size: 0.95rem;
+  color: #6b6b6b;
+  margin: 0 0 10px 0;
+}
+
+.sommelier-location-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
   color: #5d2e2e;
   background: #f5f1e8;
-  border-radius: 999px;
-  padding: 5px 14px;
+  padding: 6px 12px;
+  border-radius: 9999px;
 }
 
-.sommelier-wine-meta {
-  color: #888;
+.sommelier-reason-box {
+  h4 {
+    font-size: 0.95rem;
+    color: #5d2e2e;
+    margin: 0 0 6px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  p {
+    font-size: 0.98rem;
+    color: #2c1810;
+    line-height: 1.55;
+    margin: 0 0 16px 0;
+  }
+}
+
+.sommelier-tip-box {
+  background: #faf8f3;
+  border-radius: 18px;
+  padding: 12px 16px;
   font-size: 0.9rem;
-  margin: 6px 0 0;
+  color: #5d4e37;
+  border: 1px solid #ece2cc;
+  margin-bottom: 22px;
+  line-height: 1.45;
 }
 
-.sommelier-reason {
-  color: #2c1810;
-  line-height: 1.5;
-  margin: 14px 0;
+.sommelier-card-actions {
+  display: flex;
+  gap: 10px;
 }
 
-.sommelier-location {
-  display: inline-block;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #5d2e2e;
-  background: #f5f1e8;
-  border-radius: 999px;
-  padding: 8px 16px;
-  text-decoration: none;
-
-  &:hover { background: #e8dfc8; }
-}
-
-.sommelier-error {
-  margin-top: 25px;
-  padding: 16px 20px;
-  border-radius: 16px;
-  background: #fff5f5;
-  color: #b71c1c;
-  font-family: 'Inria Serif', serif;
+.btn-sommelier-secondary, .btn-sommelier-primary {
+  flex: 1;
   text-align: center;
+  padding: 11px 14px;
+  border-radius: 9999px;
+  font-family: 'Inria Serif', serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-sommelier-secondary {
+  background: #f5f1e8;
+  color: #2c1810;
+  border: 1.5px solid #e5dccb;
+
+  &:hover {
+    background: #e8dfc8;
+  }
+}
+
+.btn-sommelier-primary {
+  background: #5d2e2e;
+  color: #ffffff;
+  border: 1.5px solid #5d2e2e;
+
+  &:hover {
+    background: #7a3a3a;
+  }
 }
