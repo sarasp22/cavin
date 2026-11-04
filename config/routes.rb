@@ -14,6 +14,9 @@ Rails.application.routes.draw do
   resources :wine_templates, only: [:index, :create, :destroy]
 
   get "history", to: "wines#history"
+  
+  get  "sommelier", to: "sommelier#index"
+  post "sommelier", to: "sommelier#create"
 
   get "up" => "rails/health#show", as: :rails_health_check
 end

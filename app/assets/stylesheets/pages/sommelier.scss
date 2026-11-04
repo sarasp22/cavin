@@ -1,0 +1,181 @@
+.sommelier-page {
+  min-height: calc(100vh - 80px);
+  background: linear-gradient(135deg, #f5f1e8 0%, #e8dfc8 100%);
+  padding: 60px 20px;
+}
+
+.sommelier-container {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.sommelier-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.sommelier-icon {
+  display: inline-flex;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #5d2e2e 0%, #7a3a3a 100%);
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 24px rgba(93, 46, 46, 0.3);
+
+  svg { color: #c4a661; }
+}
+
+.sommelier-title {
+  font-family: 'Inria Serif', serif;
+  font-size: 2.5rem;
+  color: #2c1810;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+
+  @media (max-width: 768px) { font-size: 2rem; }
+}
+
+.sommelier-subtitle {
+  font-family: 'Inria Serif', serif;
+  font-size: 1.15rem;
+  color: #6b6b6b;
+  margin: 0;
+}
+
+.sommelier-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.sommelier-input {
+  width: 100%;
+  font-family: 'Inria Serif', serif;
+  font-size: 1rem;
+  color: #2c1810;
+  padding: 14px 18px;
+  border: 2px solid #e8dfc8;
+  border-radius: 16px;
+  background: #faf8f3;
+  resize: vertical;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: #5d2e2e;
+  }
+}
+
+.sommelier-submit {
+  align-self: flex-end;
+  font-family: 'Inria Serif', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: #5d2e2e;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover:not(:disabled) {
+    background: #7a3a3a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(93, 46, 46, 0.3);
+  }
+
+  &:disabled { opacity: 0.7; cursor: wait; }
+
+  @media (max-width: 768px) { align-self: stretch; }
+}
+
+.sommelier-intro {
+  font-family: 'Inria Serif', serif;
+  font-size: 1.1rem;
+  color: #2c1810;
+  margin: 30px 0 15px;
+  text-align: center;
+}
+
+.sommelier-results {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.sommelier-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 22px 26px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  font-family: 'Inria Serif', serif;
+}
+
+.sommelier-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.sommelier-wine-name {
+  font-size: 1.35rem;
+  color: #2c1810;
+  margin: 0;
+}
+
+.sommelier-wine-type {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #5d2e2e;
+  background: #f5f1e8;
+  border-radius: 999px;
+  padding: 5px 14px;
+}
+
+.sommelier-wine-meta {
+  color: #888;
+  font-size: 0.9rem;
+  margin: 6px 0 0;
+}
+
+.sommelier-reason {
+  color: #2c1810;
+  line-height: 1.5;
+  margin: 14px 0;
+}
+
+.sommelier-location {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #5d2e2e;
+  background: #f5f1e8;
+  border-radius: 999px;
+  padding: 8px 16px;
+  text-decoration: none;
+
+  &:hover { background: #e8dfc8; }
+}
+
+.sommelier-error {
+  margin-top: 25px;
+  padding: 16px 20px;
+  border-radius: 16px;
+  background: #fff5f5;
+  color: #b71c1c;
+  font-family: 'Inria Serif', serif;
+  text-align: center;
+}
