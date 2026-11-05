@@ -510,3 +510,13 @@
     background: #7a3a3a;
   }
 }
+
+.wine-type-badge.prosecco {
+  background: linear-gradient(135deg, #d4e7b5 0%, #c2dca0 100%);
+  color: #3a5223;
+}
+.wine-card-type.prosecco,
+.template-type.prosecco {
+  background: #d4e7b5;
+  color: #3a5223;
+}

@@ -41,7 +41,7 @@
       <div class="wine-form-group">
         <%= f.label :wine_type, "Type de Vin", class: "wine-form-label" %>
         <div class="wine-type-buttons">
-          <% ["Rouge", "Blanc", "Rosé", "Champagne", "Pétillant"].each do |type| %>
+          <% ["Rouge", "Blanc", "Rosé", "Champagne", "Pétillant", "Prosecco"].each do |type| %>
             <label class="wine-type-option">
               <%= f.radio_button :wine_type, type, class: "wine-type-radio", required: true %>
               <span class="wine-type-label <%= type.downcase %>"><%= type %></span>

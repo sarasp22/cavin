@@ -85,7 +85,8 @@
     blanc: "<%= asset_path('bianco.png') %>",
     rose: "<%= asset_path('rose.png') %>",
     champagne: "<%= asset_path('champagne.png') %>",
-    petillant: "<%= asset_path('frizzante.png') %>"
+    petillant: "<%= asset_path('frizzante.png') %>",
+    prosecco: "<%= asset_path('champagne.png') %>"
   };
 
   const SOMMELIER_SUGGESTIONS = {
@@ -127,6 +128,7 @@
     if (wt.includes('blanc') || wt.includes('bianco') || wt.includes('white')) return BOTTLE_IMAGES.blanc;
     if (wt.includes('rosé') || wt.includes('rose') || wt.includes('rosato')) return BOTTLE_IMAGES.rose;
     if (wt.includes('champagne')) return BOTTLE_IMAGES.champagne;
+    if (wt.includes('prosecco')) return BOTTLE_IMAGES.champagne;
     if (wt.includes('pétillant') || wt.includes('petillant') || wt.includes('frizzante') || wt.includes('sparkling')) return BOTTLE_IMAGES.petillant;
     return BOTTLE_IMAGES.rouge;
   }

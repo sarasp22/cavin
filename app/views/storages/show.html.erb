@@ -35,7 +35,7 @@
                 <% bottle_img = case wine.wine_type.to_s.downcase
                                 when "blanc" then "bianco.png"
                                 when "rosé", "rose" then "rose.png"
-                                when "champagne" then "champagne.png"
+                                when "champagne", "prosecco" then "champagne.png"
                                 when "pétillant", "petillant" then "frizzante.png"
                                 else "rosso.png"
                                 end %>

@@ -17,7 +17,7 @@
 <div class="form-section">
   <label class="form-section-label">Choisir le type de stockage</label>
   <div class="storage-types-grid">
-    <% ["Cave", "Vinothèque salon", "Meuble cuisine", "Vinothèque cuisine"].each do |category| %>
+    <% ["Cave", "Vinothèque salon", "Meuble cuisine", "Vinothèque cuisine", "Frigo"].each do |category| %>
       <div class="storage-type-card">
         <%= f.radio_button :category, category, id: "category_#{category.parameterize}", class: "storage-radio-input" %>
         <label for="category_<%= category.parameterize %>" class="storage-type-label">
@@ -28,6 +28,7 @@
                 when "Vinothèque salon" then "vinotheque_salon.png"
                 when "Meuble cuisine" then "meuble_cuisine.jpg"
                 when "Vinothèque cuisine" then "vinotheque_cuisine.png"
+                when "Frigo" then "frigo.png"
                 else "default_storage.jpg"
               end
             %>
