@@ -22,24 +22,28 @@
         <%= f.text_field :name, placeholder: "Ex: Château Margaux 2015", class: "form-input", required: true %>
       </div>
 
-      <div class="form-group">
-        <%= f.label :wine_type, "Type de vin", class: "form-label" %>
-        <%= f.select :wine_type, ["Rouge", "Blanc", "Rosé", "Champagne", "Pétillant", "Prosecco"], {}, class: "form-input", required: true %>
+      <div class="form-row">
+        <div class="form-group">
+          <%= f.label :wine_type, "Type de vin", class: "form-label" %>
+          <%= f.select :wine_type, ["Rouge", "Blanc", "Rosé", "Champagne", "Pétillant", "Prosecco"], {}, class: "form-input", required: true %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :size, "Format", class: "form-label" %>
+          <%= f.select :size, ["37.5cl", "75cl", "1.5L (Magnum)", "3L (Jéroboam)", "6L (Mathusalem)"], { selected: (@wine.size.presence || "75cl") }, class: "form-input" %>
+        </div>
       </div>
 
-      <div class="form-group">
-        <%= f.label :region, "Région", class: "form-label" %>
-        <%= f.text_field :region, placeholder: "Ex: Bordeaux", class: "form-input", required: true %>
-      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <%= f.label :region, "Région", class: "form-label" %>
+          <%= f.text_field :region, placeholder: "Ex: Bordeaux", class: "form-input", required: true %>
+        </div>
 
-      <div class="form-group">
-        <%= f.label :price, "Prix (€)", class: "form-label" %>
-        <%= f.number_field :price, step: 0.01, min: 0, placeholder: "Ex: 45.50", class: "form-input", required: true %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :size, "Format de la bouteille", class: "form-label" %>
-        <%= f.select :size, ["37.5cl", "75cl", "1.5L (Magnum)", "3L (Jéroboam)", "6L (Mathusalem)"], { selected: (@wine.size.presence || "75cl") }, class: "form-input" %>
+        <div class="form-group">
+          <%= f.label :price, "Prix (€)", class: "form-label" %>
+          <%= f.number_field :price, step: 0.01, min: 0, placeholder: "Ex: 45.50", class: "form-input", required: true %>
+        </div>
       </div>
 
       <div class="form-group">
@@ -62,12 +66,12 @@
         </div>
       </div>
 
-      <div class="position-preview" style="margin-bottom: 30px;">
+      <div class="position-preview">
         <p class="preview-label">Positions dans le Stockage</p>
         <div class="preview-grid" id="edit-position-grid"></div>
       </div>
 
-      <div class="form-actions" style="display: flex; justify-content: center; gap: 20px;">
+      <div class="form-actions wine-edit-actions">
         <%= link_to "Annuler", storage_wine_path(@storage, @wine), class: "btn-secondary" %>
         <%= f.submit "Mettre à jour", class: "btn-submit-wine" %>
       </div>
@@ -92,7 +96,8 @@
     rowInput.value = selectedRow;
     colInput.value = selectedCol;
 
-    gridEl.style.gridTemplateColumns = 'repeat(' + storageObj.cols + ', 1fr)';
+    gridEl.style.gridTemplateColumns = 'repeat(' + storageObj.cols + ', minmax(0, 1fr))';
+    gridEl.style.maxWidth = (storageObj.cols * 48) + 'px';
     gridEl.innerHTML = '';
 
     for (let r = 1; r <= storageObj.rows; r++) {
@@ -104,7 +109,7 @@
         const slot = document.createElement('div');
         slot.className = 'preview-slot' + (isOccupied ? ' occupied' : '') + (isSelected ? ' selected' : '');
         if (isOccupied) {
-          slot.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 2h8l2 10-4 10-4-10z"/><ellipse cx="12" cy="2" rx="4" ry="1"/></svg>';
+          slot.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 2h8l2 10-4 10-4-10z"/><ellipse cx="12" cy="2" rx="4" ry="1"/></svg>';
         } else {
           slot.innerHTML = '<span class="slot-label">R' + r + 'C' + c + '</span>';
           slot.onclick = function() {
