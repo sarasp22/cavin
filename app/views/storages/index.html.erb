@@ -39,6 +39,198 @@
         </div>
       <% end %>
     </div>
+
+    <%
+      all_active_wines = @storages.flat_map { |st| st.wines.where(consumed_at: nil).map { |w| [w, st] } }
+      total_bottles_count = all_active_wines.size
+      total_cellar_value = all_active_wines.sum { |(w, _st)| w.price.to_f }
+
+      categories = [
+        { key: "all", label: "Tous les vins", img: nil },
+        { key: "rouge", label: "Rouge", img: "rosso.png" },
+        { key: "blanc", label: "Blanc", img: "bianco.png" },
+        { key: "rosé", label: "Rosé", img: "rose.png" },
+        { key: "champagne", label: "Champagne", img: "champagne.png" },
+        { key: "pétillant", label: "Pétillant", img: "frizzante.png" },
+        { key: "prosecco", label: "Prosecco", img: "frizzante.png" }
+      ]
+    %>
+
+    <section class="cellar-overview-section">
+      <div class="cellar-overview-header">
+        <h2 class="cellar-overview-title">Vue d'ensemble de ma Cave</h2>
+        <p class="cellar-overview-subtitle">Statistiques globales et inventaire détaillé par catégorie de vin</p>
+      </div>
+
+      <div class="cellar-kpi-grid">
+        <div class="cellar-kpi-card">
+          <div class="cellar-kpi-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M8 2h8l2 10-4 10-4-10z"/>
+              <ellipse cx="12" cy="2" rx="4" ry="1"/>
+            </svg>
+          </div>
+          <div class="cellar-kpi-info">
+            <span class="cellar-kpi-label">Total Bouteilles</span>
+            <strong class="cellar-kpi-value"><%= total_bottles_count %></strong>
+          </div>
+        </div>
+
+        <div class="cellar-kpi-card">
+          <div class="cellar-kpi-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+          <div class="cellar-kpi-info">
+            <span class="cellar-kpi-label">Valeur Totale de la Cave</span>
+            <strong class="cellar-kpi-value"><%= number_with_precision(total_cellar_value, precision: 2, separator: ",") %> €</strong>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="cellar-section-subtitle">Répartition par Catégorie</h3>
+      <div class="cellar-categories-grid">
+        <% categories.each_with_index do |cat, idx| %>
+          <%
+            matching = if cat[:key] == "all"
+                         all_active_wines
+                       else
+                         all_active_wines.select do |(w, _st)|
+                           wt = w.wine_type.to_s.downcase.strip
+                           norm = if ["rouge", "rosso", "red"].include?(wt)
+                                    "rouge"
+                                  elsif ["blanc", "bianco", "white"].include?(wt)
+                                    "blanc"
+                                  elsif ["rosé", "rose", "rosato"].include?(wt)
+                                    "rosé"
+                                  elsif wt == "champagne"
+                                    "champagne"
+                                  elsif ["pétillant", "petillant", "frizzante", "sparkling"].include?(wt)
+                                    "pétillant"
+                                  elsif wt == "prosecco"
+                                    "prosecco"
+                                  else
+                                    "rouge"
+                                  end
+                           norm == cat[:key]
+                         end
+                       end
+            cat_count = matching.size
+            cat_val = matching.sum { |(w, _st)| w.price.to_f }
+          %>
+          <button type="button"
+                  class="cellar-category-card <%= 'active' if idx == 0 %>"
+                  data-cat="<%= cat[:key] %>"
+                  onclick="filterCellarCategory('<%= cat[:key] %>', this)">
+            <div class="cellar-cat-top">
+              <% if cat[:img] %>
+                <%= image_tag cat[:img], alt: cat[:label], class: "cellar-cat-bottle-img" %>
+              <% else %>
+                <span class="cellar-cat-all-badge">🍷</span>
+              <% end %>
+              <span class="cellar-cat-count"><%= cat_count %></span>
+            </div>
+            <div class="cellar-cat-bottom">
+              <span class="cellar-cat-name"><%= cat[:label] %></span>
+              <span class="cellar-cat-price"><%= number_with_precision(cat_val, precision: 2, separator: ",") %> €</span>
+            </div>
+          </button>
+        <% end %>
+      </div>
+
+      <div class="cellar-wines-list-wrapper">
+        <div class="cellar-list-header">
+          <h3 class="cellar-section-subtitle" style="margin: 0;">Liste des Bouteilles par Catégorie</h3>
+        </div>
+
+        <div class="cellar-wines-grid" id="cellar-wines-grid">
+          <% all_active_wines.each do |(wine, storage)| %>
+            <%
+              wt = wine.wine_type.to_s.downcase.strip
+              cat_key = if ["rouge", "rosso", "red"].include?(wt)
+                          "rouge"
+                        elsif ["blanc", "bianco", "white"].include?(wt)
+                          "blanc"
+                        elsif ["rosé", "rose", "rosato"].include?(wt)
+                          "rosé"
+                        elsif wt == "champagne"
+                          "champagne"
+                        elsif ["pétillant", "petillant", "frizzante", "sparkling"].include?(wt)
+                          "pétillant"
+                        elsif wt == "prosecco"
+                          "prosecco"
+                        else
+                          "rouge"
+                        end
+
+              bottle_img = case cat_key
+                           when "blanc" then "bianco.png"
+                           when "rosé" then "rose.png"
+                           when "champagne" then "champagne.png"
+                           when "pétillant", "prosecco" then "frizzante.png"
+                           else "rosso.png"
+                           end
+            %>
+            <div class="cellar-wine-item" data-wine-cat="<%= cat_key %>">
+              <div class="cellar-wine-item-left">
+                <%= image_tag bottle_img, alt: wine.name, class: "cellar-wine-item-img" %>
+                <div class="cellar-wine-item-info">
+                  <div class="cellar-wine-item-top">
+                    <h4 class="cellar-wine-item-name"><%= wine.name %></h4>
+                    <span class="wine-card-type <%= cat_key %>"><%= wine.wine_type %></span>
+                  </div>
+                  <p class="cellar-wine-item-meta">
+                    <%= wine.region %> • <%= wine.respond_to?(:size) && wine.size.present? ? wine.size : "75cl" %> • <strong><%= number_with_precision(wine.price.to_f, precision: 2, separator: ",") %> €</strong>
+                  </p>
+                  <p class="cellar-wine-item-location">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    </svg>
+                    <span><%= storage.name %> (R<%= wine.row_position %>-C<%= wine.col_position %>)</span>
+                  </p>
+                </div>
+              </div>
+              <div class="cellar-wine-item-actions">
+                <%= link_to "Voir la bouteille", storage_wine_path(storage, wine), class: "btn-cellar-wine-view" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <div id="cellar-category-empty" class="cellar-category-empty" style="display: <%= all_active_wines.empty? ? 'block' : 'none' %>;">
+          <p>Aucune bouteille dans cette catégorie</p>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      function filterCellarCategory(catKey, btnEl) {
+        document.querySelectorAll('.cellar-category-card').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        if (btnEl) btnEl.classList.add('active');
+
+        const items = document.querySelectorAll('.cellar-wine-item');
+        let visibleCount = 0;
+
+        items.forEach(item => {
+          const itemCat = item.getAttribute('data-wine-cat');
+          if (catKey === 'all' || itemCat === catKey) {
+            item.style.display = 'flex';
+            visibleCount++;
+          } else {
+            item.style.display = 'none';
+          }
+        });
+
+        const emptyEl = document.getElementById('cellar-category-empty');
+        if (emptyEl) {
+          emptyEl.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+      }
+    </script>
   <% else %>
     <div class="empty-state">
       <h2 class="empty-title">Aucun stockage pour le moment</h2>
