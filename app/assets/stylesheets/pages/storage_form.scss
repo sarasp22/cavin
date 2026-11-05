@@ -259,22 +259,33 @@
 }
 
 .grid-preview {
-  margin-top: 30px;
-  padding: 30px;
+  margin-top: 24px;
+  padding: 24px;
   background-color: #faf8f3;
   border-radius: 24px;
   border: 1.5px solid #e8dfc8;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .grid-preview-container {
   display: grid;
   gap: 8px;
-  max-width: 600px;
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .bottle-slot {
+  width: 100%;
+  max-width: 42px;
+  height: auto;
   aspect-ratio: 1;
+  min-width: 0;
+  margin: 0 auto;
+  box-sizing: border-box;
   background-color: #ffffff;
   border: 2px solid #c4a661;
   border-radius: 12px;
@@ -285,10 +296,10 @@
 }
 
 .bottle-slot svg {
-  width: 60%;
-  height: 60%;
+  width: 58%;
+  height: 58%;
   stroke: #c4a661;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 .bottle-slot:hover {
@@ -298,20 +309,27 @@
 
 .bottle-slot:hover svg {
   stroke: #5d2e2e;
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 .form-actions {
   text-align: center;
-  margin-top: 50px;
+  margin-top: 36px;
+}
+
+.storage-form-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 }
 
 .btn-submit-storage {
-  padding: 18px 60px;
+  padding: 14px 42px;
   background-color: #5d2e2e;
   color: #ffffff;
   font-family: 'Inria Serif', serif;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 700;
   border: none;
   border-radius: 9999px;
@@ -322,8 +340,32 @@
 
 .btn-submit-storage:hover {
   background-color: #7a3a3a;
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: 0 12px 28px rgba(93, 46, 46, 0.3);
+}
+
+.storage-delete-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee5d3;
+}
+
+.btn-delete-storage {
+  padding: 11px 28px;
+  background-color: #ffffff;
+  color: #991b1b;
+  border: 1.5px solid #991b1b;
+  border-radius: 9999px;
+  font-family: 'Inria Serif', serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-delete-storage:hover {
+  background-color: #991b1b;
+  color: #ffffff;
 }
 
 /* Mobile Responsive Overrides for Storage New / Edit Form */
@@ -334,88 +376,98 @@
   }
 
   .storage-form-card {
-    padding: 18px 12px;
+    padding: 16px 12px;
     border-radius: 20px;
   }
 
   .storage-form-card .form-main-title {
     font-size: 1.35rem;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 
   .form-section {
-    margin-bottom: 18px;
+    margin-bottom: 12px;
   }
 
   .form-section-label {
-    font-size: 0.95rem;
-    margin-bottom: 8px;
+    font-size: 0.82rem;
+    margin-bottom: 6px;
   }
 
   .form-text-input {
-    padding: 10px 38px 10px 14px;
-    font-size: 0.9rem;
-    border-radius: 14px;
+    padding: 8px 34px 8px 12px;
+    font-size: 0.85rem;
+    border-radius: 12px;
   }
 
   .storage-types-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
   }
 
   .storage-type-image {
-    height: 92px;
-    border-radius: 14px;
+    height: 68px;
+    border-radius: 10px;
     border-width: 2px;
   }
 
   .storage-type-overlay {
-    padding: 8px 6px;
+    padding: 5px 4px;
   }
 
   .storage-type-name {
-    font-size: 0.78rem;
+    font-size: 0.66rem;
+    line-height: 1.1;
   }
 
   .dimensions-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
   }
 
   .dimension-label {
-    font-size: 0.8rem;
-    margin-bottom: 6px;
+    font-size: 0.76rem;
+    margin-bottom: 4px;
   }
 
   .dimension-input-group {
-    padding: 6px 8px;
-    gap: 6px;
+    padding: 4px 6px;
+    gap: 5px;
+    width: 100%;
+    max-width: 145px;
+    box-sizing: border-box;
   }
 
   .dimension-btn {
-    width: 28px;
-    height: 28px;
-    font-size: 1rem;
+    width: 26px;
+    height: 26px;
+    font-size: 0.95rem;
+    flex-shrink: 0;
   }
 
   .dimension-input {
-    width: 44px;
-    padding: 4px;
-    font-size: 0.95rem;
-    border-radius: 10px;
+    width: 42px;
+    min-width: 0;
+    padding: 3px;
+    font-size: 0.88rem;
+    border-radius: 8px;
   }
 
   .dimension-subtitle {
-    font-size: 0.72rem;
-    margin-top: 4px;
+    display: none;
   }
 
   .grid-preview {
-    margin-top: 14px;
-    padding: 12px 8px;
-    border-radius: 16px;
+    margin-top: 8px;
+    padding: 10px 6px;
+    border-radius: 14px;
     overflow: hidden;
+  }
+
+  .grid-preview .preview-label {
+    font-size: 0.78rem;
+    margin-bottom: 8px;
   }
 
   .grid-preview-container {
@@ -425,18 +477,40 @@
   }
 
   .bottle-slot {
+    width: 100%;
+    max-width: 36px;
+    height: auto;
+    aspect-ratio: 1;
+    min-width: 0;
     border-radius: 7px;
     border-width: 1.5px;
-    min-width: 0;
+    margin: 0 auto;
   }
 
   .form-actions {
-    margin-top: 18px;
+    margin-top: 12px;
   }
 
-  .btn-submit-storage {
+  .storage-form-actions {
+    gap: 10px;
+  }
+
+  .storage-form-actions .btn-secondary,
+  .storage-form-actions .btn-submit-storage {
+    flex: 1;
+    width: auto;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+
+  .storage-delete-section {
+    margin-top: 12px;
+    padding-top: 12px;
+  }
+
+  .btn-delete-storage {
     width: 100%;
-    padding: 12px 20px;
-    font-size: 0.92rem;
+    padding: 9px 14px;
+    font-size: 0.82rem;
   }
 }

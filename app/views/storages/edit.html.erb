@@ -8,7 +8,7 @@
         <div class="input-with-icon">
           <%= f.text_field :name, class: "form-text-input", placeholder: "Ex: Ma Cave Privée", required: true %>
           <div class="input-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
           </div>
         </div>
       </div>
@@ -28,7 +28,7 @@
                           else "default_storage.jpg"
                           end
             %>
-            <div class="storage-type-card">
+            <div class="storage-type-card" onclick="selectCategoryEdit(this)">
               <%= f.radio_button :category, category, id: "category_#{index}", class: "storage-radio-input", checked: (@storage.category == category) %>
               <label for="category_<%= index %>" class="storage-type-label">
                 <div class="storage-type-image">
@@ -43,33 +43,100 @@
         </div>
       </div>
 
-      <div class="dimensions-grid">
-        <div class="dimension-control">
-          <label class="dimension-label">Nombre de lignes</label>
-          <div class="dimension-input-group">
-            <button type="button" class="dimension-btn" onclick="this.parentNode.querySelector('input').stepDown()">-</button>
-            <%= f.number_field :rows, class: "dimension-input", min: 1, max: 20 %>
-            <button type="button" class="dimension-btn" onclick="this.parentNode.querySelector('input').stepUp()">+</button>
+      <div class="form-section">
+        <label class="form-section-label">Dimensions du Stockage</label>
+
+        <div class="dimensions-grid">
+          <div class="dimension-control">
+            <label class="dimension-label">Nombre de lignes</label>
+            <div class="dimension-input-group">
+              <button type="button" class="dimension-btn" onclick="changeEditRows(-1)">-</button>
+              <%= f.number_field :rows, class: "dimension-input", id: "edit-storage-rows", min: 1, max: 20, onchange: "updateEditStorageGrid()" %>
+              <button type="button" class="dimension-btn" onclick="changeEditRows(1)">+</button>
+            </div>
+          </div>
+
+          <div class="dimension-control">
+            <label class="dimension-label">Nombre de colonnes</label>
+            <div class="dimension-input-group">
+              <button type="button" class="dimension-btn" onclick="changeEditCols(-1)">-</button>
+              <%= f.number_field :cols, class: "dimension-input", id: "edit-storage-cols", min: 1, max: 20, onchange: "updateEditStorageGrid()" %>
+              <button type="button" class="dimension-btn" onclick="changeEditCols(1)">+</button>
+            </div>
           </div>
         </div>
 
-        <div class="dimension-control">
-          <label class="dimension-label">Nombre de colonnes</label>
-          <div class="dimension-input-group">
-            <button type="button" class="dimension-btn" onclick="this.parentNode.querySelector('input').stepDown()">-</button>
-            <%= f.number_field :cols, class: "dimension-input", min: 1, max: 20 %>
-            <button type="button" class="dimension-btn" onclick="this.parentNode.querySelector('input').stepUp()">+</button>
-          </div>
+        <div class="grid-preview">
+          <p class="preview-label" id="edit-storage-slots-label">Aperçu de la grille</p>
+          <div class="grid-preview-container" id="edit-storage-grid-preview"></div>
         </div>
       </div>
 
-      <div class="form-actions">
-        <%= f.submit "Enregistrer les modifications", class: "btn-submit-storage" %>
+      <div class="form-actions storage-form-actions">
+        <%= link_to "Annuler", storage_path(@storage), class: "btn-secondary" %>
+        <%= f.submit "Enregistrer", class: "btn-submit-storage" %>
       </div>
     <% end %>
 
-    <div class="form-actions" style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 30px;">
-      <%= button_to "Supprimer le stockage", storage_path(@storage), method: :delete, class: "btn-submit-storage", style: "background-color: #991b1b; padding: 12px 30px; font-size: 1rem; text-decoration: none; display: inline-block;" %>
+    <div class="form-actions storage-delete-section">
+      <%= button_to "Supprimer le stockage", storage_path(@storage), method: :delete, class: "btn-delete-storage" %>
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    updateEditStorageGrid();
+  });
+  document.addEventListener('turbo:load', function() {
+    updateEditStorageGrid();
+  });
+
+  function selectCategoryEdit(card) {
+    const radio = card.querySelector('input[type="radio"]');
+    if (radio) radio.checked = true;
+  }
+
+  function changeEditRows(delta) {
+    const input = document.getElementById('edit-storage-rows');
+    if (!input) return;
+    const val = Math.min(Math.max(1, (parseInt(input.value, 10) || 1) + delta), 20);
+    input.value = val;
+    updateEditStorageGrid();
+  }
+
+  function changeEditCols(delta) {
+    const input = document.getElementById('edit-storage-cols');
+    if (!input) return;
+    const val = Math.min(Math.max(1, (parseInt(input.value, 10) || 1) + delta), 20);
+    input.value = val;
+    updateEditStorageGrid();
+  }
+
+  function updateEditStorageGrid() {
+    const rowsInput = document.getElementById('edit-storage-rows');
+    const colsInput = document.getElementById('edit-storage-cols');
+    const gridPreview = document.getElementById('edit-storage-grid-preview');
+    const labelEl = document.getElementById('edit-storage-slots-label');
+    if (!rowsInput || !colsInput || !gridPreview) return;
+
+    const rows = Math.min(Math.max(1, parseInt(rowsInput.value, 10) || 3), 20);
+    const cols = Math.min(Math.max(1, parseInt(colsInput.value, 10) || 4), 20);
+
+    if (labelEl) {
+      labelEl.textContent = 'Aperçu de la grille (' + rows + ' × ' + cols + ' = ' + (rows * cols) + ' emplacements)';
+    }
+
+    gridPreview.style.gridTemplateColumns = 'repeat(' + cols + ', minmax(0, 1fr))';
+    gridPreview.style.maxWidth = (cols * 48) + 'px';
+    gridPreview.innerHTML = '';
+
+    const totalSlots = rows * cols;
+    for (let i = 0; i < totalSlots; i++) {
+      const slot = document.createElement('div');
+      slot.className = 'bottle-slot';
+      slot.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#4a0e0e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2h4v2.5h-4z" fill="#4a0e0e"/><path d="M10 4.5v5.5c0 0 0 1-1 2s-2 1.5-2 4v6c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2v-6c0-2.5-1-3-2-4s-1-2-1-2V4.5"/></svg>';
+      gridPreview.appendChild(slot);
+    }
+  }
+</script>
