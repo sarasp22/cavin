@@ -1,9 +1,22 @@
+<%
+  user_storages_data = current_user.storages.order(:id).map do |st|
+    occupied = st.wines.where(consumed_at: nil).where.not(id: @wine.id).pluck(:row_position, :col_position).map { |r, c| "#{r}-#{c}" }
+    {
+      id: st.id,
+      name: st.name,
+      category: st.category,
+      rows: st.rows,
+      cols: st.cols,
+      occupied: occupied
+    }
+  end
+%>
+
 <div class="wine-form-container">
   <div class="wine-form-card">
     <h1 class="form-main-title">Modifier le Vin</h1>
 
-    <%= form_with model: [@storage, @wine], class: "wine-form" do |f| %>
-
+    <%= form_with model: [@storage, @wine], local: true, class: "wine-form" do |f| %>
       <div class="form-group">
         <%= f.label :name, "Nom du vin", class: "form-label" %>
         <%= f.text_field :name, placeholder: "Ex: Château Margaux 2015", class: "form-input", required: true %>
@@ -11,11 +24,7 @@
 
       <div class="form-group">
         <%= f.label :wine_type, "Type de vin", class: "form-label" %>
-        <%= f.select :wine_type,
-            [["Rouge", "Rouge"], ["Blanc", "Blanc"], ["Rosé", "Rosé"], ["Champagne", "Champagne"], ["Pétillant", "Pétillant"], ["Prosecco", "Prosecco"]],
-            { prompt: "Sélectionnez un type" },
-            class: "form-input",
-            required: true %>
+        <%= f.select :wine_type, ["Rouge", "Blanc", "Rosé", "Champagne", "Pétillant", "Prosecco"], {}, class: "form-input", required: true %>
       </div>
 
       <div class="form-group">
@@ -28,22 +37,130 @@
         <%= f.number_field :price, step: 0.01, min: 0, placeholder: "Ex: 45.50", class: "form-input", required: true %>
       </div>
 
+      <div class="form-group">
+        <%= f.label :size, "Format de la bouteille", class: "form-label" %>
+        <%= f.select :size, ["37.5cl", "75cl", "1.5L (Magnum)", "3L (Jéroboam)", "6L (Mathusalem)"], { selected: (@wine.size.presence || "75cl") }, class: "form-input" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :storage_id, "Stockage", class: "form-label" %>
+        <%= f.select :storage_id,
+              user_storages_data.map { |st| ["#{st[:name]} (#{st[:category]} — #{st[:rows]}x#{st[:cols]})", st[:id]] },
+              { selected: @wine.storage_id },
+              { class: "form-input", id: "edit-storage-select", onchange: "onStorageChange(this.value)" } %>
+      </div>
+
       <div class="form-row">
         <div class="form-group">
           <%= f.label :row_position, "Rangée", class: "form-label" %>
-          <%= f.number_field :row_position, min: 1, max: @storage.rows, class: "form-input", required: true %>
+          <%= f.number_field :row_position, min: 1, max: @storage.rows, class: "form-input", id: "edit-row-input", onchange: "syncGridFromInputs()", required: true %>
         </div>
 
         <div class="form-group">
           <%= f.label :col_position, "Colonne", class: "form-label" %>
-          <%= f.number_field :col_position, min: 1, max: @storage.cols, class: "form-input", required: true %>
+          <%= f.number_field :col_position, min: 1, max: @storage.cols, class: "form-input", id: "edit-col-input", onchange: "syncGridFromInputs()", required: true %>
         </div>
       </div>
 
-      <div class="form-actions">
+      <div class="position-preview" style="margin-bottom: 30px;">
+        <p class="preview-label">Positions dans le Stockage</p>
+        <div class="preview-grid" id="edit-position-grid"></div>
+      </div>
+
+      <div class="form-actions" style="display: flex; justify-content: center; gap: 20px;">
         <%= link_to "Annuler", storage_wine_path(@storage, @wine), class: "btn-secondary" %>
         <%= f.submit "Mettre à jour", class: "btn-submit-wine" %>
       </div>
     <% end %>
   </div>
 </div>
+
+<script>
+  const EDIT_STORAGES_DATA = <%= raw user_storages_data.to_json %>;
+  const INITIAL_STORAGE_ID = <%= @wine.storage_id || @storage.id %>;
+  const INITIAL_ROW = <%= @wine.row_position || 1 %>;
+  const INITIAL_COL = <%= @wine.col_position || 1 %>;
+
+  function renderEditGrid(storageObj, selectedRow, selectedCol) {
+    const gridEl = document.getElementById('edit-position-grid');
+    const rowInput = document.getElementById('edit-row-input');
+    const colInput = document.getElementById('edit-col-input');
+    if (!gridEl || !storageObj) return;
+
+    rowInput.max = storageObj.rows;
+    colInput.max = storageObj.cols;
+    rowInput.value = selectedRow;
+    colInput.value = selectedCol;
+
+    gridEl.style.gridTemplateColumns = 'repeat(' + storageObj.cols + ', 1fr)';
+    gridEl.innerHTML = '';
+
+    for (let r = 1; r <= storageObj.rows; r++) {
+      for (let c = 1; c <= storageObj.cols; c++) {
+        const key = r + '-' + c;
+        const isOccupied = (storageObj.occupied || []).includes(key);
+        const isSelected = !isOccupied && r === selectedRow && c === selectedCol;
+
+        const slot = document.createElement('div');
+        slot.className = 'preview-slot' + (isOccupied ? ' occupied' : '') + (isSelected ? ' selected' : '');
+        if (isOccupied) {
+          slot.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 2h8l2 10-4 10-4-10z"/><ellipse cx="12" cy="2" rx="4" ry="1"/></svg>';
+        } else {
+          slot.innerHTML = '<span class="slot-label">R' + r + 'C' + c + '</span>';
+          slot.onclick = function() {
+            renderEditGrid(storageObj, r, c);
+          };
+        }
+        gridEl.appendChild(slot);
+      }
+    }
+  }
+
+  function onStorageChange(storageIdStr) {
+    const stId = parseInt(storageIdStr, 10);
+    const st = EDIT_STORAGES_DATA.find(function(s) { return s.id === stId; });
+    if (!st) return;
+
+    let targetR = 1;
+    let targetC = 1;
+
+    if (st.id === INITIAL_STORAGE_ID) {
+      targetR = INITIAL_ROW;
+      targetC = INITIAL_COL;
+    } else {
+      let found = false;
+      for (let r = 1; r <= st.rows && !found; r++) {
+        for (let c = 1; c <= st.cols && !found; c++) {
+          if (!(st.occupied || []).includes(r + '-' + c)) {
+            targetR = r;
+            targetC = c;
+            found = true;
+          }
+        }
+      }
+    }
+
+    renderEditGrid(st, targetR, targetC);
+  }
+
+  function syncGridFromInputs() {
+    const selectEl = document.getElementById('edit-storage-select');
+    const rowInput = document.getElementById('edit-row-input');
+    const colInput = document.getElementById('edit-col-input');
+    if (!selectEl || !rowInput || !colInput) return;
+
+    const st = EDIT_STORAGES_DATA.find(function(s) { return s.id === parseInt(selectEl.value, 10); });
+    if (!st) return;
+
+    const r = Math.min(Math.max(1, parseInt(rowInput.value, 10) || 1), st.rows);
+    const c = Math.min(Math.max(1, parseInt(colInput.value, 10) || 1), st.cols);
+    renderEditGrid(st, r, c);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    onStorageChange(INITIAL_STORAGE_ID);
+  });
+  document.addEventListener('turbo:load', function() {
+    onStorageChange(INITIAL_STORAGE_ID);
+  });
+</script>

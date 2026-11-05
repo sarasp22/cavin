@@ -1,3 +1,4 @@
+/* Storage Show (CAVE GRID & SLOTS STRICTLY PRESERVED) */
 .storage-show-container {
   max-width: 1400px;
   margin: 0 auto;
@@ -51,12 +52,6 @@
   margin: 0;
 }
 
-@media (max-width: 768px) {
-  .storage-show-subtitle {
-    font-size: 0.9rem;
-  }
-}
-
 .storage-show-actions {
   display: flex;
   gap: 15px;
@@ -73,27 +68,13 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 24px;
+  padding: 12px 26px;
   font-family: 'Inria Serif', serif;
   font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-@media (max-width: 768px) {
-  .btn-back, .btn-edit {
-    padding: 10px;
-    font-size: 0.85rem;
-    flex: 1;
-    justify-content: center;
-    gap: 5px;
-  }
-  .btn-back svg, .btn-edit svg {
-    width: 16px;
-    height: 16px;
-  }
+  border-radius: 9999px;
+  transition: all 0.25s ease;
 }
 
 .btn-back { background: #f5f1e8; color: #2c1810; border: 2px solid #e8dfc8; }
@@ -108,8 +89,10 @@
 
 @media (max-width: 768px) {
   .wine-grid-container {
-    padding: 12px;
+    padding: 10px 8px;
     border-radius: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -122,7 +105,8 @@
 
 @media (max-width: 768px) {
   .wine-grid {
-    gap: 8px;
+    gap: 6px;
+    min-width: min-content;
   }
 }
 
@@ -138,13 +122,6 @@
   padding: 10px;
   position: relative;
   overflow: hidden;
-}
-
-@media (max-width: 768px) {
-  .wine-slot {
-    padding: 6px;
-    border-radius: 8px;
-  }
 }
 
 .wine-slot.filled {
@@ -190,25 +167,11 @@
   padding: 0 5px;
 }
 
-@media (max-width: 768px) {
-  .wine-slot.filled .wine-name {
-    font-size: 0.7rem;
-    padding: 0 2px;
-  }
-}
-
 .wine-slot.filled .wine-type {
   font-size: 0.7rem;
   color: #c4a661;
   margin: 0;
   text-transform: uppercase;
-}
-
-@media (max-width: 768px) {
-  .wine-slot.filled .wine-type {
-    font-size: 0.55rem;
-    letter-spacing: 0px;
-  }
 }
 
 .wine-slot.empty {
@@ -223,13 +186,6 @@
 
 .wine-slot.empty .add-wine-icon { color: #c4a661; }
 
-@media (max-width: 768px) {
-  .wine-slot.empty .add-wine-icon svg {
-    width: 20px;
-    height: 20px;
-  }
-}
-
 .wine-slot.empty .slot-position {
   font-size: 0.75rem;
   color: #888;
@@ -237,9 +193,84 @@
 }
 
 @media (max-width: 768px) {
+  .wine-slot {
+    aspect-ratio: auto;
+    min-width: 68px;
+    height: 82px;
+    padding: 5px 4px;
+    border-radius: 10px;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+
+  .wine-slot.filled .wine-bottle-icon {
+    width: 100%;
+    height: 32px;
+    min-height: 0;
+    max-height: 32px;
+    flex: 0 0 32px;
+    margin-bottom: 2px;
+    overflow: hidden;
+  }
+
+  .wine-slot.filled .bottle-image {
+    height: 28px;
+    max-height: 28px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .wine-slot.filled .wine-info {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .wine-slot.filled .wine-name {
+    font-size: 0.68rem;
+    line-height: 1.12;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    padding: 0 2px;
+    max-width: 100%;
+  }
+
+  .wine-slot.filled .wine-type {
+    display: none;
+  }
+
+  .wine-slot.empty {
+    justify-content: center;
+  }
+
+  .wine-slot.empty .add-wine-icon,
+  .wine-slot.empty .add-wine-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
   .wine-slot.empty .slot-position {
-    font-size: 0.6rem;
+    font-size: 0.64rem;
     margin-top: 2px;
+  }
+
+  .floating-add-btn {
+    bottom: 22px;
+    right: 22px;
+    width: 52px;
+    height: 52px;
   }
 }
 
@@ -255,19 +286,6 @@
   align-items: center;
   justify-content: center;
   color: white;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.3);
   z-index: 99;
-}
-
-@media (max-width: 768px) {
-  .floating-add-btn {
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-  }
-  .floating-add-btn svg {
-    width: 24px;
-    height: 24px;
-  }
 }

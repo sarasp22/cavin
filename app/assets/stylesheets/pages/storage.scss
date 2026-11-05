@@ -1,3 +1,4 @@
+/* Storages Index (Caves Visuals Preserved + Mobile 2-Column Compact Grid & PingSafe Drawer) */
 .storages-container {
   max-width: 1400px;
   margin: 0 auto;
@@ -298,6 +299,7 @@
   line-height: 1.6;
 }
 
+/* Compact Summary Pill & Dropdown Bar at Bottom of Mes Stockages (PingSafe Style) */
 .cellar-summary-bar {
   margin-top: 32px;
   background: #ffffff;
@@ -446,6 +448,7 @@
   }
 }
 
+/* PingSafe-Style Floating Modal Drawer */
 .cellar-drawer-backdrop {
   position: fixed;
   inset: 0;
@@ -591,6 +594,7 @@
   border-color: #5d2e2e;
 }
 
+/* Compact Bottle Cards List (NO bottle images) */
 .cellar-drawer-list {
   padding: 12px 14px 18px;
   overflow-y: auto;
