@@ -54,6 +54,7 @@
       end
     %>
 
+    <!-- Griglia delle Cantine (2 colonne compatte su mobile) -->
     <div class="storages-grid">
       <% @storages.each do |storage| %>
         <div class="storage-card">
@@ -88,6 +89,7 @@
       <% end %>
     </div>
 
+    <!-- Barra Riepilogo Compatta in basso a Mes Stockages (SOLO 2 PILLOLE) -->
     <div class="cellar-summary-bar">
       <div class="cellar-summary-pill">
         <span class="cellar-summary-dot"></span>
@@ -104,6 +106,7 @@
       </button>
     </div>
 
+    <!-- Modal / Drawer flottante (senza immagini bottiglia, card compatte) -->
     <div class="cellar-drawer-backdrop" id="cellar-drawer-backdrop" onclick="if(event.target === this) closeCellarDrawer()">
       <div class="cellar-drawer-panel" role="dialog" aria-modal="true">
         <div class="cellar-drawer-header">
@@ -120,6 +123,7 @@
           </button>
         </div>
 
+        <!-- Tutte le pillole categorie ben visibili su 2 righe dentro il pannello -->
         <div class="cellar-drawer-filter-bar">
           <div class="cellar-drawer-chips">
             <% categories.each_with_index do |cat, idx| %>
