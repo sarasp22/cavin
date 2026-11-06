@@ -2,33 +2,87 @@
 <html>
   <head>
     <title>Cavin</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="theme-color" content="#5d2e2e">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Cavin">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
 
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" href="<%= asset_path('logo.png') %>">
+    <link rel="apple-touch-icon" id="cavin-apple-icon" href="<%= asset_path('logo.png') %>">
+
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Imperial+Script&family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
   </head>
 
   <body>
-  <%= render 'shared/navbar' %>
-<% flash.each do |type, message| %>
-  <div class="flash-alert flash-<%= type %>" id="flash-message">
-    <div class="flash-content">
-      <% if type == 'notice' %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flash-icon"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-      <% else %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flash-icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-      <% end %>
-      <span><%= message %></span>
-    </div>
-    <button class="flash-close" onclick="document.getElementById('flash-message').style.display='none'">&times;</button>
-  </div>
-<% end %>
+    <%= render "shared/navbar" %>
 
-      <%= yield %>
+    <% if notice %>
+      <div class="flash-alert flash-notice" id="flash-message">
+        <div class="flash-content">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flash-icon"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          <span><%= notice %></span>
+        </div>
+        <button class="flash-close" onclick="document.getElementById('flash-message').style.display='none'">&times;</button>
+      </div>
+    <% end %>
+
+    <% if alert %>
+      <div class="flash-alert flash-alert" id="flash-message">
+        <div class="flash-content">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="flash-icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <span><%= alert %></span>
+        </div>
+        <button class="flash-close" onclick="document.getElementById('flash-message').style.display='none'">&times;</button>
+      </div>
+    <% end %>
+
+    <%= yield %>
+
+    <script>
+      setTimeout(() => {
+        const flash = document.getElementById('flash-message');
+        if (flash) {
+          flash.style.transition = "opacity 0.5s ease";
+          flash.style.opacity = "0";
+          setTimeout(() => flash.remove(), 500);
+        }
+      }, 4000);
+
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js').catch(function() {});
+        });
+      }
+
+      (function() {
+        const iconLink = document.getElementById('cavin-apple-icon');
+        if (!iconLink) return;
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = function() {
+          try {
+            const canvas = document.createElement('canvas');
+            canvas.width = 180;
+            canvas.height = 180;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#f5f1e8';
+            ctx.fillRect(0, 0, 180, 180);
+            ctx.drawImage(img, 18, 18, 144, 144);
+            iconLink.href = canvas.toDataURL('image/png');
+          } catch (_e) {}
+        };
+        img.src = iconLink.href;
+      })();
+    </script>
   </body>
 </html>

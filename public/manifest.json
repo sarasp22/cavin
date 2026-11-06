@@ -1,0 +1,26 @@
+{
+  "id": "/",
+  "name": "Cavin — Ma Cave à Vin",
+  "short_name": "Cavin",
+  "description": "L'ordre parfait pour votre cave à vin avec Sommelier IA personnel.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f5f1e8",
+  "theme_color": "#5d2e2e",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
