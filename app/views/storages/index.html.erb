@@ -20,50 +20,37 @@
 
   <% if @storages.any? %>
     <%
-      all_active_wines = @storages.flat_map { |st| st.wines.where(consumed_at: nil).map { |w| [w, st] } }
-      total_bottles_count = all_active_wines.size
-      total_cellar_value = all_active_wines.sum { |(w, _st)| w.price.to_f }
+      active_wines = @storages.flat_map { |s| s.wines.active.to_a }
+      total_bottles = active_wines.size
+      total_value = active_wines.sum { |w| w.price.to_f }
 
-      raw_categories = [
-        { key: "all", label: "Tous les vins" },
-        { key: "rouge", label: "Rouge" },
-        { key: "blanc", label: "Blanc" },
-        { key: "rosé", label: "Rosé" },
-        { key: "champagne", label: "Champagne" },
-        { key: "pétillant", label: "Pétillant" },
-        { key: "prosecco", label: "Prosecco" }
-      ]
+      normalize_cat = lambda do |wt|
+        s = wt.to_s.strip.downcase
+        case s
+        when 'rouge', 'rosso', 'red' then 'rouge'
+        when 'blanc', 'bianco', 'white' then 'blanc'
+        when 'rosé', 'rose', 'rosato' then 'rosé'
+        when 'champagne' then 'champagne'
+        when 'pétillant', 'petillant', 'frizzante', 'sparkling' then 'pétillant'
+        when 'prosecco' then 'prosecco'
+        else 'rouge'
+        end
+      end
 
-      categories = raw_categories.map do |cat|
-        matching = if cat[:key] == "all"
-                     all_active_wines
-                   else
-                     all_active_wines.select do |(w, _st)|
-                       wt = w.wine_type.to_s.downcase.strip
-                       norm = if ["rouge", "rosso", "red"].include?(wt)
-                                "rouge"
-                              elsif ["blanc", "bianco", "white"].include?(wt)
-                                "blanc"
-                              elsif ["rosé", "rose", "rosato"].include?(wt)
-                                "rosé"
-                              elsif wt == "champagne"
-                                "champagne"
-                              elsif ["pétillant", "petillant", "frizzante", "sparkling"].include?(wt)
-                                "pétillant"
-                              elsif wt == "prosecco"
-                                "prosecco"
-                              else
-                                "rouge"
-                              end
-                       norm == cat[:key]
-                     end
-                   end
-        {
-          key: cat[:key],
-          label: cat[:label],
+      categories = [
+        { key: 'all', label: 'Tous les vins' },
+        { key: 'rouge', label: 'Rouge' },
+        { key: 'blanc', label: 'Blanc' },
+        { key: 'rosé', label: 'Rosé' },
+        { key: 'champagne', label: 'Champagne' },
+        { key: 'pétillant', label: 'Pétillant' },
+        { key: 'prosecco', label: 'Prosecco' }
+      ].map do |cat|
+        matching = cat[:key] == 'all' ? active_wines : active_wines.select { |w| normalize_cat.call(w.wine_type) == cat[:key] }
+        cat.merge(
           count: matching.size,
-          val: matching.sum { |(w, _st)| w.price.to_f }
-        }
+          val: matching.sum { |w| w.price.to_f }
+        )
       end
     %>
 
@@ -72,25 +59,24 @@
         <div class="storage-card">
           <%= link_to storage_path(storage), class: "storage-link" do %>
             <div class="storage-image">
-              <%
-                photo_file = if storage.photo_url.present?
-                               storage.photo_url
-                             else
-                               case storage.category
-                               when "Cave" then "cave.jpg"
-                               when "Vinothèque salon" then "vinotheque_salon.png"
-                               when "Meuble cuisine" then "meuble_cuisine.jpg"
-                               when "Vinothèque cuisine" then "vinotheque_cuisine.png"
-                               when "Frigo" then "frigo.png"
-                               else "cave.jpg"
-                               end
-                             end
-              %>
-              <%= image_tag photo_file, alt: storage.name, class: "storage-photo" %>
+              <% case storage.storage_type %>
+              <% when "Cave" %>
+                <%= image_tag "cave.png", alt: storage.name, class: "storage-photo" %>
+              <% when "Vinothèque salon" %>
+                <%= image_tag "vinotheque-salon.png", alt: storage.name, class: "storage-photo" %>
+              <% when "Meuble cuisine" %>
+                <%= image_tag "meuble-cuisine.png", alt: storage.name, class: "storage-photo" %>
+              <% when "Vinothèque cuisine" %>
+                <%= image_tag "vinotheque-cuisine.png", alt: storage.name, class: "storage-photo" %>
+              <% when "Frigo" %>
+                <%= image_tag "frigo.png", alt: storage.name, class: "storage-photo" %>
+              <% else %>
+                <%= image_tag "cave.png", alt: storage.name, class: "storage-photo" %>
+              <% end %>
               <div class="storage-overlay">
                 <h3 class="storage-name"><%= storage.name %></h3>
                 <p class="storage-bottles">
-                  <%= storage.wines.where(consumed_at: nil).count %> Bouteilles
+                  <%= storage.wines.active.count %> Bouteilles
                 </p>
               </div>
             </div>
@@ -103,31 +89,19 @@
     </div>
 
     <div class="cellar-summary-bar">
-      <button type="button" class="cellar-summary-pill" onclick="openCellarDrawer('all')">
+      <div class="cellar-summary-pill">
         <span class="cellar-summary-dot"></span>
-        <span class="cellar-summary-count"><strong><%= total_bottles_count %></strong> <span>Bouteilles</span></span>
+        <span class="cellar-summary-count"><strong><%= total_bottles %></strong> <span>Bouteilles</span></span>
         <span class="cellar-summary-sep">|</span>
-        <span class="cellar-summary-val"><strong><%= number_with_precision(total_cellar_value, precision: 2, separator: ",") %> €</strong></span>
-      </button>
-
-      <div class="cellar-dropdown-control">
-        <select id="cellar-quick-select" class="cellar-category-select" aria-label="Filtrer par catégorie" onchange="if(this.value) { openCellarDrawer(this.value); }">
-          <option value="" selected disabled>Explorer par catégorie...</option>
-          <% categories.each do |cat| %>
-            <option value="<%= cat[:key] %>">
-              <%= cat[:label] %> (<%= cat[:count] %>) — <%= number_with_precision(cat[:val], precision: 2, separator: ",") %> €
-            </option>
-          <% end %>
-        </select>
-        <button type="button" class="btn-open-drawer" onclick="openCellarDrawer('all')">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-            <polyline points="2 17 12 22 22 17"></polyline>
-            <polyline points="2 12 12 17 22 12"></polyline>
-          </svg>
-          <span>Inventaire</span>
-        </button>
+        <span class="cellar-summary-val"><strong><%= number_with_precision(total_value, precision: 2, separator: ",") %> €</strong></span>
       </div>
+
+      <button type="button"
+              class="cellar-drawer-chip cellar-open-pill"
+              onclick="openCellarDrawer('all')">
+        <span>Tous les vins</span>
+        <strong><%= total_bottles %></strong>
+      </button>
     </div>
 
     <div class="cellar-drawer-backdrop" id="cellar-drawer-backdrop" onclick="if(event.target === this) closeCellarDrawer()">
@@ -135,10 +109,10 @@
         <div class="cellar-drawer-header">
           <div>
             <h3 class="cellar-drawer-title" id="cellar-drawer-title">
-              <span>Tous les vins</span> (<%= total_bottles_count %>)
+              <span>Tous les vins</span> (<%= total_bottles %>)
             </h3>
             <p class="cellar-drawer-subtitle" id="cellar-drawer-subtitle">
-              <%= total_bottles_count %> Bouteilles • <%= number_with_precision(total_cellar_value, precision: 2, separator: ",") %> €
+              <%= total_bottles %> Bouteilles • <%= number_with_precision(total_value, precision: 2, separator: ",") %> €
             </p>
           </div>
           <button type="button" class="cellar-drawer-close" onclick="closeCellarDrawer()" aria-label="Fermer">
@@ -147,22 +121,14 @@
         </div>
 
         <div class="cellar-drawer-filter-bar">
-          <select id="drawer-category-select" class="cellar-drawer-select" onchange="filterDrawerByCategory(this.value)">
-            <% categories.each do |cat| %>
-              <option value="<%= cat[:key] %>"
-                      data-label="<%= cat[:label] %>"
-                      data-count="<%= cat[:count] %>"
-                      data-val="<%= number_with_precision(cat[:val], precision: 2, separator: ",") %>">
-                <%= cat[:label] %> (<%= cat[:count] %>) — <%= number_with_precision(cat[:val], precision: 2, separator: ",") %> €
-              </option>
-            <% end %>
-          </select>
-
           <div class="cellar-drawer-chips">
             <% categories.each_with_index do |cat, idx| %>
               <button type="button"
-                      class="cellar-drawer-chip <%= 'active' if idx == 0 %>"
+                      class="cellar-drawer-chip <%= idx == 0 ? 'active' : '' %>"
                       data-chip-cat="<%= cat[:key] %>"
+                      data-label="<%= cat[:label] %>"
+                      data-count="<%= cat[:count] %>"
+                      data-val="<%= number_with_precision(cat[:val], precision: 2, separator: ",") %>"
                       onclick="filterDrawerByCategory('<%= cat[:key] %>')">
                 <span><%= cat[:label] %></span>
                 <strong><%= cat[:count] %></strong>
@@ -171,48 +137,36 @@
           </div>
         </div>
 
+        <!-- Lista scorrevole di card compatte (SENZA immagini bottiglia) -->
         <div class="cellar-drawer-list" id="cellar-drawer-list">
-          <% all_active_wines.each do |(wine, storage)| %>
-            <%
-              wt = wine.wine_type.to_s.downcase.strip
-              cat_key = if ["rouge", "rosso", "red"].include?(wt)
-                          "rouge"
-                        elsif ["blanc", "bianco", "white"].include?(wt)
-                          "blanc"
-                        elsif ["rosé", "rose", "rosato"].include?(wt)
-                          "rosé"
-                        elsif wt == "champagne"
-                          "champagne"
-                        elsif ["pétillant", "petillant", "frizzante", "sparkling"].include?(wt)
-                          "pétillant"
-                        elsif wt == "prosecco"
-                          "prosecco"
-                        else
-                          "rouge"
-                        end
-            %>
-            <%= link_to storage_wine_path(storage, wine), class: "cellar-ping-card cat-#{cat_key}", data: { wine_cat: cat_key } do %>
-              <div class="cellar-ping-body">
-                <div class="cellar-ping-top">
-                  <h4 class="cellar-ping-title"><%= wine.name %></h4>
-                  <div class="cellar-ping-right">
-                    <span class="cellar-ping-tag <%= cat_key %>"><%= wine.wine_type %></span>
-                    <span class="cellar-ping-price"><%= number_with_precision(wine.price.to_f, precision: 2, separator: ",") %> €</span>
+          <% @storages.each do |storage| %>
+            <% storage.wines.active.each do |wine| %>
+              <% cat_key = normalize_cat.call(wine.wine_type) %>
+              <%= link_to storage_wine_path(storage, wine),
+                          class: "cellar-ping-card cat-#{cat_key}",
+                          data: { wine_cat: cat_key } do %>
+                <div class="cellar-ping-body">
+                  <div class="cellar-ping-top">
+                    <h4 class="cellar-ping-title"><%= wine.name %></h4>
+                    <div class="cellar-ping-right">
+                      <span class="cellar-ping-tag <%= cat_key %>"><%= wine.wine_type %></span>
+                      <span class="cellar-ping-price"><%= number_with_precision(wine.price || 0, precision: 2, separator: ",") %> €</span>
+                    </div>
+                  </div>
+                  <div class="cellar-ping-meta">
+                    <span class="cellar-ping-storage">
+                      📍 <%= storage.name %> (R<%= wine.row_position %>-C<%= wine.col_position %>)
+                    </span>
+                    <span class="cellar-ping-desc">
+                      <%= wine.region %> • <%= wine.size.presence || "75cl" %>
+                    </span>
                   </div>
                 </div>
-                <div class="cellar-ping-meta">
-                  <span class="cellar-ping-storage">
-                    📍 <%= storage.name %> (R<%= wine.row_position %>-C<%= wine.col_position %>)
-                  </span>
-                  <span class="cellar-ping-desc">
-                    <%= wine.region %> • <%= wine.respond_to?(:size) && wine.size.present? ? wine.size : "75cl" %>
-                  </span>
-                </div>
-              </div>
+              <% end %>
             <% end %>
           <% end %>
 
-          <div id="cellar-drawer-empty" class="cellar-drawer-empty" style="display: <%= all_active_wines.empty? ? 'block' : 'none' %>;">
+          <div id="cellar-drawer-empty" class="cellar-drawer-empty" style="display: <%= active_wines.empty? ? 'block' : 'none' %>;">
             <p>Aucune bouteille dans cette catégorie</p>
           </div>
         </div>
@@ -233,29 +187,26 @@
         if (!backdrop) return;
         backdrop.classList.remove('open');
         document.body.style.overflow = '';
-        const quickSelect = document.getElementById('cellar-quick-select');
-        if (quickSelect) quickSelect.selectedIndex = 0;
       }
 
       function filterDrawerByCategory(catKey) {
-        const drawerSelect = document.getElementById('drawer-category-select');
-        if (drawerSelect) {
-          drawerSelect.value = catKey;
-          const selectedOpt = drawerSelect.options[drawerSelect.selectedIndex];
-          if (selectedOpt) {
-            const label = selectedOpt.getAttribute('data-label') || 'Inventaire';
-            const count = selectedOpt.getAttribute('data-count') || '0';
-            const val = selectedOpt.getAttribute('data-val') || '0,00';
-            const titleEl = document.getElementById('cellar-drawer-title');
-            const subEl = document.getElementById('cellar-drawer-subtitle');
-            if (titleEl) titleEl.textContent = label + ' (' + count + ')';
-            if (subEl) subEl.textContent = count + ' Bouteilles • ' + val + ' €';
-          }
-        }
-
-        document.querySelectorAll('.cellar-drawer-chip').forEach(function(chip) {
-          chip.classList.toggle('active', chip.getAttribute('data-chip-cat') === catKey);
+        let activeChip = null;
+        document.querySelectorAll('.cellar-drawer-filter-bar .cellar-drawer-chip').forEach(function(chip) {
+          const isMatch = chip.getAttribute('data-chip-cat') === catKey;
+          chip.classList.toggle('active', isMatch);
+          if (isMatch) activeChip = chip;
         });
+
+        if (activeChip) {
+          const labelSpan = activeChip.querySelector('span');
+          const label = labelSpan ? labelSpan.textContent : (activeChip.getAttribute('data-label') || 'Inventaire');
+          const count = activeChip.getAttribute('data-count') || '0';
+          const val = activeChip.getAttribute('data-val') || '0,00';
+          const titleEl = document.getElementById('cellar-drawer-title');
+          const subEl = document.getElementById('cellar-drawer-subtitle');
+          if (titleEl) titleEl.textContent = label + ' (' + count + ')';
+          if (subEl) subEl.textContent = count + ' Bouteilles • ' + val + ' €';
+        }
 
         let visible = 0;
         document.querySelectorAll('.cellar-ping-card').forEach(function(card) {
