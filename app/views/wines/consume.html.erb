@@ -1,10 +1,23 @@
 <div class="consume-page">
   <div class="consume-card">
+    <%
+      wt_class = @wine.wine_type.to_s.strip.downcase
+      bottle_img = case wt_class
+                   when "blanc", "bianco", "white" then "bianco.png"
+                   when "rosé", "rose", "rosato" then "rose.png"
+                   when "champagne" then "champagne.png"
+                   when "pétillant", "petillant", "prosecco", "frizzante", "sparkling" then "frizzante.png"
+                   else "rosso.png"
+                   end
+      wine_size = (@wine.respond_to?(:size) && @wine.size.present?) ? @wine.size : "75cl"
+    %>
+
     <div class="consume-header">
       <div class="consume-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-          <path d="m9 12 2 2 4-4"></path>
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 22h8"></path>
+          <path d="M12 15v7"></path>
+          <path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"></path>
         </svg>
       </div>
       <h1 class="consume-title">Marquer comme consommé</h1>
@@ -12,88 +25,94 @@
     </div>
 
     <div class="wine-info-box">
-      <div class="wine-info-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M8 2h8l2 10-4 10-4-10z"/>
-          <ellipse cx="12" cy="2" rx="4" ry="1"/>
-        </svg>
+      <div class="consume-bottle-thumb">
+        <%= image_tag bottle_img, alt: @wine.name, class: "consume-bottle-img" %>
       </div>
       <div class="wine-info-text">
+        <div class="consume-wine-badges">
+          <span class="consume-wine-type <%= wt_class %>"><%= @wine.wine_type %></span>
+          <span class="consume-wine-pos">📍 <%= @storage.name %> (R<%= @wine.row_position %>-C<%= @wine.col_position %>)</span>
+        </div>
         <h3><%= @wine.name %></h3>
-        <p><%= @wine.wine_type %> • <%= @wine.region %></p>
+        <p><%= @wine.region %> • <%= wine_size %> • <%= number_with_precision(@wine.price || 0, precision: 2, separator: ",") %> €</p>
       </div>
     </div>
 
-<%= form_with url: mark_consumed_storage_wine_path(@storage, @wine), method: :patch, class: "consume-form" do |f| %>
-<div class="form-group">
-  <label>Votre évaluation</label>
-  <div class="star-rating">
-    <% 5.downto(1) do |i| %>
-      <input type="radio" value="<%= i %>" name="wine[rating]" id="rating_<%= i %>" class="star-input">
-      <label for="rating_<%= i %>" class="star-label">★</label>
+    <%= form_with url: mark_consumed_storage_wine_path(@storage, @wine), method: :patch, local: true, class: "consume-form" do %>
+      <div class="form-group consume-rating-group">
+        <label>Votre évaluation</label>
+        <div class="star-rating">
+          <% 5.downto(1) do |i| %>
+            <%= radio_button_tag "wine[rating]", i, (i == 5), id: "rating_#{i}", class: "star-input" %>
+            <label for="rating_<%= i %>" class="star-label" title="<%= i %> / 5">★</label>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="wine_notes_area" class="form-label">Vos notes de dégustation</label>
+        <%= text_area_tag "wine[notes]",
+              (@wine.respond_to?(:notes) ? @wine.notes : nil),
+              rows: 4,
+              id: "wine_notes_area",
+              class: "form-textarea",
+              placeholder: "Ex: Arômes de fruits rouges...",
+              maxlength: 500 %>
+        <span class="char-count" id="char-count">0 / 500</span>
+      </div>
+
+      <div class="form-group favorite-section">
+        <%= check_box_tag :save_as_template, "1", false, class: "favorite-checkbox", id: "favorite-checkbox" %>
+        <label for="favorite-checkbox" class="favorite-label">
+          <div class="favorite-content">
+            <div class="favorite-icon-wrap">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </div>
+            <div class="favorite-text">
+              <strong>Ajouter à mes favoris</strong>
+              <p>Sauvegarder ce vin dans ma bibliothèque pour l'ajouter à mes favoris</p>
+            </div>
+          </div>
+        </label>
+      </div>
+
+      <div class="consume-actions">
+        <%= link_to "Annuler", storage_wine_path(@storage, @wine), class: "btn-cancel" %>
+        <button type="submit" class="btn-submit-consume">
+          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Marquer comme consommé</span>
+        </button>
+      </div>
     <% end %>
   </div>
 </div>
 
-
-  <div class="form-group">
-    <%= label_tag 'wine[notes]', "Vos notes de dégustation", class: "form-label" %>
-    <%= text_area_tag 'wine[notes]', nil,
-        rows: 6,
-        id: "wine_notes_area",
-        class: "form-textarea",
-        placeholder: "Ex: Arômes de fruits rouges...",
-        maxlength: 500 %>
-    <span class="char-count" id="char-count">0 / 500</span>
-  </div>
-
-<div class="form-group favorite-section">
-  <%= check_box_tag 'save_as_template', '1', false, class: "favorite-checkbox", id: "favorite-checkbox" %>
-
-  <label for="favorite-checkbox" class="favorite-label">
-    <div class="favorite-content">
-
-
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-      </svg>
-
-      <div>
-        <strong>Ajouter à mes favoris</strong>
-        <p>Sauvegarder ce vin dans ma bibliothèque pour l'ajouter à mes favoris</p>
-      </div>
-    </div>
-  </label>
-</div>
-
-  <div class="consume-actions">
-    <%= link_to "Annuler", storage_wine_path(@storage, @wine), class: "btn-cancel" %>
-    <%= f.submit "Marquer comme consommé", class: "btn-submit-consume" %>
-  </div>
-<% end %>
-
 <script>
-
-  const initCharCount = () => {
+  function initConsumeForm() {
     const textarea = document.getElementById('wine_notes_area');
     const charCount = document.getElementById('char-count');
 
     if (textarea && charCount) {
-      textarea.addEventListener('input', function() {
-        const length = this.value.length;
-        charCount.textContent = `${length} / 500`;
-
+      const updateCount = function() {
+        const length = textarea.value.length;
+        charCount.textContent = length + ' / 500';
         if (length > 450) {
-          charCount.style.color = '#d32f2f';
-          charCount.style.fontWeight = 'bold';
+          charCount.style.color = '#b91c1c';
+          charCount.style.fontWeight = '700';
         } else {
-          charCount.style.color = '#888';
-          charCount.style.fontWeight = 'normal';
+          charCount.style.color = '#8a7968';
+          charCount.style.fontWeight = '400';
         }
-      });
+      };
+      updateCount();
+      textarea.addEventListener('input', updateCount);
     }
-  };
+  }
 
-  document.addEventListener('DOMContentLoaded', initCharCount);
-  document.addEventListener('turbo:load', initCharCount);
+  document.addEventListener('DOMContentLoaded', initConsumeForm);
+  document.addEventListener('turbo:load', initConsumeForm);
 </script>

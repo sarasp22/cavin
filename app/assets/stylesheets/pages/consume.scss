@@ -1,347 +1,586 @@
+/* Consume Wine Page — Harmonized Cavin Design (Web + Mobile Responsive) */
 .consume-page {
   min-height: calc(100vh - 80px);
   background: linear-gradient(135deg, #f5f1e8 0%, #e8dfc8 100%);
-  padding: 60px 20px;
+  padding: 36px 20px 64px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .consume-card {
-  max-width: 650px;
+  max-width: 600px;
   width: 100%;
   background: #ffffff;
   border-radius: 30px;
-  padding: 50px 40px;
-  box-shadow: 0 12px 48px rgba(93, 46, 46, 0.2);
-
-  @media (max-width: 768px) {
-    padding: 40px 30px;
-  }
-
-  @media (max-width: 576px) {
-    padding: 30px 20px;
-  }
+  padding: 34px 36px;
+  box-shadow: 0 18px 46px rgba(93, 46, 46, 0.12);
+  border: 1.5px solid rgba(196, 166, 97, 0.35);
 }
 
 .consume-header {
   text-align: center;
-  margin-bottom: 35px;
+  margin-bottom: 22px;
 }
 
 .consume-icon {
   display: inline-flex;
-  width: 90px;
-  height: 90px;
-  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  width: 58px;
+  height: 58px;
+  background: linear-gradient(135deg, #5d2e2e 0%, #7a3a3a 100%);
   border-radius: 50%;
   align-items: center;
   justify-content: center;
-  margin-bottom: 25px;
-  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.3);
+  margin-bottom: 12px;
+  box-shadow: 0 8px 22px rgba(93, 46, 46, 0.24);
+  border: 1.5px solid rgba(196, 166, 97, 0.45);
+}
 
-  svg {
-    color: #ffffff;
-  }
+.consume-icon svg {
+  color: #c4a661;
 }
 
 .consume-title {
   font-family: 'Inria Serif', serif;
-  font-size: 2.2rem;
+  font-size: 1.95rem;
   color: #2c1810;
-  margin: 0 0 10px 0;
+  margin: 0 0 6px 0;
   font-weight: 700;
-
-  @media (max-width: 768px) {
-    font-size: 1.8rem;
-  }
+  line-height: 1.15;
 }
 
 .consume-subtitle {
   font-family: 'Inria Serif', serif;
-  font-size: 1.1rem;
+  font-size: 0.98rem;
   color: #6b6b6b;
   margin: 0;
 }
 
+/* Wine Bottle Info Showcase Box */
 .wine-info-box {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 25px;
-  background: linear-gradient(135deg, #faf8f3 0%, #f5f1e8 100%);
-  border: 2px solid #e8dfc8;
-  border-radius: 24px;
-  margin-bottom: 35px;
+  gap: 18px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #faf6ed 0%, #f3ead8 100%);
+  border: 1.5px solid rgba(196, 166, 97, 0.38);
+  border-radius: 22px;
+  margin-bottom: 22px;
 }
 
+.consume-bottle-thumb,
 .wine-info-icon {
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, #5d2e2e 0%, #7a3a3a 100%);
-  border-radius: 18px;
+  width: 64px;
+  height: 78px;
+  background: #ffffff;
+  border: 1px solid rgba(196, 166, 97, 0.4);
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(44, 24, 16, 0.06);
+  padding: 6px;
+}
 
-  svg {
-    color: #c4a661;
-  }
+.consume-bottle-img {
+  height: 64px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(44, 24, 16, 0.2));
+}
+
+.wine-info-icon svg {
+  color: #c4a661;
 }
 
 .wine-info-text {
   flex: 1;
-
-  h3 {
-    font-family: 'Inria Serif', serif;
-    font-size: 1.4rem;
-    color: #2c1810;
-    margin: 0 0 8px 0;
-    font-weight: 700;
-  }
-
-  p {
-    font-family: 'Inria Serif', serif;
-    font-size: 1rem;
-    color: #6b6b6b;
-    margin: 0;
-  }
+  min-width: 0;
 }
 
-.consume-form {
-  .form-group {
-    margin-bottom: 30px;
-  }
-
-  .form-label {
-    display: block;
-    font-family: 'Inria Serif', serif;
-    font-size: 1.1rem;
-    color: #2c1810;
-    font-weight: 600;
-    margin-bottom: 12px;
-  }
-
-  .form-textarea {
-    width: 100%;
-    padding: 16px;
-    font-family: 'Inria Serif', serif;
-    font-size: 1rem;
-    color: #2c1810;
-    background-color: #f8f8f8;
-    border: 2px solid #e0e0e0;
-    border-radius: 18px;
-    resize: vertical;
-    min-height: 150px;
-    transition: all 0.3s ease;
-    line-height: 1.6;
-
-    &:focus {
-      outline: none;
-      border-color: #4caf50;
-      background-color: #ffffff;
-      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
-    }
-
-    &::placeholder {
-      color: #aaa;
-    }
-  }
-
-  .char-count {
-    display: block;
-    text-align: right;
-    font-family: 'Inria Serif', serif;
-    font-size: 0.85rem;
-    color: #888;
-    margin-top: 8px;
-    transition: color 0.3s ease;
-  }
-}
-
-.consume-actions {
+.consume-wine-badges {
   display: flex;
-  gap: 15px;
-  justify-content: center;
-  margin-top: 35px;
-
-  @media (max-width: 576px) {
-    flex-direction: column;
-  }
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 5px;
 }
 
-.btn-cancel {
-  padding: 14px 35px;
-  background-color: #f5f1e8;
-  color: #2c1810;
+.consume-wine-type {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 9999px;
   font-family: 'Inria Serif', serif;
-  font-size: 1rem;
-  font-weight: 600;
-  text-decoration: none;
-  border-radius: 16px;
-  border: 2px solid #e8dfc8;
-  transition: all 0.3s ease;
-  text-align: center;
-
-  &:hover {
-    background-color: #e8dfc8;
-    transform: translateY(-2px);
-  }
-
-  @media (max-width: 576px) {
-    width: 100%;
-  }
-}
-
-.btn-submit-consume {
-  padding: 14px 35px;
-  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-  color: #ffffff;
-  font-family: 'Inria Serif', serif;
-  font-size: 1rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  border: none;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-
-  &:hover {
-    background: linear-gradient(135deg, #66bb6a 0%, #81c784 100%);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4);
-  }
-
-  &:active {
-    transform: translateY(-1px);
-  }
-
-  @media (max-width: 576px) {
-    width: 100%;
-  }
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: #5d2e2e;
+  color: #ffffff;
 }
 
+.consume-wine-type.rouge,
+.consume-wine-type.rosso,
+.consume-wine-type.red {
+  background: #5d2e2e;
+  color: #ffffff;
+}
+
+.consume-wine-type.blanc,
+.consume-wine-type.bianco,
+.consume-wine-type.white {
+  background: #f3e5ab;
+  color: #5c4308;
+}
+
+.consume-wine-type.rosé,
+.consume-wine-type.rose,
+.consume-wine-type.rosato {
+  background: #f4c2c2;
+  color: #6b1d2f;
+}
+
+.consume-wine-type.champagne {
+  background: #f7e7ce;
+  color: #5c4308;
+  border: 1px solid #c4a661;
+}
+
+.consume-wine-type.pétillant,
+.consume-wine-type.petillant,
+.consume-wine-type.prosecco,
+.consume-wine-type.frizzante,
+.consume-wine-type.sparkling {
+  background: #e6f2ff;
+  color: #1e4b7a;
+}
+
+.consume-wine-pos {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'Inria Serif', serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #5d2e2e;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid #e2d6c1;
+  padding: 2px 9px;
+  border-radius: 9999px;
+}
+
+.wine-info-text h3 {
+  font-family: 'Inria Serif', serif;
+  font-size: 1.25rem;
+  color: #2c1810;
+  margin: 0 0 3px 0;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.wine-info-text p {
+  font-family: 'Inria Serif', serif;
+  font-size: 0.88rem;
+  color: #6b5a4e;
+  margin: 0;
+}
+
+/* Form Controls */
+.consume-form .form-group {
+  margin-bottom: 18px;
+}
+
+.consume-form .form-group > label {
+  display: block;
+  font-family: 'Inria Serif', serif;
+  font-weight: 700;
+  font-size: 0.96rem;
+  color: #5d2e2e;
+  margin-bottom: 8px;
+}
+
+.consume-rating-group {
+  text-align: center;
+  background: #faf7f2;
+  border: 1px solid #ebe2d0;
+  border-radius: 18px;
+  padding: 12px 16px;
+}
+
+.consume-rating-group > label {
+  margin-bottom: 4px !important;
+}
+
+.star-rating {
+  display: inline-flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  gap: 6px;
+}
+
+.star-rating input[type="radio"] {
+  display: none;
+}
+
+.star-rating label.star-label {
+  font-size: 2.3rem;
+  line-height: 1;
+  color: #dfd7c6;
+  cursor: pointer;
+  transition: transform 0.15s ease, color 0.15s ease;
+  display: inline-block;
+  margin: 0;
+}
+
+.star-rating label.star-label:hover,
+.star-rating label.star-label:hover ~ label.star-label,
+.star-rating input[type="radio"]:checked ~ label.star-label {
+  color: #d4a017;
+  text-shadow: 0 2px 8px rgba(212, 160, 23, 0.28);
+}
+
+.star-rating label.star-label:hover {
+  transform: scale(1.1);
+}
+
+.consume-form .form-textarea {
+  width: 100%;
+  padding: 14px 16px;
+  font-family: 'Inria Serif', serif;
+  font-size: 0.96rem;
+  color: #2c1810;
+  background-color: #faf7f2;
+  border: 1.5px solid #e2d6c1;
+  border-radius: 18px;
+  resize: vertical;
+  min-height: 100px;
+  transition: all 0.22s ease;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+.consume-form .form-textarea:focus {
+  outline: none;
+  border-color: #5d2e2e;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(93, 46, 46, 0.08);
+}
+
+.consume-form .char-count {
+  display: block;
+  text-align: right;
+  font-family: 'Inria Serif', serif;
+  font-size: 0.78rem;
+  color: #8a7968;
+  margin-top: 5px;
+}
+
+/* Favorite Toggle Section */
 .favorite-section {
-  margin-bottom: 30px;
+  margin-bottom: 22px;
 }
 
 .favorite-checkbox {
   display: none;
-
-  &:checked + .favorite-label {
-    background: #fff9e6;
-    border-color: #ffd700;
-
-    .checkbox-circle {
-     background-color: #ffffff;
-    }
-
-
-    svg {
-      fill: #c4a661;
-      color: #c4a661;
-    }
-  }
 }
 
 .favorite-label {
   display: block;
   cursor: pointer;
-  background: #ffffff;
-  border: 2px solid #e0e0e0;
-  border-radius: 24px;
-  padding: 20px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #faf7f2;
+  border: 1.5px solid #e2d6c1;
+  border-radius: 18px;
+  padding: 14px 18px;
+  transition: all 0.22s ease;
   user-select: none;
+}
 
-  &:hover {
-    border-color: #c4a661;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  }
+.favorite-label:hover {
+  border-color: #c4a661;
+  background: #fdfaf3;
 }
 
 .favorite-content {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 14px;
 }
 
-
-.favorite-content div {
-  strong {
-    display: block;
-    font-family: 'Inria Serif', serif;
-    font-size: 1.1rem;
-    color: #2c1810;
-  }
-  p {
-    font-family: 'Inria Serif', serif;
-    font-size: 0.85rem;
-    color: #6b6b6b;
-    margin: 0;
-  }
+.favorite-icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: #f3ead8;
+  border: 1px solid rgba(196, 166, 97, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #5d2e2e;
+  transition: all 0.2s ease;
 }
 
-.form-group {
-  margin-bottom: 25px;
+.favorite-content strong {
+  display: block;
+  font-family: 'Inria Serif', serif;
+  font-size: 0.98rem;
+  color: #2c1810;
+  margin-bottom: 2px;
+}
 
-  label {
-    display: block;
-    font-family: 'Inria Serif', serif;
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #5d2e2e;
-    margin-bottom: 10px;
+.favorite-content p {
+  font-family: 'Inria Serif', serif;
+  font-size: 0.8rem;
+  color: #6b6b6b;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.favorite-checkbox:checked + .favorite-label {
+  background: linear-gradient(135deg, #fdf8ec 0%, #f6ecd4 100%);
+  border-color: #c4a661;
+  box-shadow: 0 6px 18px rgba(196, 166, 97, 0.18);
+}
+
+.favorite-checkbox:checked + .favorite-label .favorite-icon-wrap {
+  background: #5d2e2e;
+  border-color: #5d2e2e;
+  color: #c4a661;
+}
+
+.favorite-checkbox:checked + .favorite-label svg {
+  fill: #c4a661;
+  color: #c4a661;
+}
+
+/* Action Buttons */
+.consume-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 22px;
+}
+
+.consume-actions .btn-cancel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 26px;
+  background: #f5f1e8;
+  color: #2c1810;
+  border: 1.5px solid #dfd5c0;
+  border-radius: 9999px;
+  font-family: 'Inria Serif', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.consume-actions .btn-cancel:hover {
+  background: #e8dfc8;
+  border-color: #c4a661;
+}
+
+.btn-submit-consume {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #5d2e2e 0%, #7a3a3a 100%);
+  color: #ffffff;
+  font-family: 'Inria Serif', serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  border: 1.5px solid #5d2e2e;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 22px rgba(93, 46, 46, 0.25);
+}
+
+.btn-submit-consume svg {
+  color: #c4a661;
+  flex-shrink: 0;
+}
+
+.btn-submit-consume:hover {
+  background: linear-gradient(135deg, #7a3a3a 0%, #8f4646 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(93, 46, 46, 0.32);
+}
+
+/* Mobile Responsive Overrides for Consume Wine Page */
+@media (max-width: 768px) {
+  .consume-page {
+    min-height: calc(100vh - 64px);
+    padding: 14px 12px 28px;
+    align-items: flex-start;
   }
 
-  .rating-select-wrapper {
-    position: relative;
-    width: 100%;
-
-    &::after {
-      content: '▼';
-      font-size: 0.8rem;
-      top: 50%;
-      right: 15px;
-      transform: translateY(-50%);
-      position: absolute;
-      color: #c4a661;
-      pointer-events: none;
-    }
+  .consume-card {
+    padding: 20px 16px;
+    border-radius: 22px;
   }
 
-  .star-input { display: none; }
+  .consume-header {
+    margin-bottom: 14px;
+  }
+
+  .consume-icon {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 8px;
+  }
+
+  .consume-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .consume-title {
+    font-size: 1.4rem;
+    margin: 0 0 3px 0;
+  }
+
+  .consume-subtitle {
+    font-size: 0.84rem;
+  }
+
+  .wine-info-box {
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    margin-bottom: 14px;
+  }
+
+  .consume-bottle-thumb,
+  .wine-info-icon {
+    width: 50px;
+    height: 62px;
+    border-radius: 12px;
+    padding: 4px;
+  }
+
+  .consume-bottle-img {
+    height: 50px;
+  }
+
+  .consume-wine-badges {
+    gap: 4px;
+    margin-bottom: 3px;
+  }
+
+  .consume-wine-type {
+    font-size: 0.64rem;
+    padding: 2px 8px;
+  }
+
+  .consume-wine-pos {
+    font-size: 0.68rem;
+    padding: 1.5px 7px;
+  }
+
+  .wine-info-text h3 {
+    font-size: 1.05rem;
+    margin: 0 0 2px 0;
+  }
+
+  .wine-info-text p {
+    font-size: 0.78rem;
+  }
+
+  .consume-form .form-group {
+    margin-bottom: 12px;
+  }
+
+  .consume-form .form-group > label {
+    font-size: 0.86rem;
+    margin-bottom: 6px;
+  }
+
+  .consume-rating-group {
+    padding: 9px 12px;
+    border-radius: 14px;
+  }
 
   .star-rating {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: center;
-  gap: 5px;
-
-  input[type="radio"] {
-    display: none;
+    gap: 5px;
   }
 
-  label {
-    font-size: 3rem;
-    color: #e0e0e0;
-    cursor: pointer;
-    transition: color 0.1s ease;
+  .star-rating label.star-label {
+    font-size: 1.85rem;
   }
 
-  label:hover,
-  label:hover ~ label {
-    color: #ffc107;
+  .consume-form .form-textarea {
+    padding: 10px 12px;
+    font-size: 0.86rem;
+    border-radius: 14px;
+    min-height: 76px;
+    line-height: 1.4;
   }
 
-  input:checked ~ label {
-    color: #ffc107;
+  .consume-form .char-count {
+    font-size: 0.72rem;
+    margin-top: 3px;
   }
 
-  label:active {
-    transform: scale(0.9);
+  .favorite-section {
+    margin-bottom: 14px;
   }
-}
+
+  .favorite-label {
+    padding: 11px 12px;
+    border-radius: 14px;
+  }
+
+  .favorite-content {
+    gap: 10px;
+  }
+
+  .favorite-icon-wrap {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+  }
+
+  .favorite-icon-wrap svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .favorite-content strong {
+    font-size: 0.86rem;
+  }
+
+  .favorite-content p {
+    font-size: 0.72rem;
+    line-height: 1.25;
+  }
+
+  .consume-actions {
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .consume-actions .btn-cancel {
+    padding: 11px 16px;
+    font-size: 0.84rem;
+  }
+
+  .btn-submit-consume {
+    padding: 11px 16px;
+    font-size: 0.86rem;
+    gap: 6px;
+  }
+
+  .btn-submit-consume svg {
+    width: 15px;
+    height: 15px;
+  }
 }

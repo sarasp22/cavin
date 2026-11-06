@@ -577,88 +577,88 @@
 @media (max-width: 768px) {
   .sommelier-page {
     min-height: calc(100vh - 64px);
-    padding: 10px 10px 24px;
+    padding: 16px 12px 28px;
   }
 
   .sommelier-hero-card {
-    padding: 14px 12px;
-    border-radius: 20px;
-    margin-bottom: 14px;
+    padding: 22px 16px;
+    border-radius: 24px;
+    margin-bottom: 18px;
   }
 
   .sommelier-badge-icon {
-    width: 42px;
-    height: 42px;
-    margin-bottom: 6px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 10px;
 
     svg {
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
     }
   }
 
   .sommelier-title {
-    font-size: 1.25rem;
-    margin: 0 0 4px 0;
+    font-size: 1.4rem;
+    margin: 0 0 6px 0;
   }
 
   .sommelier-subtitle {
-    font-size: 0.78rem;
-    line-height: 1.35;
-    margin: 0 auto 8px;
+    font-size: 0.85rem;
+    line-height: 1.42;
+    margin: 0 auto 12px;
   }
 
   /* Compact side-by-side Stock Summary on mobile */
   .sommelier-stock-summary {
-    gap: 4px;
-    margin-bottom: 8px;
+    gap: 5px;
+    margin-bottom: 12px;
   }
 
   .stock-chip {
-    font-size: 0.65rem;
-    padding: 2px 7px;
+    font-size: 0.71rem;
+    padding: 3.5px 9px;
   }
 
   .sommelier-input-wrapper {
-    margin-bottom: 8px;
+    margin-bottom: 12px;
   }
 
   .sommelier-textarea {
-    padding: 9px 11px;
-    font-size: 0.82rem;
-    border-radius: 14px;
-    min-height: 58px;
-    line-height: 1.35;
+    padding: 11px 13px;
+    font-size: 0.88rem;
+    border-radius: 16px;
+    min-height: 74px;
+    line-height: 1.4;
   }
 
   /* Compact side-by-side Quick Ideas on mobile */
   .sommelier-suggestions {
-    gap: 4px;
-    margin-bottom: 10px;
+    gap: 5px;
+    margin-bottom: 15px;
   }
 
   .suggestions-label {
-    font-size: 0.64rem;
+    font-size: 0.69rem;
     margin-right: 2px;
     width: auto;
     display: inline;
   }
 
   .suggestion-btn {
-    font-size: 0.64rem;
-    padding: 3px 7px;
-    line-height: 1.15;
+    font-size: 0.69rem;
+    padding: 4px 8.5px;
+    line-height: 1.2;
   }
 
   .btn-sommelier-submit {
     width: 100%;
-    padding: 10px 16px;
-    font-size: 0.86rem;
-    gap: 6px;
+    padding: 12px 18px;
+    font-size: 0.92rem;
+    gap: 7px;
 
     svg {
-      width: 15px;
-      height: 15px;
+      width: 17px;
+      height: 17px;
     }
   }
 
