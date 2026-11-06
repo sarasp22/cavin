@@ -20,15 +20,6 @@
   box-shadow: 0 25px 55px -12px rgba(44, 24, 16, 0.45);
 }
 
-@media (max-width: 768px) {
-  .hero-section {
-    height: 70vh;
-    width: 96%;
-    margin: 12px auto;
-    border-radius: 32px;
-  }
-}
-
 .hero-overlay {
   position: absolute;
   inset: 0;
@@ -55,12 +46,6 @@
   text-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
 
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 2.8rem;
-  }
-}
-
 .hero-subtitle {
   font-family: 'Inria Serif', serif;
   font-size: 1rem;
@@ -69,13 +54,6 @@
   margin-bottom: 40px;
   font-weight: 400;
   display: block;
-}
-
-@media (max-width: 768px) {
-  .hero-subtitle {
-    letter-spacing: 6px;
-    font-size: 0.8rem;
-  }
 }
 
 .btn-primary {
@@ -129,12 +107,6 @@
   margin: 20px auto 0;
 }
 
-@media (max-width: 768px) {
-  .features-section .section-title {
-    font-size: 2.2rem;
-  }
-}
-
 .features-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -144,12 +116,6 @@
 @media (max-width: 1100px) {
   .features-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .features-grid {
-    grid-template-columns: 1fr;
   }
 }
 
@@ -217,13 +183,6 @@
   gap: 60px;
 }
 
-@media (max-width: 768px) {
-  .cta-content {
-    flex-direction: column;
-    padding-bottom: 60px;
-  }
-}
-
 .wine-glass-wrapper {
   flex-shrink: 0;
   margin-top: -80px;
@@ -233,13 +192,6 @@
   width: 320px;
   height: auto;
   filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
-}
-
-@media (max-width: 768px) {
-  .wine-glass-wrapper .wine-glass-img {
-    width: 220px;
-    margin-top: -60px;
-  }
 }
 
 .cta-text-wrapper {
@@ -254,9 +206,117 @@
   margin: 0;
 }
 
+/* Mobile Responsive Overrides for Home (Hero, 2x2 Cards, Compact Footer) */
 @media (max-width: 768px) {
+  .hero-section {
+    height: auto;
+    min-height: 270px;
+    width: 94%;
+    margin: 10px auto 6px;
+    border-radius: 24px;
+  }
+
+  .hero-overlay {
+    position: relative;
+    min-height: 270px;
+    padding: 26px 18px;
+  }
+
+  .hero-title {
+    font-size: 1.75rem;
+    line-height: 1.18;
+    margin-bottom: 10px;
+  }
+
+  .hero-subtitle {
+    font-size: 0.68rem;
+    letter-spacing: 3px;
+    margin-bottom: 18px;
+  }
+
+  .btn-primary {
+    padding: 11px 26px;
+    font-size: 0.9rem;
+  }
+
+  .features-section {
+    padding: 20px 12px 24px;
+  }
+
+  .features-section .section-title {
+    font-size: 1.45rem;
+    margin-bottom: 16px;
+  }
+
+  .features-section .section-title::after {
+    width: 42px;
+    height: 3px;
+    margin: 8px auto 0;
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .feature-card {
+    padding: 14px 10px;
+    border-radius: 18px;
+  }
+
+  .feature-icon-wrapper {
+    height: 44px;
+    margin-bottom: 8px;
+  }
+
+  .feature-icon-wrapper .feature-icon-img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .feature-title {
+    font-size: 0.86rem;
+    margin-bottom: 5px;
+    line-height: 1.2;
+  }
+
+  .feature-description {
+    font-size: 0.72rem;
+    line-height: 1.32;
+    margin: 0;
+  }
+
+  .cta-section {
+    margin-top: 28px;
+    padding: 0 14px;
+    border-radius: 24px 24px 0 0;
+  }
+
+  .cta-content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 10px 4px 14px;
+  }
+
+  .wine-glass-wrapper {
+    margin-top: -26px;
+  }
+
+  .wine-glass-wrapper .wine-glass-img {
+    width: 82px;
+    margin-top: 0;
+    filter: drop-shadow(0 8px 14px rgba(0,0,0,0.45));
+  }
+
+  .cta-text-wrapper {
+    max-width: 100%;
+  }
+
   .cta-quote {
-    font-size: 2.8rem;
-    text-align: center;
+    font-size: 1.45rem;
+    line-height: 1.15;
+    text-align: left;
   }
 }
