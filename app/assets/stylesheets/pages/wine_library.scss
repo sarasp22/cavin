@@ -1,246 +1,357 @@
+/* Wine Library (Ma Bibliothèque) — Sleek Interactive Wine List (Desktop with Bottle Image, Mobile Pure List) */
 .library-page {
   min-height: calc(100vh - 80px);
   background: linear-gradient(135deg, #f5f1e8 0%, #e8dfc8 100%);
-  padding: 60px 20px;
+  padding: 36px 20px 70px;
 }
 
 .library-container {
-  max-width: 1200px;
+  max-width: 880px;
   margin: 0 auto;
 }
 
+/* Compact Header Card */
 .library-header {
-  text-align: center;
-  margin-bottom: 50px;
+  background: #ffffff;
+  border: 1.5px solid #e6dac2;
+  border-radius: 24px;
+  padding: 20px 26px;
+  margin-bottom: 22px;
+  box-shadow: 0 10px 28px rgba(44, 24, 16, 0.06);
+}
+
+.library-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: left;
 }
 
 .library-icon {
   display: inline-flex;
-  width: 80px;
-  height: 80px;
+  width: 54px;
+  height: 54px;
   background: linear-gradient(135deg, #5d2e2e 0%, #7a3a3a 100%);
-  border-radius: 50%;
+  border-radius: 16px;
   align-items: center;
   justify-content: center;
-  margin-bottom: 25px;
-  box-shadow: 0 8px 24px rgba(93, 46, 46, 0.3);
+  flex-shrink: 0;
+  box-shadow: 0 6px 16px rgba(93, 46, 46, 0.22);
+  border: 1.5px solid rgba(196, 166, 97, 0.5);
+}
 
-  svg {
-    color: #c4a661;
-  }
+.library-icon svg {
+  color: #c4a661;
+  width: 26px;
+  height: 26px;
 }
 
 .library-title {
   font-family: 'Inria Serif', serif;
-  font-size: 2.5rem;
+  font-size: 1.85rem;
   color: #2c1810;
-  margin: 0 0 10px 0;
+  margin: 0 0 3px 0;
   font-weight: 700;
-
-  @media (max-width: 768px) {
-    font-size: 2rem;
-  }
+  line-height: 1.15;
 }
 
 .library-subtitle {
   font-family: 'Inria Serif', serif;
-  font-size: 1.2rem;
+  font-size: 0.95rem;
   color: #6b6b6b;
   margin: 0;
 }
 
-.templates-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 25px;
-  margin-bottom: 40px;
+/* Vertical Wine List */
+.templates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
 }
 
 .template-card {
   background: #ffffff;
-  border-radius: 24px;
-  padding: 25px;
-  border: 2px solid #e8dfc8;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(93, 46, 46, 0.12);
-    border-color: #c4a661;
-  }
+  border-radius: 16px;
+  padding: 12px 18px;
+  border: 1.5px solid #e8dfc8;
+  border-left: 4px solid #c4a661;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(44, 24, 16, 0.04);
 }
 
-.template-header {
+.template-card.type-border-rouge { border-left-color: #8b0000; }
+.template-card.type-border-blanc { border-left-color: #d4b46a; }
+.template-card.type-border-rosé, .template-card.type-border-rose { border-left-color: #e06397; }
+.template-card.type-border-champagne { border-left-color: #c4a661; }
+.template-card.type-border-pétillant, .template-card.type-border-petillant { border-left-color: #5ea8c9; }
+.template-card.type-border-prosecco { border-left-color: #7ca954; }
+
+.template-card:hover {
+  border-color: #c4a661;
+  box-shadow: 0 8px 22px rgba(93, 46, 46, 0.09);
+}
+
+.template-row-clickable {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  gap: 14px;
+  cursor: pointer;
+  user-select: none;
 }
 
-.template-icon {
-  width: 45px;
-  height: 45px;
-  background: linear-gradient(135deg, #5d2e2e 0%, #7a3a3a 100%);
-  border-radius: 16px;
+.template-row-left {
   display: flex;
   align-items: center;
-  justify-content: center;
-
-  svg {
-    width: 25px;
-    height: 25px;
-    color: #c4a661;
-  }
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
 }
 
-.template-type {
-  padding: 6px 16px;
-  border-radius: 28px;
-  font-family: 'Inria Serif', serif;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-
-  &.rouge {
-    background: #8b0000;
-    color: #ffffff;
-  }
-
-  &.blanc {
-    background: #f4e4c1;
-    color: #5d4e37;
-  }
-
-  &.rosé {
-    background: #ff69b4;
-    color: #ffffff;
-  }
-
-  &.champagne {
-    background: #ffd700;
-    color: #5d4e37;
-  }
-
-  &.pétillant {
-    background: #87ceeb;
-    color: #2c5f77;
-  }
+.template-row-title-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  min-width: 0;
+  flex: 1;
 }
 
 .template-name {
   font-family: 'Inria Serif', serif;
-  font-size: 1.3rem;
+  font-size: 1.06rem;
   color: #2c1810;
   font-weight: 700;
-  margin: 0 0 20px 0;
-  line-height: 1.3;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.template-type {
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-family: 'Inria Serif', serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  flex-shrink: 0;
+}
+
+.template-type.rouge { background: #8b0000; color: #ffffff; }
+.template-type.blanc { background: #f4e4c1; color: #5d4e37; }
+.template-type.rosé, .template-type.rose { background: #ff69b4; color: #ffffff; }
+.template-type.champagne { background: #ffd700; color: #5d4e37; }
+.template-type.pétillant, .template-type.petillant { background: #87ceeb; color: #2c5f77; }
+.template-type.prosecco { background: #d4e7b5; color: #3a5223; }
+
+.template-row-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Collapsible Details Panel */
+.template-collapsible-content {
+  display: none;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #f0e9da;
+}
+
+.accordion-item.is-open .template-collapsible-content {
+  display: block;
+}
+
+.template-details-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .template-details {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
 }
 
 .detail-row {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   font-family: 'Inria Serif', serif;
-  font-size: 0.95rem;
-  color: #6b6b6b;
+  font-size: 0.84rem;
+  color: #5d4e37;
+  background: #faf7f2;
+  border: 1px solid #ede4d3;
+  padding: 4px 11px;
+  border-radius: 9999px;
+}
 
-  svg {
-    color: #5d2e2e;
-    flex-shrink: 0;
-  }
+.detail-row svg {
+  color: #5d2e2e;
+  flex-shrink: 0;
+}
+
+.template-notes-box {
+  margin-top: 10px;
+  padding: 9px 12px;
+  background: #fdfbf7;
+  border: 1px dashed #e2d6c1;
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.template-notes-box svg {
+  color: #c4a661;
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
 .template-actions {
-  padding-top: 20px;
-  border-top: 1px solid #f5f1e8;
+  flex-shrink: 0;
 }
 
 .btn-delete-template {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 10px;
-  background-color: #ffffff;
-  color: #d32f2f;
-  border: 2px solid #d32f2f;
-  border-radius: 14px;
-  font-family: 'Inria Serif', serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background-color: #d32f2f;
-    color: #ffffff;
-    transform: translateY(-2px);
-  }
-}
-
-.library-empty {
-  text-align: center;
-  padding: 80px 20px;
-  background: #ffffff;
-  border-radius: 28px;
-  margin-bottom: 40px;
-}
-
-.empty-icon {
-  color: #c4a661;
-  opacity: 0.5;
-  margin-bottom: 30px;
-}
-
-.empty-title {
-  font-family: 'Inria Serif', serif;
-  font-size: 2rem;
-  color: #2c1810;
-  margin-bottom: 15px;
-  font-weight: 700;
-}
-
-.empty-text {
-  font-family: 'Inria Serif', serif;
-  font-size: 1.1rem;
-  color: #6b6b6b;
-  margin-bottom: 30px;
-  line-height: 1.6;
-}
-
-.library-actions {
-  text-align: center;
-  margin-top: 40px;
-}
-
-.btn-back-library {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 14px 35px;
-  background-color: #5d2e2e;
-  color: #ffffff;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background-color: #fff8f8;
+  color: #b91c1c;
+  border: 1.5px solid #f3c2c2;
+  border-radius: 9999px;
   font-family: 'Inria Serif', serif;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  text-decoration: none;
-  border-radius: 16px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(93, 46, 46, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
-  &:hover {
-    background-color: #7a3a3a;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(93, 46, 46, 0.3);
+.btn-delete-template:hover {
+  background-color: #b91c1c;
+  border-color: #b91c1c;
+  color: #ffffff;
+}
+
+/* Mobile Responsive Overrides  */
+@media (max-width: 768px) {
+  .library-page {
+    min-height: calc(100vh - 64px);
+    padding: 12px 10px 30px;
+  }
+
+  .library-header {
+    padding: 12px 12px;
+    border-radius: 18px;
+    margin-bottom: 14px;
+  }
+
+  .library-header-top {
+    gap: 10px;
+    justify-content: flex-start;
+  }
+
+  .library-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+  }
+
+  .library-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .library-title {
+    font-size: 1.18rem;
+    margin: 0 0 2px 0;
+  }
+
+  .library-subtitle {
+    font-size: 0.74rem;
+  }
+
+  .templates-list {
+    gap: 7px;
+    margin-bottom: 18px;
+  }
+
+  .template-card {
+    padding: 9px 11px;
+    border-radius: 12px;
+    border-left-width: 3px;
+  }
+
+  .template-row-clickable {
+    gap: 8px;
+  }
+
+  .template-row-left {
+    gap: 8px;
+  }
+
+  .template-row-title-group {
+    gap: 4px 6px;
+  }
+
+  .template-name {
+    font-size: 0.85rem;
+    line-height: 1.2;
+  }
+
+  .template-type {
+    font-size: 0.58rem;
+    padding: 2px 7px;
+  }
+
+  .template-collapsible-content {
+    margin-top: 8px;
+    padding-top: 8px;
+  }
+
+  .template-details-bar {
+    gap: 6px;
+  }
+
+  .template-details {
+    gap: 5px;
+  }
+
+  .detail-row {
+    font-size: 0.72rem;
+    padding: 3px 8px;
+    gap: 4px;
+  }
+
+  .detail-row svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .template-notes-box {
+    margin-top: 7px;
+    padding: 7px 9px;
+    border-radius: 10px;
+    gap: 6px;
+  }
+
+  .btn-delete-template {
+    padding: 4px 10px;
+    font-size: 0.72rem;
+    gap: 4px;
+  }
+
+  .btn-delete-template svg {
+    width: 12px;
+    height: 12px;
   }
 }

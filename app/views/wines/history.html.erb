@@ -1,100 +1,141 @@
 <div class="history-page">
   <div class="history-container">
     <div class="history-header">
-      <div class="history-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"></circle>
-          <polyline points="12 6 12 12 16 14"></polyline>
-        </svg>
-      </div>
-      <h1 class="history-title">Historique des Vins Consommés</h1>
-      <p class="history-subtitle">Tous les vins que vous avez dégustés</p>
-    </div>
-
-    <%# Sezione Statistiche %>
-    <div class="history-stats">
-      <div class="stat-card">
-        <div class="stat-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M8 2h8l2 10-4 10-4-10z"/>
-            <ellipse cx="12" cy="2" rx="4" ry="1"/>
+      <div class="history-header-top">
+        <div class="history-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
           </svg>
         </div>
-        <div class="stat-content">
-          <p class="stat-value"><%= @consumed_wines.count %></p>
-          <p class="stat-label">Vins Consommés</p>
+        <div>
+          <h1 class="history-title">Historique des Vins Consommés</h1>
+          <p class="history-subtitle">Tous les vins que vous avez dégustés</p>
         </div>
       </div>
 
-      <div class="stat-card">
-        <div class="stat-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="12" y1="1" x2="12" y2="23"></line>
-            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-          </svg>
+      <div class="history-stats">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M8 2h8l2 10-4 10-4-10z"/>
+              <ellipse cx="12" cy="2" rx="4" ry="1"/>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <p class="stat-value"><%= @consumed_wines.count %></p>
+            <p class="stat-label">Vins Consommés</p>
+          </div>
         </div>
-        <div class="stat-content">
-          <p class="stat-value"><%= number_to_currency(@consumed_wines.sum(&:price), unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></p>
-          <p class="stat-label">Valeur Totale</p>
-        </div>
-      </div>
 
-      <div class="stat-card">
-        <div class="stat-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-          </svg>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <p class="stat-value"><%= number_to_currency(@consumed_wines.sum(:price), unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></p>
+            <p class="stat-label">Valeur Totale</p>
+          </div>
         </div>
-        <div class="stat-content">
-          <p class="stat-value"><%= number_to_currency(@consumed_wines.any? ? (@consumed_wines.sum(&:price) / @consumed_wines.count) : 0, unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></p>
-          <p class="stat-label">Prix Moyen</p>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <p class="stat-value">
+              <% if @consumed_wines.any? %>
+                <%= number_to_currency(@consumed_wines.average(:price), unit: "€", separator: ",", delimiter: " ", format: "%n %u") %>
+              <% else %>
+                0,00 €
+              <% end %>
+            </p>
+            <p class="stat-label">Prix Moyen</p>
+          </div>
         </div>
       </div>
     </div>
 
     <% if @consumed_wines.any? %>
       <div class="history-list">
-        <% @consumed_wines.group_by { |w| w.consumed_at&.to_date || Date.today }.each do |date, wines| %>
-          <div class="history-date-group">
-            <h2 class="date-header">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-              </svg>
-              <%= l(date, format: :long) %>
-            </h2>
+        <% @consumed_wines.group_by { |w| w.consumed_at.to_date }.each do |date, wines| %>
+          <% formatted_date = date.strftime("%d/%m/%Y") %>
+          <% is_multi_same_day = wines.size > 1 %>
 
-            <div class="wines-grid">
-              <% wines.each do |wine| %>
-                <div class="history-wine-card accordion-item">
+          <div class="<%= is_multi_same_day ? 'same-day-cluster' : 'single-day-wrapper' %>">
+            <% if is_multi_same_day %>
+              <div class="same-day-banner">
+                <div class="same-day-banner-left">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <span class="same-day-date-text"><%= l(date, format: :long) rescue formatted_date %></span>
+                </div>
+                <span class="same-day-count-badge"><%= wines.size %> bouteilles ce jour</span>
+              </div>
+            <% end %>
 
-                  <%# HEADER CLICCABILE: Solo Nome e + %>
+            <div class="wines-list-stack">
+              <% wines.each_with_index do |wine, idx| %>
+                <% wt_class = wine.wine_type.to_s.downcase %>
+                <% bottle_img = case wt_class
+                                when "blanc" then "bianco.png"
+                                when "rosé", "rose" then "rose.png"
+                                when "champagne" then "champagne.png"
+                                when "pétillant", "petillant", "prosecco" then "frizzante.png"
+                                else "rosso.png"
+                                end %>
+
+                <div class="history-wine-card accordion-item type-border-<%= wt_class %>">
                   <div class="wine-card-header-clickable" onclick="toggleWineDetails(this)">
-                    <h3 class="wine-card-name">
-                      <%= wine.name %> - <%= wine.size.present? ? wine.size : "75cl" %>
-                    </h3>
-                    <div class="expand-icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <div class="wine-row-left">
+                      <div class="wine-list-bottle-wrap">
+                        <%= image_tag bottle_img, alt: wine.name, class: "wine-list-bottle-img" %>
+                      </div>
+                      <span class="wine-list-dot <%= wt_class %>"></span>
+                      <div class="wine-row-title-group">
+                        <h3 class="wine-card-name">
+                          <%= wine.name %>
+                          <span class="wine-size-inline"><%= (wine.respond_to?(:size) && wine.size.present?) ? wine.size : "75cl" %></span>
+                        </h3>
+                        <span class="wine-card-type <%= wt_class %>"><%= wine.wine_type %></span>
+                      </div>
+                    </div>
+
+                    <div class="wine-row-right">
+                      <span class="wine-row-date-badge <%= is_multi_same_day ? 'is-grouped' : '' %>">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                          <line x1="16" y1="2" x2="16" y2="6"></line>
+                          <line x1="8" y1="2" x2="8" y2="6"></line>
+                          <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        <span><%= formatted_date %></span>
+                        <% if is_multi_same_day %>
+                          <strong class="same-day-index">#<%= idx + 1 %>/<%= wines.size %></strong>
+                        <% end %>
+                      </span>
+
+                      <div class="expand-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                      </div>
                     </div>
                   </div>
 
-                  <%# CONTENUTO NASCOSTO %>
                   <div class="wine-card-collapsible-content">
-                    <div class="wine-card-header" style="margin-top: 10px;">
-                      <div class="wine-card-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20">
-                          <path d="M8 2h8l2 10-4 10-4-10z"/>
-                          <ellipse cx="12" cy="2" rx="4" ry="1"/>
-                        </svg>
-                      </div>
-                      <span class="wine-card-type <%= wine.wine_type&.downcase %>"><%= wine.wine_type %></span>
-                    </div>
-
                     <div class="wine-card-details">
                       <div class="detail-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                           <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                           <circle cx="12" cy="10" r="3"></circle>
                         </svg>
@@ -102,26 +143,26 @@
                       </div>
 
                       <div class="detail-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                           <line x1="12" y1="1" x2="12" y2="23"></line>
                           <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                         </svg>
-                        <span><%= number_to_currency(wine.price, unit: "€", separator: ",", format: "%n %u") %></span>
+                        <span><%= number_to_currency(wine.price, unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></span>
                       </div>
 
                       <div class="detail-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                         </svg>
-                        <span><%= wine.storage&.name || "Stockage supprimé" %></span>
+                        <span><%= wine.storage ? wine.storage.name : "Stockage supprimé" %></span>
                       </div>
                     </div>
 
-                    <div class="wine-feedback-section" style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">
-                      <div class="wine-rating-display" style="display: flex; gap: 4px; margin-bottom: 8px;">
-                        <% current_rating = wine.rating || 0 %>
+                    <div class="wine-feedback-section">
+                      <div class="wine-rating-display">
+                        <% current_rating = (wine.respond_to?(:rating) && wine.rating.present?) ? wine.rating.to_i : 5 %>
                         <% 5.times do |i| %>
-                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                                fill="<%= i < current_rating ? '#ffc107' : '#e0e0e0' %>"
                                stroke="<%= i < current_rating ? '#ffc107' : '#e0e0e0' %>" stroke-width="1">
                             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
@@ -129,20 +170,19 @@
                         <% end %>
                       </div>
 
-                      <% if wine.notes.present? %>
-                        <div class="wine-notes" style="display: flex; align-items: flex-start; gap: 8px;">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8b4513" stroke-width="2" style="margin-top: 3px;">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
+                      <% if wine.respond_to?(:notes) && wine.notes.present? %>
+                        <div class="wine-notes">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8b4513" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                           </svg>
-                          <p class="notes-text" style="font-style: italic; color: #555; font-size: 0.9rem; margin: 0;">
+                          <p class="notes-text">
                             "<%= wine.notes %>"
                           </p>
                         </div>
                       <% end %>
                     </div>
-                  </div> <%# Fine Collapsible Content %>
-                </div> <%# Fine Card %>
+                  </div>
+                </div>
               <% end %>
             </div>
           </div>
@@ -151,20 +191,20 @@
     <% else %>
       <div class="history-empty">
         <div class="empty-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M8 2h8l2 10-4 10-4-10z"/>
             <ellipse cx="12" cy="2" rx="4" ry="1"/>
           </svg>
         </div>
         <h2 class="empty-title">Aucun vin consommé</h2>
-        <p class="empty-text">Vous n'avez pas ancora marcato di vin come consumato</p>
+        <p class="empty-text">Vous n'avez pas encore marqué de vin comme consommé</p>
         <%= link_to "Voir mes stockages", storages_path, class: "btn-primary" %>
       </div>
     <% end %>
 
-    <div class="history-actions" style="margin-top: 30px;">
+    <div class="history-actions">
       <%= link_to storages_path, class: "btn-back-history" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="m12 19-7-7 7-7"></path>
           <path d="M19 12H5"></path>
         </svg>
@@ -177,7 +217,6 @@
 <script>
   function toggleWineDetails(element) {
     const card = element.closest('.accordion-item');
-    card.classList.toggle('is-open');
+    if (card) card.classList.toggle('is-open');
   }
-
 </script>

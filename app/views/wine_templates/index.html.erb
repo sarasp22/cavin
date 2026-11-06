@@ -1,82 +1,107 @@
 <div class="library-page">
   <div class="library-container">
     <div class="library-header">
-      <div class="library-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-        </svg>
+      <div class="library-header-top">
+        <div class="library-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="library-title">Ma Bibliothèque de Vins</h1>
+          <p class="library-subtitle">Vos vins favoris sauvegardés pour un ajout rapide</p>
+        </div>
       </div>
-      <h1 class="library-title">Ma Bibliothèque de Vins</h1>
-      <p class="library-subtitle">Vos vins favoris sauvegardés pour un ajout rapide</p>
     </div>
 
     <% if @wine_templates.any? %>
-      <div class="templates-grid">
+      <div class="templates-list">
         <% @wine_templates.each do |template| %>
-          <div class="template-card">
-            <div class="template-header">
-              <div class="template-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8 2h8l2 10-4 10-4-10z"/>
-                  <ellipse cx="12" cy="2" rx="4" ry="1"/>
-                </svg>
+          <% wt_class = template.wine_type.to_s.downcase %>
+          <% bottle_img = case wt_class
+                          when "blanc" then "bianco.png"
+                          when "rosé", "rose" then "rose.png"
+                          when "champagne" then "champagne.png"
+                          when "pétillant", "petillant", "prosecco" then "frizzante.png"
+                          else "rosso.png"
+                          end %>
+
+          <div class="template-card accordion-item type-border-<%= wt_class %>">
+            <div class="template-row-clickable" onclick="toggleTemplateDetails(this)">
+              <div class="template-row-left">
+                <div class="wine-list-bottle-wrap">
+                  <%= image_tag bottle_img, alt: template.name, class: "wine-list-bottle-img" %>
+                </div>
+                <span class="wine-list-dot <%= wt_class %>"></span>
+                <div class="template-row-title-group">
+                  <h3 class="template-name"><%= template.name %></h3>
+                  <span class="template-type <%= wt_class %>"><%= template.wine_type %></span>
+                </div>
               </div>
-              <span class="template-type <%= template.wine_type.downcase %>"><%= template.wine_type %></span>
+
+              <div class="template-row-right">
+                <div class="expand-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+              </div>
             </div>
 
-            <h3 class="template-name"><%= template.name %></h3>
-
-            <div class="template-details">
-              <div class="detail-row">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                  <circle cx="12" cy="10" r="3"></circle>
-                </svg>
-                <span><%= template.region %></span>
-              </div>
-
-              <div class="detail-row">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="12" y1="1" x2="12" y2="23"></line>
-                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                </svg>
-                <span><%= number_to_currency(template.price, unit: "€", separator: ",", format: "%n %u") %></span>
-              </div>
-
-               <% if template.notes.present? && template.notes.strip != "" %>                <div class="template-notes-box" style="margin-top: 15px; padding-top: 15px; border-top: 1px dashed #e0e0e0;">
-                  <div class="detail-row" style="align-items: flex-start;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-top: 3px; color: #c4a661;">
-                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            <div class="template-collapsible-content">
+              <div class="template-details-bar">
+                <div class="template-details">
+                  <div class="detail-row">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
                     </svg>
-                    <span style="font-style: italic; font-size: 0.9rem; color: #6b6b6b; line-height: 1.4;">
-                      "<%= template.notes %>"
-                    </span>
+                    <span><%= template.region %></span>
+                  </div>
+
+                  <div class="detail-row">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="12" y1="1" x2="12" y2="23"></line>
+                      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                    <span><%= number_to_currency(template.price, unit: "€", separator: ",", delimiter: " ", format: "%n %u") %></span>
                   </div>
                 </div>
-              <% end %>
-            </div>
 
-            <div class="template-actions">
-              <%= button_to wine_template_path(template), method: :delete,
-                  class: "btn-delete-template",
-                  data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer ce vin de votre bibliothèque ?" } do %>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                </svg>
-                Supprimer
+                <div class="template-actions">
+                  <%= button_to wine_template_path(template), method: :delete, class: "btn-delete-template" do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    <span>Supprimer</span>
+                  <% end %>
+                </div>
+              </div>
+
+              <% if template.respond_to?(:notes) && template.notes.present? %>
+                <div class="template-notes-box">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                  <span class="notes-text">"<%= template.notes %>"</span>
+                </div>
               <% end %>
             </div>
           </div>
         <% end %>
       </div>
     <% else %>
+      <div class="library-empty">
+        <h2 class="empty-title">Votre bibliothèque est vide</h2>
+        <p class="empty-text">Marquez un vin comme consommé et cochez "Ajouter à mes favoris" pour le retrouver ici.</p>
+      </div>
     <% end %>
 
     <div class="library-actions">
       <%= link_to storages_path, class: "btn-back-library" do %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="m12 19-7-7 7-7"></path>
           <path d="M19 12H5"></path>
         </svg>
@@ -85,3 +110,10 @@
     </div>
   </div>
 </div>
+
+<script>
+  function toggleTemplateDetails(element) {
+    const card = element.closest('.accordion-item');
+    if (card) card.classList.toggle('is-open');
+  }
+</script>
