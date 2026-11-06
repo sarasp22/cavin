@@ -20,7 +20,7 @@
 
   <% if @storages.any? %>
     <%
-      active_wines = @storages.flat_map { |s| s.wines.active.to_a }
+      active_wines = @storages.flat_map { |s| s.wines.where(consumed_at: nil).to_a }
       total_bottles = active_wines.size
       total_value = active_wines.sum { |w| w.price.to_f }
 
@@ -54,30 +54,38 @@
       end
     %>
 
-    <!-- Griglia delle Cantine (2 colonne compatte su mobile) -->
     <div class="storages-grid">
       <% @storages.each do |storage| %>
+        <% storage_bottles_count = storage.wines.where(consumed_at: nil).count %>
+        <% storage_cat = storage.respond_to?(:category) ? storage.category : (storage.respond_to?(:storage_type) ? storage.storage_type : "Cave") %>
+        <% photo_asset = case storage_cat
+                         when "Cave"
+                           "cave.jpg"
+                         when "Vinothèque salon"
+                           "vinotheque_salon.png"
+                         when "Meuble cuisine"
+                           "meuble_cuisine.jpg"
+                         when "Vinothèque cuisine"
+                           "vinotheque_cuisine.png"
+                         when "Frigo"
+                           if File.exist?(Rails.root.join("app/assets/images/frigo.png"))
+                             "frigo.png"
+                           elsif File.exist?(Rails.root.join("app/assets/images/frigo.jpg"))
+                             "frigo.jpg"
+                           else
+                             "vinotheque_cuisine.png"
+                           end
+                         else
+                           "cave.jpg"
+                         end %>
         <div class="storage-card">
           <%= link_to storage_path(storage), class: "storage-link" do %>
             <div class="storage-image">
-              <% case storage.storage_type %>
-              <% when "Cave" %>
-                <%= image_tag "cave.png", alt: storage.name, class: "storage-photo" %>
-              <% when "Vinothèque salon" %>
-                <%= image_tag "vinotheque-salon.png", alt: storage.name, class: "storage-photo" %>
-              <% when "Meuble cuisine" %>
-                <%= image_tag "meuble-cuisine.png", alt: storage.name, class: "storage-photo" %>
-              <% when "Vinothèque cuisine" %>
-                <%= image_tag "vinotheque-cuisine.png", alt: storage.name, class: "storage-photo" %>
-              <% when "Frigo" %>
-                <%= image_tag "frigo.png", alt: storage.name, class: "storage-photo" %>
-              <% else %>
-                <%= image_tag "cave.png", alt: storage.name, class: "storage-photo" %>
-              <% end %>
+              <%= image_tag photo_asset, alt: storage.name, class: "storage-photo" %>
               <div class="storage-overlay">
                 <h3 class="storage-name"><%= storage.name %></h3>
                 <p class="storage-bottles">
-                  <%= storage.wines.active.count %> Bouteilles
+                  <%= storage_bottles_count %> Bouteilles
                 </p>
               </div>
             </div>
@@ -89,7 +97,6 @@
       <% end %>
     </div>
 
-    <!-- Barra Riepilogo Compatta in basso a Mes Stockages (SOLO 2 PILLOLE) -->
     <div class="cellar-summary-bar">
       <div class="cellar-summary-pill">
         <span class="cellar-summary-dot"></span>
@@ -106,7 +113,6 @@
       </button>
     </div>
 
-    <!-- Modal / Drawer flottante (senza immagini bottiglia, card compatte) -->
     <div class="cellar-drawer-backdrop" id="cellar-drawer-backdrop" onclick="if(event.target === this) closeCellarDrawer()">
       <div class="cellar-drawer-panel" role="dialog" aria-modal="true">
         <div class="cellar-drawer-header">
@@ -123,7 +129,6 @@
           </button>
         </div>
 
-        <!-- Tutte le pillole categorie ben visibili su 2 righe dentro il pannello -->
         <div class="cellar-drawer-filter-bar">
           <div class="cellar-drawer-chips">
             <% categories.each_with_index do |cat, idx| %>
@@ -141,11 +146,11 @@
           </div>
         </div>
 
-        <!-- Lista scorrevole di card compatte (SENZA immagini bottiglia) -->
         <div class="cellar-drawer-list" id="cellar-drawer-list">
           <% @storages.each do |storage| %>
-            <% storage.wines.active.each do |wine| %>
+            <% storage.wines.where(consumed_at: nil).each do |wine| %>
               <% cat_key = normalize_cat.call(wine.wine_type) %>
+              <% wine_size = (wine.respond_to?(:size) && wine.size.present?) ? wine.size : "75cl" %>
               <%= link_to storage_wine_path(storage, wine),
                           class: "cellar-ping-card cat-#{cat_key}",
                           data: { wine_cat: cat_key } do %>
@@ -162,7 +167,7 @@
                       📍 <%= storage.name %> (R<%= wine.row_position %>-C<%= wine.col_position %>)
                     </span>
                     <span class="cellar-ping-desc">
-                      <%= wine.region %> • <%= wine.size.presence || "75cl" %>
+                      <%= wine.region %> • <%= wine_size %>
                     </span>
                   </div>
                 </div>
@@ -191,6 +196,9 @@
         if (!backdrop) return;
         backdrop.classList.remove('open');
         document.body.style.overflow = '';
+        document.querySelectorAll('[data-summary-chip]').forEach(function(chip) {
+          chip.classList.remove('active');
+        });
       }
 
       function filterDrawerByCategory(catKey) {
@@ -199,6 +207,10 @@
           const isMatch = chip.getAttribute('data-chip-cat') === catKey;
           chip.classList.toggle('active', isMatch);
           if (isMatch) activeChip = chip;
+        });
+
+        document.querySelectorAll('[data-summary-chip]').forEach(function(chip) {
+          chip.classList.toggle('active', chip.getAttribute('data-summary-chip') === catKey);
         });
 
         if (activeChip) {
