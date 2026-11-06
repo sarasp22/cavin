@@ -24,7 +24,7 @@
           <textarea
             id="sommelier-prompt"
             class="sommelier-textarea"
-            rows="3"
+            rows="2"
             placeholder="Ex: Ce soir je prépare un filet de bœuf aux morilles pour un dîner romantique..."
             required
           ></textarea>
@@ -67,7 +67,7 @@
       <div id="sommelier-cards-grid" class="sommelier-cards-grid"></div>
     </div>
 
-    <div class="history-actions" style="margin-top: 40px;">
+    <div class="history-actions" style="margin-top: 28px;">
       <%= link_to storages_path, class: "btn-back-history" do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="m12 19-7-7 7-7"></path>
@@ -85,8 +85,7 @@
     blanc: "<%= asset_path('bianco.png') %>",
     rose: "<%= asset_path('rose.png') %>",
     champagne: "<%= asset_path('champagne.png') %>",
-    petillant: "<%= asset_path('frizzante.png') %>",
-    prosecco: "<%= asset_path('champagne.png') %>"
+    petillant: "<%= asset_path('frizzante.png') %>"
   };
 
   const SOMMELIER_SUGGESTIONS = {
@@ -123,13 +122,19 @@
     }
   }
 
+  function toggleSommelierReason(btn) {
+    const accordion = btn.closest('.sommelier-ai-accordion');
+    if (!accordion) return;
+    const isOpen = accordion.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+
   function getBottleImage(wineType) {
     const wt = (wineType || '').toLowerCase();
     if (wt.includes('blanc') || wt.includes('bianco') || wt.includes('white')) return BOTTLE_IMAGES.blanc;
     if (wt.includes('rosé') || wt.includes('rose') || wt.includes('rosato')) return BOTTLE_IMAGES.rose;
     if (wt.includes('champagne')) return BOTTLE_IMAGES.champagne;
-    if (wt.includes('prosecco')) return BOTTLE_IMAGES.champagne;
-    if (wt.includes('pétillant') || wt.includes('petillant') || wt.includes('frizzante') || wt.includes('sparkling')) return BOTTLE_IMAGES.petillant;
+    if (wt.includes('pétillant') || wt.includes('petillant') || wt.includes('frizzante') || wt.includes('sparkling') || wt.includes('prosecco')) return BOTTLE_IMAGES.petillant;
     return BOTTLE_IMAGES.rouge;
   }
 
@@ -194,7 +199,7 @@
               <h3 class="sommelier-wine-title">${rec.wine_name}</h3>
               <p class="sommelier-wine-region">${rec.region} • ${formattedPrice}</p>
               <div class="sommelier-location-tag">
-                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                 </svg>
                 <span><strong>${rec.storage_name}</strong> — Rangée ${rec.row_position}, Colonne ${rec.col_position}</span>
@@ -202,13 +207,21 @@
             </div>
           </div>
 
-          <div class="sommelier-reason-box">
-            <h4>Pourquoi ce vin ?</h4>
-            <p>${rec.pairing_reason}</p>
-          </div>
-
-          <div class="sommelier-tip-box">
-            <strong>Conseil de service :</strong> ${rec.serving_tip}
+          <div class="sommelier-ai-accordion">
+            <button type="button" class="sommelier-reason-toggle" onclick="toggleSommelierReason(this)" aria-expanded="false">
+              <span class="sommelier-reason-toggle-label">Pourquoi ce vin ?</span>
+              <svg class="sommelier-chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="sommelier-ai-details">
+              <div class="sommelier-reason-box">
+                <p>${rec.pairing_reason}</p>
+              </div>
+              <div class="sommelier-tip-box">
+                <strong>Conseil de service :</strong> ${rec.serving_tip}
+              </div>
+            </div>
           </div>
 
           <div class="sommelier-card-actions">
