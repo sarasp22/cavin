@@ -12,9 +12,9 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/png" href="<%= asset_path('logo.png') %>">
-    <link rel="apple-touch-icon" id="cavin-apple-icon" href="<%= asset_path('logo.png') %>">
+    <link rel="manifest" href="/pwa-manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/pwa-apple-icon.png">
 
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
@@ -60,29 +60,9 @@
 
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function() {
-          navigator.serviceWorker.register('/sw.js').catch(function() {});
+          navigator.serviceWorker.register('/pwa-sw.js', { scope: '/' }).catch(function() {});
         });
       }
-
-      (function() {
-        const iconLink = document.getElementById('cavin-apple-icon');
-        if (!iconLink) return;
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = function() {
-          try {
-            const canvas = document.createElement('canvas');
-            canvas.width = 180;
-            canvas.height = 180;
-            const ctx = canvas.getContext('2d');
-            ctx.fillStyle = '#f5f1e8';
-            ctx.fillRect(0, 0, 180, 180);
-            ctx.drawImage(img, 18, 18, 144, 144);
-            iconLink.href = canvas.toDataURL('image/png');
-          } catch (_e) {}
-        };
-        img.src = iconLink.href;
-      })();
     </script>
   </body>
 </html>
