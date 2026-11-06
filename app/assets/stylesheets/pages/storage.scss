@@ -299,19 +299,20 @@
   line-height: 1.6;
 }
 
-/* Compact Summary Pill & Dropdown Bar at Bottom of Mes Stockages (PingSafe Style) */
+/* Compact Summary Bar at Bottom of Mes Stockages (2 Pills Only) */
 .cellar-summary-bar {
-  margin-top: 32px;
+  margin-top: 28px;
   background: #ffffff;
   border: 2px solid #c4a661;
   border-radius: 9999px;
-  padding: 10px 16px;
+  padding: 6px 8px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  box-shadow: 0 10px 30px rgba(44, 24, 16, 0.14);
-  max-width: 860px;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(44, 24, 16, 0.12);
+  width: fit-content;
+  max-width: calc(100% - 20px);
   margin-left: auto;
   margin-right: auto;
 }
@@ -319,44 +320,38 @@
 @media (max-width: 768px) {
   .cellar-summary-bar {
     position: fixed;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 90;
-    margin-top: 0;
-    border-radius: 20px;
-    padding: 8px 10px;
-    gap: 8px;
+    margin: 0;
+    border-radius: 9999px;
+    padding: 5px 7px;
+    gap: 6px;
     background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(10px);
-    box-shadow: 0 12px 32px rgba(44, 24, 16, 0.25);
+    box-shadow: 0 10px 28px rgba(44, 24, 16, 0.24);
   }
 }
 
 .cellar-summary-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   background: #faf6ee;
   border: 1.5px solid #e5dccb;
   border-radius: 9999px;
-  padding: 8px 16px;
+  padding: 6px 13px;
   font-family: 'Inria Serif', serif;
-  font-size: 0.94rem;
+  font-size: 0.88rem;
   color: #2c1810;
-  cursor: pointer;
-  transition: all 0.2s ease;
   white-space: nowrap;
-}
-
-.cellar-summary-pill:hover {
-  border-color: #c4a661;
-  background: #f5ebd6;
+  flex-shrink: 0;
 }
 
 .cellar-summary-dot {
-  width: 9px;
-  height: 9px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: #10b981;
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
@@ -371,80 +366,21 @@
   color: #5d2e2e;
 }
 
+.cellar-open-pill {
+  padding: 6px 14px;
+  font-size: 0.86rem;
+}
+
 @media (max-width: 768px) {
   .cellar-summary-pill {
-    padding: 6px 10px;
-    font-size: 0.78rem;
+    padding: 5px 10px;
+    font-size: 0.75rem;
     gap: 5px;
   }
-}
 
-.cellar-dropdown-control {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  justify-content: flex-end;
-  min-width: 0;
-}
-
-.cellar-category-select {
-  padding: 8px 14px;
-  border-radius: 9999px;
-  border: 1.5px solid #e5dccb;
-  background-color: #fdfaf5;
-  font-family: 'Inria Serif', serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #2c1810;
-  cursor: pointer;
-  outline: none;
-  max-width: 260px;
-  width: 100%;
-}
-
-.cellar-category-select:focus {
-  border-color: #5d2e2e;
-}
-
-@media (max-width: 768px) {
-  .cellar-category-select {
-    padding: 6px 10px;
-    font-size: 0.76rem;
-    max-width: none;
-    flex: 1;
-    min-width: 0;
-  }
-}
-
-.btn-open-drawer {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 16px;
-  background: #5d2e2e;
-  color: #ffffff;
-  border: none;
-  border-radius: 9999px;
-  font-family: 'Inria Serif', serif;
-  font-size: 0.88rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.btn-open-drawer:hover {
-  background: #7a3a3a;
-}
-
-@media (max-width: 768px) {
-  .btn-open-drawer {
-    padding: 7px 10px;
-  }
-  .btn-open-drawer span {
-    display: none;
+  .cellar-open-pill {
+    padding: 5px 11px;
+    font-size: 0.75rem;
   }
 }
 
@@ -467,7 +403,7 @@
 
 .cellar-drawer-panel {
   width: 100%;
-  max-width: 440px;
+  max-width: 500px;
   max-height: 85vh;
   background: #f8f6f2;
   border-radius: 24px;
@@ -538,60 +474,70 @@
 }
 
 .cellar-drawer-filter-bar {
-  padding: 10px 16px;
+  padding: 10px 16px 12px;
   background: #ffffff;
   border-bottom: 1px solid #ede5d5;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.cellar-drawer-select {
-  width: 100%;
-  padding: 8px 12px;
-  border-radius: 12px;
-  border: 1.5px solid #e0d6c3;
-  background: #faf7f2;
-  font-family: 'Inria Serif', serif;
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: #2c1810;
-  outline: none;
-  cursor: pointer;
 }
 
 .cellar-drawer-chips {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
-  overflow-x: auto;
-  padding-bottom: 2px;
-  scrollbar-width: none;
-}
-
-.cellar-drawer-chips::-webkit-scrollbar {
-  display: none;
 }
 
 .cellar-drawer-chip {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
+  gap: 5px;
+  padding: 5px 11px;
   border-radius: 9999px;
-  border: 1px solid #e0d6c3;
+  border: 1.5px solid #e0d6c3;
   background: #faf7f2;
   font-family: 'Inria Serif', serif;
-  font-size: 0.76rem;
+  font-size: 0.78rem;
+  font-weight: 600;
   color: #5d4e37;
   cursor: pointer;
   white-space: nowrap;
+  flex-shrink: 0;
   transition: all 0.18s ease;
+}
+
+.cellar-drawer-chip strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(93, 46, 46, 0.1);
+  color: #5d2e2e;
+  border-radius: 9999px;
+  padding: 1px 6px;
+  font-size: 0.72rem;
+}
+
+.cellar-drawer-chip:hover {
+  border-color: #c4a661;
+  background: #f5ebd6;
+  color: #2c1810;
 }
 
 .cellar-drawer-chip.active {
   background: #5d2e2e;
   color: #ffffff;
   border-color: #5d2e2e;
+  box-shadow: 0 3px 10px rgba(93, 46, 46, 0.22);
+}
+
+.cellar-drawer-chip.active strong {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .cellar-drawer-chip {
+    padding: 5px 10px;
+    font-size: 0.74rem;
+    gap: 4px;
+  }
 }
 
 /* Compact Bottle Cards List (NO bottle images) */
