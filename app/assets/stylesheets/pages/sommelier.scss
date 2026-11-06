@@ -113,7 +113,7 @@
   }
 }
 
-/* AI Sommelier Page — Soft & Organic */
+/* AI Sommelier Page — Soft & Organic + Compact Mobile Responsive */
 .sommelier-page {
   min-height: calc(100vh - 80px);
   background: linear-gradient(135deg, #f5f1e8 0%, #e8dfc8 100%);
@@ -133,11 +133,6 @@
   border: 1.5px solid rgba(196, 166, 97, 0.35);
   text-align: center;
   margin-bottom: 40px;
-
-  @media (max-width: 768px) {
-    padding: 34px 22px;
-    border-radius: 28px;
-  }
 }
 
 .sommelier-badge-icon {
@@ -159,10 +154,6 @@
   color: #2c1810;
   margin: 0 0 12px 0;
   font-weight: 700;
-
-  @media (max-width: 768px) {
-    font-size: 1.9rem;
-  }
 }
 
 .sommelier-subtitle {
@@ -213,6 +204,7 @@
   resize: vertical;
   transition: all 0.25s ease;
   line-height: 1.55;
+  box-sizing: border-box;
 
   &:focus {
     outline: none;
@@ -264,6 +256,7 @@
 .btn-sommelier-submit {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   padding: 16px 42px;
   background: linear-gradient(135deg, #5d2e2e 0%, #7a3a3a 100%);
@@ -420,6 +413,7 @@
 
 .sommelier-bottle-meta {
   flex: 1;
+  min-width: 0;
 }
 
 .sommelier-wine-title {
@@ -511,12 +505,208 @@
   }
 }
 
-.wine-type-badge.prosecco {
-  background: linear-gradient(135deg, #d4e7b5 0%, #c2dca0 100%);
-  color: #3a5223;
-}
-.wine-card-type.prosecco,
-.template-type.prosecco {
-  background: #d4e7b5;
-  color: #3a5223;
+/* Mobile Responsive Overrides for AI Sommelier Page */
+@media (max-width: 768px) {
+  .sommelier-page {
+    min-height: calc(100vh - 64px);
+    padding: 14px 10px 30px;
+  }
+
+  .sommelier-hero-card {
+    padding: 18px 14px;
+    border-radius: 22px;
+    margin-bottom: 18px;
+  }
+
+  .sommelier-badge-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 10px;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .sommelier-title {
+    font-size: 1.4rem;
+    margin: 0 0 6px 0;
+  }
+
+  .sommelier-subtitle {
+    font-size: 0.84rem;
+    line-height: 1.42;
+    margin: 0 auto 12px;
+  }
+
+  .sommelier-stock-summary {
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .stock-chip {
+    font-size: 0.74rem;
+    padding: 4px 10px;
+  }
+
+  .sommelier-input-wrapper {
+    margin-bottom: 10px;
+  }
+
+  .sommelier-textarea {
+    padding: 11px 13px;
+    font-size: 0.88rem;
+    border-radius: 16px;
+    min-height: 76px;
+    line-height: 1.4;
+  }
+
+  .sommelier-suggestions {
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .suggestions-label {
+    font-size: 0.74rem;
+    width: 100%;
+    text-align: center;
+    margin: 0 0 2px 0;
+  }
+
+  .suggestion-btn {
+    font-size: 0.73rem;
+    padding: 6px 11px;
+  }
+
+  .btn-sommelier-submit {
+    width: 100%;
+    padding: 11px 18px;
+    font-size: 0.92rem;
+    gap: 8px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .sommelier-loading {
+    padding: 22px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+
+    p {
+      font-size: 0.86rem;
+      margin: 0;
+    }
+  }
+
+  .sommelier-spinner {
+    width: 34px;
+    height: 34px;
+    margin-bottom: 10px;
+  }
+
+  .sommelier-error-box {
+    padding: 12px 14px;
+    border-radius: 16px;
+    font-size: 0.84rem;
+    margin-bottom: 16px;
+  }
+
+  .sommelier-intro-card {
+    padding: 16px 16px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+
+  .sommelier-quote-icon {
+    font-size: 2.6rem;
+    margin-bottom: 4px;
+  }
+
+  .sommelier-intro-text {
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .sommelier-section-heading {
+    font-size: 1.2rem;
+    margin: 0 0 14px 0;
+  }
+
+  .sommelier-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .sommelier-wine-card {
+    padding: 16px 14px;
+    border-radius: 20px;
+  }
+
+  .sommelier-card-top {
+    margin-bottom: 10px;
+  }
+
+  .sommelier-rank-badge {
+    font-size: 0.72rem;
+    padding: 4px 10px;
+  }
+
+  .sommelier-bottle-Visual {
+    gap: 12px;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+  }
+
+  .sommelier-bottle-img {
+    height: 54px;
+  }
+
+  .sommelier-wine-title {
+    font-size: 1.05rem;
+    margin: 0 0 3px 0;
+  }
+
+  .sommelier-wine-region {
+    font-size: 0.8rem;
+    margin: 0 0 6px 0;
+  }
+
+  .sommelier-location-tag {
+    font-size: 0.72rem;
+    padding: 4px 9px;
+  }
+
+  .sommelier-reason-box {
+    h4 {
+      font-size: 0.78rem;
+      margin: 0 0 4px 0;
+    }
+
+    p {
+      font-size: 0.84rem;
+      line-height: 1.42;
+      margin: 0 0 10px 0;
+    }
+  }
+
+  .sommelier-tip-box {
+    padding: 9px 12px;
+    font-size: 0.78rem;
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+
+  .sommelier-card-actions {
+    gap: 8px;
+  }
+
+  .btn-sommelier-secondary,
+  .btn-sommelier-primary {
+    padding: 9px 10px;
+    font-size: 0.8rem;
+  }
 }

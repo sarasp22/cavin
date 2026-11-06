@@ -10,6 +10,7 @@
       occupied: occupied
     }
   end
+  current_size = (@wine.respond_to?(:size) && @wine.size.present?) ? @wine.size : "75cl"
 %>
 
 <div class="wine-form-container">
@@ -29,8 +30,11 @@
         </div>
 
         <div class="form-group">
-          <%= f.label :size, "Format", class: "form-label" %>
-          <%= f.select :size, ["37.5cl", "75cl", "1.5L (Magnum)", "3L (Jéroboam)", "6L (Mathusalem)"], { selected: (@wine.size.presence || "75cl") }, class: "form-input" %>
+          <label for="wine_size" class="form-label">Format</label>
+          <%= select_tag "wine[size]",
+                options_for_select(["37.5cl", "75cl", "1.5L (Magnum)", "3L (Jéroboam)", "6L (Mathusalem)"], current_size),
+                class: "form-input",
+                id: "wine_size" %>
         </div>
       </div>
 
@@ -46,6 +50,7 @@
         </div>
       </div>
 
+      <!-- Menu a tendina per spostare la bottiglia da uno Stockage all'altro -->
       <div class="form-group">
         <%= f.label :storage_id, "Stockage", class: "form-label" %>
         <%= f.select :storage_id,
@@ -66,6 +71,7 @@
         </div>
       </div>
 
+      <!-- Griglia interattiva dello Stockage selezionato -->
       <div class="position-preview">
         <p class="preview-label">Positions dans le Stockage</p>
         <div class="preview-grid" id="edit-position-grid"></div>

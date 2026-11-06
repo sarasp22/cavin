@@ -1,3 +1,49 @@
+<%
+  templates_list = begin
+    if defined?(@wine_templates) && @wine_templates.present?
+      @wine_templates
+    elsif current_user.respond_to?(:wine_templates)
+      current_user.wine_templates.to_a
+    else
+      []
+    end
+  rescue StandardError
+    []
+  end
+
+  raw_occupied = begin
+    @occupied_positions.presence || @storage.wines.where(consumed_at: nil).pluck(:row_position, :col_position)
+  rescue StandardError
+    []
+  end
+
+  occupied_pairs = raw_occupied.map do |item|
+    if item.is_a?(Array)
+      [item[0].to_i, item[1].to_i]
+    elsif item.respond_to?(:row_position) && item.respond_to?(:col_position)
+      [item.row_position.to_i, item.col_position.to_i]
+    else
+      parts = item.to_s.split("-")
+      [parts[0].to_i, parts[1].to_i]
+    end
+  end
+
+  pre_row = if params[:row].present?
+              params[:row].to_i
+            elsif @wine.respond_to?(:row_position) && @wine.row_position.present?
+              @wine.row_position.to_i
+            end
+
+  pre_col = if params[:col].present?
+              params[:col].to_i
+            elsif @wine.respond_to?(:col_position) && @wine.col_position.present?
+              @wine.col_position.to_i
+            end
+
+  pre_pos = (pre_row.present? && pre_col.present? && pre_row > 0 && pre_col > 0) ? "#{pre_row}-#{pre_col}" : ""
+  current_size = (@wine.respond_to?(:size) && @wine.size.present?) ? @wine.size : "75cl"
+%>
+
 <div class="wine-form-container">
   <div class="wine-form-card">
     <div class="wine-form-header">
@@ -12,12 +58,12 @@
     </div>
 
     <%= form_with model: [@storage, @wine], local: true, class: "wine-form", id: "wine-form" do |f| %>
-      <% if current_user.wine_templates.any? %>
+      <% if templates_list.any? %>
         <div class="wine-form-group">
           <label class="wine-form-label">Sélectionner depuis ma bibliothèque</label>
           <select class="wine-form-input" id="wine-template-select" onchange="fillFromTemplate()">
             <option value="">-- Choisir un vin sauvegardé --</option>
-            <% current_user.wine_templates.each do |template| %>
+            <% templates_list.each do |template| %>
               <option value="<%= template.id %>"
                       data-name="<%= template.name %>"
                       data-type="<%= template.wine_type %>"
@@ -41,7 +87,7 @@
         <div class="wine-type-buttons">
           <% ["Rouge", "Blanc", "Rosé", "Champagne", "Pétillant", "Prosecco"].each_with_index do |type, idx| %>
             <label class="wine-type-option">
-              <input type="radio" name="wine[wine_type]" value="<%= type %>" class="wine-type-radio" <%= idx == 0 ? "checked" : "" %> required>
+              <input type="radio" name="wine[wine_type]" value="<%= type %>" class="wine-type-radio" <%= (@wine.wine_type == type || (@wine.wine_type.blank? && idx == 0)) ? "checked" : "" %> required>
               <span class="wine-type-label <%= type.downcase %>"><%= type %></span>
             </label>
           <% end %>
@@ -64,15 +110,15 @@
       </div>
 
       <div class="wine-form-group">
-        <%= f.label :size, "Format de la bouteille", class: "wine-form-label" %>
-        <%= f.select :size, ["75cl", "37.5cl", "1.5L (Magnum)", "3L (Jéroboam)", "6L (Mathusalem)"], { selected: (@wine.size.presence || "75cl") }, { class: "wine-form-input", id: "wine_size", required: true } %>
+        <label for="wine_size" class="wine-form-label">Format de la bouteille</label>
+        <%= select_tag "wine[size]",
+              options_for_select(["75cl", "37.5cl", "1.5L (Magnum)", "3L (Jéroboam)", "6L (Mathusalem)"], current_size),
+              class: "wine-form-input",
+              id: "wine_size" %>
       </div>
 
-      <%
-        pre_row = params[:row].present? ? params[:row].to_i : @wine.row_position
-        pre_col = params[:col].present? ? params[:col].to_i : @wine.col_position
-        pre_pos = (pre_row.present? && pre_col.present?) ? "#{pre_row}-#{pre_col}" : ""
-      %>
+      <%= f.hidden_field :row_position, value: pre_row, id: "wine-row-hidden" %>
+      <%= f.hidden_field :col_position, value: pre_col, id: "wine-col-hidden" %>
 
       <div class="wine-form-section">
         <h3 class="section-title">Positions dans le Stockage</h3>
@@ -87,7 +133,7 @@
           <div class="preview-grid" id="position-preview" style="grid-template-columns: repeat(<%= @storage.cols %>, minmax(0, 1fr)); max-width: <%= @storage.cols * 48 %>px;">
             <% (1..@storage.rows).each do |row| %>
               <% (1..@storage.cols).each do |col| %>
-                <% is_occupied = (@occupied_positions || []).include?([row, col]) %>
+                <% is_occupied = occupied_pairs.include?([row, col]) %>
                 <% is_preselected = !is_occupied && pre_row == row && pre_col == col %>
                 <div class="preview-slot <%= 'occupied' if is_occupied %> <%= 'selected' if is_preselected %>"
                      data-row="<%= row %>"
@@ -118,7 +164,7 @@
 
 <script>
   let selectedPositions = [
-    <% if pre_row.present? && pre_col.present? %>
+    <% if pre_row.present? && pre_col.present? && pre_row > 0 && pre_col > 0 %>
       { row: <%= pre_row %>, col: <%= pre_col %> }
     <% end %>
   ];
@@ -141,11 +187,17 @@
   function updateHiddenInput() {
     const input = document.getElementById('selected-positions-input');
     const countDisplay = document.getElementById('count-display');
+    const rowHidden = document.getElementById('wine-row-hidden');
+    const colHidden = document.getElementById('wine-col-hidden');
 
     const posString = selectedPositions.map(function(p) { return p.row + '-' + p.col; }).join(',');
 
     if (input) input.value = posString;
     if (countDisplay) countDisplay.textContent = selectedPositions.length;
+    if (selectedPositions.length > 0) {
+      if (rowHidden) rowHidden.value = selectedPositions[0].row;
+      if (colHidden) colHidden.value = selectedPositions[0].col;
+    }
   }
 
   function fillFromTemplate() {

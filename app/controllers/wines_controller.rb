@@ -4,24 +4,28 @@ class WinesController < ApplicationController
   before_action :set_wine, only: [:show, :edit, :update, :destroy, :consume, :mark_consumed]
 
   def new
-    @wine = @storage.wines.build(
+    initial_attrs = {
       row_position: params[:row],
-      col_position: params[:col],
-      size: "75cl"
-    )
+      col_position: params[:col]
+    }
+    initial_attrs[:size] = "75cl" if Wine.column_names.include?("size")
+
+    @wine = @storage.wines.build(initial_attrs)
     @occupied_positions = @storage.wines.where(consumed_at: nil).pluck(:row_position, :col_position)
+    @wine_templates = load_wine_templates
   end
 
   def create
     positions = params[:selected_positions].to_s.split(",").map(&:strip).reject(&:blank?)
 
-    if positions.empty? && wine_params[:row_position].present? && wine_params[:col_position].present?
-      positions = ["#{wine_params[:row_position]}-#{wine_params[:col_position]}"]
+    if positions.empty? && params.dig(:wine, :row_position).present? && params.dig(:wine, :col_position).present?
+      positions = ["#{params.dig(:wine, :row_position)}-#{params.dig(:wine, :col_position)}"]
     end
 
     if positions.empty?
       @wine = @storage.wines.build(wine_params)
       @occupied_positions = @storage.wines.where(consumed_at: nil).pluck(:row_position, :col_position)
+      @wine_templates = load_wine_templates
       flash.now[:alert] = "Veuillez sélectionner au moins un emplacement."
       render :new, status: :unprocessable_entity
       return
@@ -32,11 +36,13 @@ class WinesController < ApplicationController
       row, col = pos.split("-").map(&:to_i)
       next unless row.positive? && col.positive?
 
-      wine = @storage.wines.build(wine_params.merge(
-        user: current_user,
+      attrs = wine_params.merge(
         row_position: row,
         col_position: col
-      ))
+      )
+      attrs[:user_id] = current_user.id if Wine.column_names.include?("user_id")
+
+      wine = @storage.wines.build(attrs)
       created_count += 1 if wine.save
     end
 
@@ -45,6 +51,7 @@ class WinesController < ApplicationController
     else
       @wine = @storage.wines.build(wine_params)
       @occupied_positions = @storage.wines.where(consumed_at: nil).pluck(:row_position, :col_position)
+      @wine_templates = load_wine_templates
       render :new, status: :unprocessable_entity
     end
   end
@@ -81,15 +88,23 @@ class WinesController < ApplicationController
     rating_val = params.dig(:wine, :rating) || params[:rating] || 5
     notes_val = params.dig(:wine, :notes) || params[:notes]
 
-    if @wine.update(consumed_at: Time.current, rating: rating_val, notes: notes_val)
-      if params[:save_as_template] == "1"
-        current_user.wine_templates.create(
-          name: @wine.name,
-          wine_type: @wine.wine_type,
-          region: @wine.region,
-          price: @wine.price,
-          notes: @wine.notes
-        )
+    consume_attrs = { consumed_at: Time.current }
+    consume_attrs[:rating] = rating_val if Wine.column_names.include?("rating")
+    consume_attrs[:notes] = notes_val if Wine.column_names.include?("notes")
+
+    if @wine.update(consume_attrs)
+      if params[:save_as_template] == "1" && current_user.respond_to?(:wine_templates)
+        begin
+          current_user.wine_templates.create(
+            name: @wine.name,
+            wine_type: @wine.wine_type,
+            region: @wine.region,
+            price: @wine.price,
+            notes: (@wine.respond_to?(:notes) ? @wine.notes : nil)
+          )
+        rescue StandardError
+          nil
+        end
       end
       redirect_to storage_path(@storage), notice: "Vin marqué comme consommé!"
     else
@@ -111,7 +126,17 @@ class WinesController < ApplicationController
     @wine = @storage.wines.find(params[:id])
   end
 
+  def load_wine_templates
+    return [] unless current_user.respond_to?(:wine_templates)
+
+    current_user.wine_templates.to_a
+  rescue StandardError
+    []
+  end
+
   def wine_params
-    params.require(:wine).permit(:name, :wine_type, :region, :price, :size, :row_position, :col_position, :notes, :rating, :storage_id)
+    allowed = [:name, :wine_type, :region, :price, :size, :row_position, :col_position, :notes, :rating, :storage_id]
+    existing_columns = Wine.column_names.map(&:to_sym)
+    params.require(:wine).permit(*(allowed & existing_columns))
   end
 end
