@@ -1,41 +1,49 @@
 # 🍷 Cavin — Wine Cellar Management & AI Sommelier
 
-**Cavin** is a web application designed for wine enthusiasts who want to organize, visualize, and manage their personal wine cellars with elegance and precision, enhanced by an **AI-powered Personal Sommelier** and **multi-language support (French, Italian, English)**.
+**Cavin** is a full-stack web application designed for wine enthusiasts who want to organize, visualize, and manage their personal wine cellars with elegance and precision, enhanced by an **AI-powered Personal Sommelier**, **responsive Desktop, Laptop & Mobile design**, and **multi-language support (French, Italian, English)**.
 
 ---
 
 ## ✨ Key Features
 
-### 1. 🏛️ Tailored Cellar Management (`/storages`)
-- Create and configure multiple custom storage spaces: **Cave** (Underground Cellar), **Vinothèque salon** (Living Room Wine Fridge), **Meuble cuisine** (Kitchen Cabinet), and **Vinothèque cuisine** (Kitchen Wine Fridge).
+### 1. 🏛️ Tailored Cellar Management & Interactive Inventory Drawer (`/storages`)
+- Create and configure multiple custom storage spaces: **Cave** (Underground Cellar), **Vinothèque salon** (Living Room Wine Cabinet), **Meuble cuisine** (Kitchen Rack), **Vinothèque cuisine** (Kitchen Wine Fridge), and **Frigo** (Fridge).
 - Custom grid dimensions (**Rows × Columns**) with an interactive visual representation of your racks and slots.
-- Real-time capacity and bottle count tracking across all cellars.
+- **Compact Cellar Summary Pill & Floating Inventory Drawer**:
+  - Bottom summary pill bar displaying **total bottle count** and **overall cellar valuation (€)** alongside a quick-open **Tous les vins** pill.
+  - Opens a floating inventory modal with multi-row category filter pills (*Tous les vins, Rouge, Blanc, Rosé, Champagne, Pétillant, Prosecco*), real-time category subtotals, and direct links to each bottle.
 
-### 2. 🍾 Wine Cataloging & Multi-Slot Placement (`/wines`)
-- Detailed bottle records: name, wine type (*Rouge, Blanc, Rosé, Champagne, Pétillant*), region, vintage, price, and bottle format (*0.375L, 0.75L, 1.5L Magnum, 3L, 5L, 6L*).
-- **Multi-Slot Selection**: select multiple grid positions at once to add several bottles of the same wine in a single action.
-- Live search and filtering by wine type directly inside each cellar, dynamically highlighting matching bottles on the rack.
+### 2. 🍾 Wine Cataloging, Multi-Slot Placement & Inter-Cellar Transfer (`/wines`)
+- **Harmonized Bottle Showcase (`wines/show`)**: dedicated bottle presentation with category-specific bottle photography (*Rouge, Blanc, Rosé, Champagne, Pétillant / Prosecco*), cellar coordinates (`R-C`), 2×2 detail cards (*Région, Prix, Format, Stockage*), and quick actions.
+- **Multi-Slot Selection (`wines/new`)**: select multiple grid positions at once to add several bottles of the same wine in a single action, or pre-fill details directly from your saved **Wine Library**.
+- **Move Bottles Across Cellars (`wines/edit`)**: transfer any bottle from one storage (`Stockage`) to another with a live, interactive rack grid preview that automatically highlights occupied and available slots.
 
 ### 3. ✨ AI Personal Sommelier (`/sommelier`)
-- Intelligent sommelier assistant that analyzes **exclusively the bottles currently available** in your cellars.
-- Recommends up to **3 ideal wine pairings** based on your dish, occasion, or season.
-- Displays for each recommended bottle:
-  - **Exact cellar location** (*Cellar name, Row, and Column*) so you can find it immediately.
-  - **Sommelier pairing notes** explaining why the wine matches your request.
-  - **Serving advice** (ideal temperature, decanting tips, and glassware).
-- Automatically responds in the user's selected language (**FR / IT / EN**) and includes a built-in oenological pairing engine as a seamless fallback.
+- Intelligent sommelier assistant powered by **Google Gemini** that analyzes **exclusively the bottles currently available** in your cellars.
+- Recommends **1 to 3 ideal wine pairings** based on your dish, occasion, or budget.
+- Compact side-by-side cellar stock chips and quick-prompt ideas, optimized for both desktop and mobile screens.
+- Each recommendation card features:
+  - **Exact cellar location** (*Cellar name, Row, and Column*) and bottle preview.
+  - **Collapsible *"Pourquoi ce vin ?"* accordion** containing the sommelier's pairing explanation and **serving advice** (ideal temperature & decanting tips), keeping cards compact at a glance.
+- Automatically responds in the user's active language (**FR / IT / EN**).
 
-### 4. 📖 Tasting Notes, History & Statistics (`/history`)
-- When opening a bottle (*Mark as consumed*), rate it from **1 to 5 stars** and record your **tasting notes**.
-- Dedicated history dashboard with **live statistics**: total bottles tasted, total collection value enjoyed, and average price per bottle, grouped chronologically.
+### 4. 📖 Tasting Notes, Same-Day Grouping & History (`/history`)
+- **Harmonized Consumption Form (`wines/consume`)**: when opening a bottle (*Marquer comme consommé*), view the bottle summary card, rate it from **1 to 5 stars**, write **tasting notes** (up to 500 characters), and optionally bookmark it to your library.
+- **Collapsible History List (`wines/history`)**:
+  - Live summary statistics: **total bottles tasted**, **total value enjoyed (€)**, and **average bottle price (€)**.
+  - Sleek collapsible list rows showing bottle thumbnails on Desktop and a pure streamlined list on Mobile, expanding on click to reveal region, price, cellar, star rating, and tasting notes.
+  - **Same-Day Consumption Clustering**: automatically groups multiple bottles opened on the same date into a visual cluster with a shared date banner and `#1/N` badges.
 
-### 5. 📚 Favorites Library (`/wine_templates`)
+### 5. 📚 Favorites Wine Library (`/wine_templates`)
 - Save your favorite bottles to your personal **Wine Library** when marking them as consumed.
-- Quickly pre-fill the "Add a Wine" form from your saved templates with a single click.
+- Collapsible list layout (`wine_templates/index`) with bottle thumbnails on Desktop and clean list rows on Mobile, expandable tasting notes, and 1-click auto-fill when adding new wines to any cellar.
 
-### 6. 🌍 Multi-Language Interface (`FR` / `IT` / `EN`)
-- Built-in language switcher in the navigation bar (**FR · IT · EN**) with automatic preference persistence.
-- Instant translation across the entire UI, forms, quick-prompt chips, and AI Sommelier responses.
+### 6. 📱 Responsive Design (Desktop, Laptop & Mobile) & 🌍 Multi-Language (`FR / IT / EN`)
+- **Adaptive Viewport Experience**:
+  - **Large Desktop Monitors**: full-scale hero showcase (`80vh`) and 4-column feature grid.
+  - **Laptop Screens**: tailored viewport-aware hero sizing so the call-to-action button is always visible above the fold.
+  - **Mobile Devices**: glassmorphic floating mobile navigation menu with a **2×2 quick-access card grid**, **2×2 *"Comment ça marche"* home cards**, compact footer, and horizontally scrollable cellar grids.
+- **Instant Multi-Language Switcher (`FR` · `IT` · `EN`)**: available in both desktop and mobile navigation, translating the entire interface, placeholders, dynamic counters, and AI Sommelier responses.
 
 ---
 
@@ -45,7 +53,7 @@
 - **Database**: PostgreSQL
 - **Authentication**: Devise
 - **Frontend**: ERB Views, SCSS (*Inria Serif* & *Imperial Script* typography), JavaScript / Turbo
-- **Artificial Intelligence**: Google Gemini API (`gemini-2.5-flash`) with built-in local oenological fallback
+- **Artificial Intelligence**: Google Gemini API (`gemini-2.5-flash` / `gemini-2.0-flash`)
 - **Deployment**: Docker & Railway.app
 
 ---
@@ -69,7 +77,6 @@ Create or update the `.env` file in the project root to enable the Gemini API fo
 ```env
 GEMINI_API_KEY=your_gemini_api_key
 ```
-*(Note: If `GEMINI_API_KEY` is not set, the AI Sommelier still works seamlessly using its built-in oenological pairing engine).*
 
 ### 4. Database Setup
 ```bash
@@ -117,13 +124,15 @@ The application is containerized via Docker and deployed with continuous deliver
 cavin/
 ├── app/
 │   ├── assets/
-│   │   ├── images/              # Visual assets, cellar backgrounds, and bottle icons
-│   │   └── stylesheets/         # SCSS stylesheets (home, storages, wines, sommelier, etc.)
+│   │   ├── images/              # Cellar photos, bottle images (rosso, bianco, rose, champagne, frizzante) & icons
+│   │   └── stylesheets/
+│   │       ├── components/      # _navbar.scss (Desktop + Floating Mobile Menu), _footer.scss
+│   │       └── pages/           # home, storage, storage_show, wine_show, wine_form, consume, history, wine_library, sommelier
 │   ├── controllers/
-│   │   ├── storages_controller.rb       # Cellar management and interactive rack grid
-│   │   ├── wines_controller.rb          # Wine CRUD, consumption, and tasting history
-│   │   ├── wine_templates_controller.rb # Saved favorite wine templates
-│   │   └── sommelier_controller.rb      # AI Sommelier & pairing recommendation engine
+│   │   ├── storages_controller.rb       # Cellar CRUD & interactive rack grid
+│   │   ├── wines_controller.rb          # Wine CRUD, multi-slot creation, inter-cellar move, consume & history
+│   │   ├── wine_templates_controller.rb # Favorite wine templates library
+│   │   └── sommelier_controller.rb      # AI Sommelier & Gemini API integration
 │   ├── models/
 │   │   ├── user.rb
 │   │   ├── storage.rb
@@ -131,11 +140,11 @@ cavin/
 │   │   └── wine_template.rb
 │   └── views/
 │       ├── pages/home.html.erb
-│       ├── shared/_navbar.html.erb      # Navbar + Language Switcher (FR/IT/EN)
-│       ├── sommelier/index.html.erb     # AI Sommelier interface
-│       ├── storages/                    # Cellar views & interactive rack grid
-│       ├── wines/                       # Add/edit wine forms & tasting history
-│       └── wine_templates/              # Wine library view
+│       ├── shared/_navbar.html.erb      # Navbar, Mobile 2x2 Menu & FR/IT/EN I18n Engine
+│       ├── sommelier/index.html.erb     # AI Sommelier interface with collapsible recommendations
+│       ├── storages/                    # Cellar index (with Inventory Drawer), show, new & edit
+│       ├── wines/                       # Wine show, new, edit (with storage transfer), consume & history
+│       └── wine_templates/              # Collapsible Wine Library view
 ├── config/
 │   └── routes.rb
 └── db/
@@ -145,6 +154,4 @@ cavin/
 
 ---
 
-> *"For true connoisseurs, every bottle tells a story."*
-# Run migrations on the server
-heroku run rails db:migrate
+> *"For true wine lovers, every bottle tells a story."*
